@@ -112,6 +112,14 @@
                                     <input type="text" id="alias" placeholder="Alias" class="form-control" name="alias" />
                                 </div>
                             </div>
+                            <!-- AFFILIATION -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Afiliasi </label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" id="affiliation" placeholder="Afiliasi" class="form-control" name="affiliation" />
+                                </div>
+                            </div>
                             <!-- NATIONALITY -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Suku/Kwn </label>
@@ -125,7 +133,7 @@
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Keluarga </label>
 
                                 <div class="col-sm-9">
-                                    <input type="text" id="nationality" placeholder="Keluarga" class="form-control" name="nationality" />
+                                    <input type="text" id="family_conn" placeholder="Keluarga" class="form-control" name="family_conn" />
                                 </div>
                             </div>
                             <!-- TEMPAT LAHIR -->

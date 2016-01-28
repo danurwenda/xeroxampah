@@ -31,10 +31,10 @@ class Individu_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $name, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $source_id) {
+    public function update($id, $name, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation,$family_conn, $source_id) {
         return $this->db->update(
                         $this->table, array(
-                    'nama' => $name,
+                    'name' => $name,
                     'alias' => $alias,
                     'born_date' => $born_date,
                     'born_place' => $born_place,
@@ -42,22 +42,27 @@ class Individu_model extends CI_Model {
                     'detention_history' => $detention_history,
                     'detention_status' => $detention_status,
                     'education' => $education,
+                    'family_conn' => $family_conn,
                     'affiliation' => $affiliation,
-                    'source' => $source_id,
+                    'source_id' => $source_id,
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($org_name, $address, $website, $email, $phone, $description, $source) {
+    public function create( $name, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn,$source_id) {
         return $this->db->insert(
                         $this->table, array(
-                    'org_name' => $org_name,
-                    'address' => $address,
-                    'website' => $website,
-                    'email' => $email,
-                    'phone' => $phone,
-                    'description' => $description,
-                    'source_id' => $source
+                   'name' => $name,
+                    'alias' => $alias,
+                    'born_date' => $born_date,
+                    'born_place' => $born_place,
+                    'nationality' => $nationality,
+                    'detention_history' => $detention_history,
+                    'detention_status' => $detention_status,
+                    'education' => $education,
+                    'family_conn' => $family_conn,
+                    'affiliation' => $affiliation,
+                    'source_id' => $source_id,
                         )
         );
     }

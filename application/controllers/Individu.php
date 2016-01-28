@@ -48,18 +48,19 @@ class Individu extends Member_Controller {
         $id = $this->input->post('individu_id');
         $nama = $this->input->post('name');
         $alias = $this->input->post('alias');
+        $affiliation = $this->input->post('affiliation');
+        $nationality = $this->input->post('nationality');
+        $family_conn = $this->input->post('family_conn');
         $born_date = $this->input->post('born_date');
         $born_place = $this->input->post('born_place');
-        $nationality = $this->input->post('nationality');
         $detention_history = $this->input->post('detention_history');
         $detention_status = $this->input->post('detention_status');
         $education = $this->input->post('education');
-        $affiliation = $this->input->post('affiliation');
         $source_id = $this->input->post('source_id');
         if ($id) {
             //edit
             if ($this->individu_model->update(
-                            $id, $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $source_id)) {
+                            $id, $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn,$source_id)) {
                 echo 1;
             } else {
                 echo 0;
@@ -67,7 +68,7 @@ class Individu extends Member_Controller {
         } else {
             //add
             if ($this->individu_model->create(
-                            $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $source_id)) {
+                            $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation,$family_conn, $source_id)) {
                 echo 1;
             } else {
                 echo 0;

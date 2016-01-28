@@ -32,7 +32,7 @@ jQuery(function ($) {
             {
                 //actions
                 width: '100px',
-                data: 'org_id',
+                data: 'individu_id',
                 searchable: false,
                 render: function (d, t, f, m) {
                     return $('#row-actions').html();
@@ -100,15 +100,15 @@ jQuery(function ($) {
             detention_history = $('<input type="hidden" name="detention_history" />')
                     .appendTo(this);
         }
-        detention_history.val($('#detention_editor').html());
+        detention_history.val($('#detention-editor').html());
         //detention status
         var detention_status = $(this).find('input[name="detention_status"]');
         if (detention_status.length === 0) {
             //create
-            detention_history = $('<input type="hidden" name="detention_status" />')
+            detention_status = $('<input type="hidden" name="detention_status" />')
                     .appendTo(this);
         }
-        detention_status.val($('#status_editor').html());
+        detention_status.val($('#status-editor').html());
         //education status
         var education = $(this).find('input[name="education"]');
         if (education.length === 0) {
@@ -116,7 +116,7 @@ jQuery(function ($) {
             education = $('<input type="hidden" name="education" />')
                     .appendTo(this);
         }
-        education.val($('#education_editor').html());
+        education.val($('#education-editor').html());
         //ajax submit form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
@@ -164,33 +164,34 @@ jQuery(function ($) {
             //enable field
             enableField(true);
             //remove 'id' field, if any
-            $(leForm).find('input[name="org_id"]').remove();
+            $(leForm).find('input[name="individu_id"]').remove();
         } else {
             //query
-            var org_id = $(e.relatedTarget).closest('tr').attr('id').substr(4);
-            $.getJSON('individu/get/' + org_id, function (d) {
+            var individu_id = $(e.relatedTarget).closest('tr').attr('id').substr(4);
+            $.getJSON('individu/get/' + individu_id, function (d) {
                 //populate fields
                 $(leForm).find('#source_id').val(d.source_id)
                 $(leForm).find('#name').val(d.name)
                 $(leForm).find('#alias').val(d.alias)
+                $(leForm).find('#affiliation').val(d.affiliation)
+                $(leForm).find('#nationality').val(d.nationality)
+                $(leForm).find('#family_conn').val(d.family_conn)
                 $(leForm).find('#born_place').val(d.born_place)
                 $(leForm).find('#born_date').datepicker('update',d.born_date?new Date(d.born_date):'')
-                $(leForm).find('#nationality').val(d.nationality)
-                $(leForm).find('#affiliation').val(d.affiliation)
-                $(leForm).find('#education-editor').html(d.education)
                 $(leForm).find('#detention-editor').html(d.detention_history)
                 $(leForm).find('#status-editor').html(d.detention_status)
+                $(leForm).find('#education-editor').html(d.education)
             })
             if (action == 'edit') {
                 enableField(true)
                 //add 'id' field
-                var id_field = $(leForm).find('input[name="org_id"]');
+                var id_field = $(leForm).find('input[name="individu_id"]');
                 if (id_field.length == 0) {
                     //create
-                    id_field = $('<input type="hidden" name="org_id" />')
+                    id_field = $('<input type="hidden" name="individu_id" />')
                             .appendTo(leForm);
                 }
-                id_field.val(org_id);
+                id_field.val(individu_id);
             } else if (action == 'view') {
                 enableField(false)
             }
