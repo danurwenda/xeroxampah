@@ -82,7 +82,7 @@
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-12">
-                        <form class="form-horizontal" role="form">
+                        <?php echo form_open('', ['class'=>'form-horizontal','role'=>'form','id'=>'leform']);?>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sumber </label>
 

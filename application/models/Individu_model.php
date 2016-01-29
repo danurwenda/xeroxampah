@@ -31,10 +31,10 @@ class Individu_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $name, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation,$family_conn, $source_id) {
+    public function update($id, $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn, $source_id) {
         return $this->db->update(
                         $this->table, array(
-                    'name' => $name,
+                    'name' => $nama,
                     'alias' => $alias,
                     'born_date' => $born_date,
                     'born_place' => $born_place,
@@ -49,10 +49,10 @@ class Individu_model extends CI_Model {
         );
     }
 
-    public function create( $name, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn,$source_id) {
+    public function create($nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn, $source_id) {
         return $this->db->insert(
                         $this->table, array(
-                   'name' => $name,
+                    'name' => $nama,
                     'alias' => $alias,
                     'born_date' => $born_date,
                     'born_place' => $born_place,

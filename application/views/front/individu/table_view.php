@@ -82,7 +82,7 @@
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-12">
-                        <form class="form-horizontal" role="form">
+                        <?php echo form_open('', ['class'=>'form-horizontal','role'=>'form','id'=>'leform']);?>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sumber </label>
 
@@ -150,7 +150,7 @@
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input class="form-control date-picker" id="born_date" name="born_date" type="text" data-date-format="dd-mm-yyyy" />
+                                        <input class="form-control date-picker" id="born_date" name="born_date" type="text" data-date-format="dd/mm/yyyy" />
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar bigger-110"></i>
                                         </span>

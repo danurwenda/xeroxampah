@@ -345,7 +345,8 @@ class Datatables {
                 'draw' => intval($this->ci->input->post('draw')),
                 'recordsTotal' => $iTotal,
                 'recordsFiltered' => $iFilteredTotal,
-                'data' => $aaData
+                'data' => $aaData,
+                $this->ci->security->get_csrf_token_name()=>$this->ci->security->get_csrf_hash()
             );
             if ($charset == 'utf-8')
                 return json_encode($sOutput);

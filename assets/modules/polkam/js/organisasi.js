@@ -3,7 +3,17 @@ jQuery(function ($) {
     var table = $('#organisasi-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: {url: 'organisasi/dt', type: 'POST'},
+        ajax: {
+            url: 'organisasi/dt',
+            type: 'POST',
+            data: function (d) {
+                d[$('#csrfform :hidden').attr('name')] = $('#csrfform :hidden').val()
+            },
+            dataSrc: function (d) {
+                $('#csrfform :hidden').val(d[$('#csrfform :hidden').attr('name')])
+                return d.data;
+            }
+        },
         order: [[0, 'desc']],
         //mapping nth-column to data source
         columns: [
@@ -70,7 +80,7 @@ jQuery(function ($) {
         $('#modal-form').find('form').first().submit();
     })
     //when the form is submitted, add additional hidden from wysiwyg
-    $('#modal-form').find('form').first().on('submit', function (e) {
+    $('#leform').on('submit', function (e) {
         //put the editor's HTML into hidden_input and it will be sent to server along with other fields
         var id_field = $(this).find('input[name="description"]');
         if (id_field.length === 0) {
@@ -79,17 +89,21 @@ jQuery(function ($) {
                     .appendTo(this);
         }
         id_field.val($('#editor2').html());
+        //refresh csrf from csrf hidden form, in case it's already changed
+        var csrf = $(this).find('input[name="' + $('#csrfform :hidden').attr('name') + '"]')
+        csrf.val($('#csrfform :hidden').val())
         //ajax submit form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
             url: 'organisasi/post', // the url where we want to POST
             data: $(this).serialize(), // our data object
             //dataType: 'json', // what type of data do we expect back from the server
-        }).done(function (data) {
+        }).done(function (d) {
             // using the done promise callback
+            d=JSON.parse(d)
 
-            // log data to the console so we can see
-            console.log(data);
+            // renew csrf
+            $('#csrfform :hidden').val(d[$('#csrfform :hidden').attr('name')])
 
             // here we will handle errors and validation messages
 

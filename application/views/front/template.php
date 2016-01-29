@@ -25,9 +25,9 @@
         <?php echo css_asset('ace-fonts.css', 'ace'); ?>
 
         <!-- ace styles -->
-<?php echo css_asset('ace.css', 'ace', ['class' => "ace-main-stylesheet", 'id' => "main-ace-style"]); ?>
+        <?php echo css_asset('ace.css', 'ace', ['class' => "ace-main-stylesheet", 'id' => "main-ace-style"]); ?>
         <!-- polkam styles -->
-<?php echo css_asset('polkam.css', 'polkam'); ?>
+        <?php echo css_asset('polkam.css', 'polkam'); ?>
         <!-- inline styles related to this page -->
 
         <!--[if !IE]> -->
@@ -38,8 +38,8 @@
 
         <!-- <![endif]-->
         <!-- ace settings handler -->
-<?php echo js_asset('ace-extra.js', 'ace'); ?>
-<?php echo js_asset('trdb.js', 'polkam'); ?>
+        <?php echo js_asset('ace-extra.js', 'ace'); ?>
+        <?php echo js_asset('trdb.js', 'polkam'); ?>
     </head>
 
     <body class="no-skin">
@@ -58,7 +58,7 @@
                     <a href="<?php echo site_url(); ?>" class="breadcrumb-left"> </a>
                     <div class="breadcrumb-mid">
                         <ul class="breadcrumb">
-<?php echo $breadcrumb; ?>
+                            <?php echo $breadcrumb; ?>
                         </ul>
                     </div>
                     <div class="breadcrumb-right">
@@ -105,19 +105,21 @@
                                     <?php echo ".ace-nav > li.$menu->module_name"; ?> a{
                                         background: url("<?php echo image_asset_url('menu_icon/' . $menu->icon, 'polkam'); ?>") 4px 2px no-repeat;
                                     }
-                                <?php echo ".ace-nav > li.$menu->module_name"; ?> a:hover{
+                                    <?php echo ".ace-nav > li.$menu->module_name"; ?> a:hover{
                                         background: url("<?php echo image_asset_url('menu_icon/' . $menu->hover_icon, 'polkam'); ?>") 4px 2px no-repeat;
                                     }
                                 </style>
-    <?php } else { ?>
+                            <?php } else { ?>
 
                                 <li class="infobox infobox-green">
                                     <a class="infobox-icon" href="<?php echo site_url('admin'); ?>">
                                         <i class="ace-icon fa fa-cogs" style="width: 42px;"></i>
                                     </a>
                                 </li>
-    <?php }
-} ?>
+                                <?php
+                            }
+                        }
+                        ?>
                         <li class="logout"><?php echo anchor('auth/logout', ' ', array('title' => 'Keluar')); ?></li>
                     </ul>
                 </div>
@@ -166,7 +168,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <!-- PAGE CONTENT BEGINS -->
-<?php echo $_content; ?>
+                                <?php echo $_content; ?>
 
                                 <!-- PAGE CONTENT ENDS -->
                             </div>
@@ -187,6 +189,10 @@
         <!-- /.main-container -->
 
         <!-- basic scripts -->
+        <?php
+        echo form_open('', ['id' => 'csrfform']);
+        echo form_close();
+        ?>
 
 
 
@@ -199,7 +205,7 @@ window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/
             if ('ontouchstart' in document.documentElement)
                 document.write("<script src='<?php echo js_asset_url('jquery.mobile.custom.js', 'ace'); ?>'>" + "<" + "/script>");
         </script>
-<?php echo js_asset('bootstrap.js', 'ace'); ?>
+        <?php echo js_asset('bootstrap.js', 'ace'); ?>
 
         <!-- page specific plugin scripts -->
         <script type="text/javascript">/* typeahead on search box top right*/
@@ -246,10 +252,8 @@ window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/
         <?php echo js_asset('ace/ace.settings-skin.js', 'ace'); ?>
         <?php echo js_asset('ace/ace.widget-on-reload.js', 'ace'); ?>
         <?php echo js_asset('typeahead.bs3.js', 'polkam'); ?>
-<?php // echo js_asset('polkam.js', 'polkam');  ?>
-<?php // echo js_asset('ace/ace.searchbox-autocomplete.js', 'ace');    ?>
         <!-- inline scripts related to this page -->
-<?php echo js_asset('notify.min.js', 'polkam'); ?>
+        <?php echo js_asset('notify.min.js', 'polkam'); ?>
 
     </body>
 </html>

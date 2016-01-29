@@ -3,7 +3,17 @@ jQuery(function ($) {
     var table = $('#individu-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: {url: 'individu/dt', type: 'POST'},
+        ajax: {
+            url: 'individu/dt',
+            type: 'POST',
+            data: function (d) {
+                d[$('#csrfform :hidden').attr('name')] = $('#csrfform :hidden').val()
+            },
+            dataSrc: function (d) {
+                $('#csrfform :hidden').val(d[$('#csrfform :hidden').attr('name')])
+                return d.data;
+            }
+        },
         order: [[0, 'desc']],
         //mapping nth-column to data source
         columns: [
@@ -15,7 +25,7 @@ jQuery(function ($) {
                     var formatted = f.born_place || '';
                     if (d) {
                         var date = new Date(d);
-                        formatted += ', ' + date.getDate() + '-' + date.getMonth() + '-' + date.getYear();
+                        formatted += ', ' + date.getDate() + '-' + (1+date.getMonth()) + '-' + date.getFullYear();
                     }
                     return formatted;
                 }
@@ -61,7 +71,7 @@ jQuery(function ($) {
     //create datepicker
     $('.date-picker').datepicker({
         autoclose: true,
-        format:"dd/mm/yyyy",
+        format: "dd/mm/yyyy",
         todayHighlight: true
     })
             //show datepicker when clicking on the icon
@@ -91,7 +101,7 @@ jQuery(function ($) {
         $('#modal-form').find('form').first().submit();
     })
     //when the form is submitted, add additional hidden from wysiwyg
-    $('#modal-form').find('form').first().on('submit', function (e) {
+    $('#leform').on('submit', function (e) {
         //put the editor's HTML into hidden_input and it will be sent to server along with other fields
         //detention history
         var detention_history = $(this).find('input[name="detention_history"]');
@@ -117,17 +127,21 @@ jQuery(function ($) {
                     .appendTo(this);
         }
         education.val($('#education-editor').html());
+        //refresh csrf from csrf hidden form, in case it's already changed
+        var csrf = $(this).find('input[name="' + $('#csrfform :hidden').attr('name') + '"]')
+        csrf.val($('#csrfform :hidden').val())
         //ajax submit form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
             url: 'individu/post', // the url where we want to POST
             data: $(this).serialize(), // our data object
             //dataType: 'json', // what type of data do we expect back from the server
-        }).done(function (data) {
+        }).done(function (d) {
+            console.log(d)
             // using the done promise callback
-
-            // log data to the console so we can see
-            console.log(data);
+            d = JSON.parse(d)
+            // renew csrf
+            $('#csrfform :hidden').val(d[$('#csrfform :hidden').attr('name')])
 
             // here we will handle errors and validation messages
 
@@ -146,7 +160,7 @@ jQuery(function ($) {
         // chosen
 //        $form.find('.chosen-select').attr('disabled',!b).trigger('chosen:updated');
         // wysiwyg editor
-        $form.find('.wysiwyg-editor').each(function(){
+        $form.find('.wysiwyg-editor').each(function () {
             $(this).attr('contenteditable', $(this).prev().toggle(b).is(':visible'))
         });
         //when fields are disabled, hide "save" button
@@ -177,7 +191,7 @@ jQuery(function ($) {
                 $(leForm).find('#nationality').val(d.nationality)
                 $(leForm).find('#family_conn').val(d.family_conn)
                 $(leForm).find('#born_place').val(d.born_place)
-                $(leForm).find('#born_date').datepicker('update',d.born_date?new Date(d.born_date):'')
+                $(leForm).find('#born_date').datepicker('update', d.born_date ? new Date(d.born_date) : '')
                 $(leForm).find('#detention-editor').html(d.detention_history)
                 $(leForm).find('#status-editor').html(d.detention_status)
                 $(leForm).find('#education-editor').html(d.education)

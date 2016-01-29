@@ -35,21 +35,20 @@ class Organisasi extends Member_Controller {
      * Server-side processing for datatables
      */
     function dt() {
-        $this->datatables
-                ->select('org_name,address,description,org_id')
-                ->add_column('DT_RowId', 'row_$1', 'org_id')
-                ->from('organization');
-        echo $this->datatables->generate();
+        if ($this->input->is_ajax_request()) {
+            //ajax only
+            $this->datatables
+                    ->select('org_name,address,description,org_id')
+                    ->add_column('DT_RowId', 'row_$1', 'org_id')
+                    ->from('organization');
+            echo $this->datatables->generate();
+        }
     }
 
     //REST-like
     function post() {
-        $id = $this->input->post('org_id');
-        if ($id) {
-            //edit
-            $this->update($id);
-        } else {
-            //add
+        if ($this->input->is_ajax_request()) {
+            $id = $this->input->post('org_id');
             $nama = $this->input->post('org_name');
             $address = $this->input->post('address');
             $website = $this->input->post('website');
@@ -57,32 +56,27 @@ class Organisasi extends Member_Controller {
             $phone = $this->input->post('phone');
             $desc = $this->input->post('description');
             $source = $this->input->post('source_id');
-            //insert to db
-            if ($this->organization_model->create($nama, $address, $website, $email, $phone, $desc, $source)) {
-                echo 1;
+            if ($id) {
+                //edit
+                if ($this->organization_model->update($id, $nama, $address, $website, $email, $phone, $desc, $source)) {
+                    echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
+                } else {
+                    echo 0;
+                }
             } else {
-                echo 0;
+                //add
+                //insert to db
+                if ($this->organization_model->create($nama, $address, $website, $email, $phone, $desc, $source)) {
+                    echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
+                } else {
+                    echo 0;
+                }
             }
         }
     }
 
     function get($id) {
         echo json_encode($this->organization_model->get($id));
-    }
-
-    function update($id) {
-        $nama = $this->input->post('org_name');
-        $address = $this->input->post('address');
-        $website = $this->input->post('website');
-        $email = $this->input->post('email');
-        $phone = $this->input->post('phone');
-        $desc = $this->input->post('description');
-        $source = $this->input->post('source_id');
-        if ($this->organization_model->update($id, $nama, $address, $website, $email, $phone, $desc, $source)) {
-            echo 1;
-        } else {
-            echo 0;
-        }
     }
 
     function delete($id) {
