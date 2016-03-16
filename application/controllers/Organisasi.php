@@ -20,6 +20,20 @@ class Organisasi extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+    
+    function add(){
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
+        $data['title'] = 'Tambah Organisasi';
+        $data['css_assets'] = [
+            ['module' => 'ace', 'asset' => 'datepicker.css'],
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets']=[
+            ['module'=>'polkam','asset'=>'select2.min.js']
+        ];
+        $data['sources'] = $this->source_model->get_all();
+        $this->template->display('organisasi/add_view', $data);
+    }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);

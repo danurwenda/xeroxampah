@@ -286,9 +286,9 @@ class Datatables {
             for ($i = 0; $i < count($mColArray); $i++)
                 if ($mColArray[$i]['searchable'] == 'true')
                     if ($this->check_cType())
-                        $sWhere .= $this->select[$mColArray[$i]['data']] . " iLIKE '%" . $sSearch . "%' OR ";
+                        $sWhere .= 'UPPER(' . $this->select[$mColArray[$i]['data']] . ") LIKE '%" . strtoupper($sSearch) . "%' OR ";
                     else
-                        $sWhere .= $this->select[$this->columns[$i]] . " iLIKE '%" . $sSearch . "%' OR ";
+                        $sWhere .='UPPER(' . $this->select[$this->columns[$i]] . ") LIKE '%" . strtoupper($sSearch) . "%' OR ";
         $sWhere = substr_replace($sWhere, '', -3);
         if ($sWhere != '')
             $this->ci->db->where('(' . $sWhere . ')');
@@ -346,7 +346,7 @@ class Datatables {
                 'recordsTotal' => $iTotal,
                 'recordsFiltered' => $iFilteredTotal,
                 'data' => $aaData,
-                $this->ci->security->get_csrf_token_name()=>$this->ci->security->get_csrf_hash()
+                $this->ci->security->get_csrf_token_name() => $this->ci->security->get_csrf_hash()
             );
             if ($charset == 'utf-8')
                 return json_encode($sOutput);

@@ -4,9 +4,9 @@
     <div class="col-xs-12">
         <h3 class="header smaller lighter blue">Organisasi</h3>
         <h4>
-            <button class="btn btn-white btn-default btn-round" data-toggle="modal" data-target="#modal-form" data-action="add">
+            <a class="btn btn-white btn-default btn-round" href="<?php echo site_url('organisasi/add');?>">
                 <i class="ace-icon fa fa-plus-circle blue"></i>Tambah
-            </button>
+            </a>
         </h4>
         <!--<div class="clear"></div>-->
 
@@ -67,97 +67,6 @@
                     </a>
                 </li>
             </ul>
-        </div>
-    </div>
-</div>
-<div id="modal-form" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger">Form Organisasi</h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="row">
-
-                    <div class="col-xs-12 col-sm-12">
-                        <?php echo form_open('', ['class'=>'form-horizontal','role'=>'form','id'=>'leform']);?>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sumber </label>
-
-                                <div class="col-sm-9">
-                                    <select class="chosen-select" data-placeholder="Pilih sumber" name="source_id" id="source_id">
-                                        <?php foreach ($sources as $s) {
-                                            echo '<option value="'.$s->source_id.'">'.$s->source_name.'</option>';
-                                        }?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="org_name" placeholder="Nama Organisasi" class="form-control" name="org_name" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Alamat </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="org_address" placeholder="Alamat" class="form-control" name="address" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Website </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="org_website" placeholder="Website" class="form-control" name="website" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Email </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="org_email" placeholder="Email" class="form-control" name="email" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Telepon </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="org_phone" placeholder="Phone" class="form-control" name="phone" />
-                                </div>
-                            </div>
-
-                            <div class="space-4"></div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-tags">Deskripsi</label>
-
-                                <div class="col-sm-9">
-                                    <!-- #section:plugins/input.tag-input -->
-                                    <div class="wysiwyg-editor" id="editor2"></div>
-
-                                    <!-- /section:plugins/input.tag-input -->
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div><!-- PAGE CONTENT ENDS -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-sm" data-dismiss="modal">
-                    <i class="ace-icon fa fa-times"></i>
-                    Cancel
-                </button>
-
-                <button class="btn btn-sm btn-primary submit-button">
-                    <i class="ace-icon fa fa-check"></i>
-                    Save
-                </button>
-            </div>
         </div>
     </div>
 </div>

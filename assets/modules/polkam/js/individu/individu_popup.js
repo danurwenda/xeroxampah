@@ -18,7 +18,7 @@ jQuery(function ($) {
         //mapping nth-column to data source
         columns: [
             {data: 'name'}, //nama individu
-            {data: 'affiliation'}, //nama individu
+            {data: 'network'}, //nama individu
             {
                 data: 'born_date',
                 render: function (d, t, f, m) {
@@ -32,11 +32,9 @@ jQuery(function ($) {
             }, //nama individu
             {
                 //long desc
-                data: 'detention_status',
+                data: 'arrested',
                 render: function (data, type, full, meta) {
-                    return type === 'display' && data.length > 60 ?
-                            '<span title="' + removeTags(data) + '">' + removeTags(data).substr(0, 58) + '...</span>' :
-                            data;
+                    return data;
                 }
             },
             {

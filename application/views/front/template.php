@@ -7,7 +7,6 @@
             <?php echo $title; ?>
         </title>
 
-        <meta name="description" content="404 Error Page" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
         <!-- bootstrap & fontawesome -->
@@ -40,6 +39,14 @@
         <!-- ace settings handler -->
         <?php echo js_asset('ace-extra.js', 'ace'); ?>
         <?php echo js_asset('trdb.js', 'polkam'); ?>
+        
+        <?php
+        if (!empty($js_assets)) {
+            foreach ($js_assets as $value) {
+                echo js_asset($value['asset'], $value['module']);
+            }
+        }
+        ?>
     </head>
 
     <body class="no-skin">
@@ -95,28 +102,30 @@
                     <ul class="nav ace-nav">
                         <?php
 //                        print_r($topmenus);
-                        foreach ($topmenus as $menu) {
-                            if ($menu->module_id > 0) {
-                                ?>
-                                <li class="<?php echo $menu->module_name; ?>">
-                                    <?php echo anchor($menu->module_name, ' ', array('title' => $menu->module_name)); ?>
-                                </li>
-                                <style>
-                                    <?php echo ".ace-nav > li.$menu->module_name"; ?> a{
-                                        background: url("<?php echo image_asset_url('menu_icon/' . $menu->icon, 'polkam'); ?>") 4px 2px no-repeat;
-                                    }
-                                    <?php echo ".ace-nav > li.$menu->module_name"; ?> a:hover{
-                                        background: url("<?php echo image_asset_url('menu_icon/' . $menu->hover_icon, 'polkam'); ?>") 4px 2px no-repeat;
-                                    }
-                                </style>
-                            <?php } else { ?>
+                        if (false) {
+                            foreach ($topmenus as $menu) {
+                                if ($menu->module_id > 0) {
+                                    ?>
+                                    <li class="<?php echo $menu->module_name; ?>">
+                                        <?php echo anchor($menu->module_name, ' ', array('title' => $menu->module_name)); ?>
+                                    </li>
+                                    <style>
+                                        <?php echo ".ace-nav > li.$menu->module_name"; ?> a{
+                                            background: url("<?php echo image_asset_url('menu_icon/' . $menu->icon, 'polkam'); ?>") 4px 2px no-repeat;
+                                        }
+                                        <?php echo ".ace-nav > li.$menu->module_name"; ?> a:hover{
+                                            background: url("<?php echo image_asset_url('menu_icon/' . $menu->hover_icon, 'polkam'); ?>") 4px 2px no-repeat;
+                                        }
+                                    </style>
+                                <?php } else { ?>
 
-                                <li class="infobox infobox-green">
-                                    <a class="infobox-icon" href="<?php echo site_url('admin'); ?>">
-                                        <i class="ace-icon fa fa-cogs" style="width: 42px;"></i>
-                                    </a>
-                                </li>
-                                <?php
+                                    <li class="infobox infobox-green">
+                                        <a class="infobox-icon" href="<?php echo site_url('admin'); ?>">
+                                            <i class="ace-icon fa fa-cogs" style="width: 42px;"></i>
+                                        </a>
+                                    </li>
+                                    <?php
+                                }
                             }
                         }
                         ?>
@@ -168,7 +177,7 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <!-- PAGE CONTENT BEGINS -->
-                                <?php echo $_content; ?>
+<?php echo $_content; ?>
 
                                 <!-- PAGE CONTENT ENDS -->
                             </div>
@@ -205,7 +214,7 @@ window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/
             if ('ontouchstart' in document.documentElement)
                 document.write("<script src='<?php echo js_asset_url('jquery.mobile.custom.js', 'ace'); ?>'>" + "<" + "/script>");
         </script>
-        <?php echo js_asset('bootstrap.js', 'ace'); ?>
+<?php echo js_asset('bootstrap.js', 'ace'); ?>
 
         <!-- page specific plugin scripts -->
         <script type="text/javascript">/* typeahead on search box top right*/
@@ -254,6 +263,8 @@ window.jQuery || document.write("<script src='../assets/js/jquery1x.js'>"+"<"+"/
         <?php echo js_asset('typeahead.bs3.js', 'polkam'); ?>
         <!-- inline scripts related to this page -->
         <?php echo js_asset('notify.min.js', 'polkam'); ?>
+        <!-- page specific plugin script -->
+        
 
     </body>
 </html>
