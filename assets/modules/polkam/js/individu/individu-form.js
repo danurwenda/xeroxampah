@@ -64,7 +64,8 @@ jQuery(function ($) {
         var template = $(this).parents('.widget-main').find('.template');
         var clone = template.clone()
                 .removeClass('template hide')
-                .insertAfter(template);
+                .insertBefore($(this).parents('.form-group').first());
+        //initiate jquery plugins/UI
         clone.find('.input-daterange').datepicker({autoclose: true});
         clone.find('.date-picker')
                 .datepicker({
@@ -78,7 +79,7 @@ jQuery(function ($) {
         })
     })
     // RIWAYAT PENDIDIKAN
-    $('.input-daterange').datepicker({autoclose: true});    
+    $('.input-daterange').datepicker({autoclose: true});
     $('#edu-widget').on('change', '.edu-select', function () {
         var select = $(this);
         var row = $('<div class="form-group">' +

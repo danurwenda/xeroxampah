@@ -21,7 +21,6 @@ jQuery(function ($) {
             {
                 data: 'alias'
             },
-            {data: 'net_name'},
             {
                 data: 'born_date',
                 searchable: false,

@@ -30,7 +30,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="name" placeholder="Nama Individu" class="form-control" name="name" />
+                        <input type="text" id="name" placeholder="Nama Individu" class="form-control" name="individu_name" />
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tempat lahir </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="tangkap_place" placeholder="Tempat lahir" class="form-control" name="tangkap_place" />
+                        <input type="text" id="tangkap_place" placeholder="Tempat lahir" class="form-control" name="born_place" />
                     </div>
                 </div>
 
@@ -279,6 +279,77 @@ echo js_asset('jquery-ui.js', 'ace');
                         </div>
                     </div>
                 </div>
+                <div class="widget-box collapsed">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Kejahatan Teror</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main template-group">
+                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                    <div class="col-sm-9">
+                                        <div class="input-daterange input-group">
+                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-exchange"></i>
+                                            </span>
+
+                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                    <div class="col-sm-9">
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                            <option value="">&nbsp;</option>
+                                            <option value="25">Pemberi Perintah</option>
+                                            <option value="26">Perencana</option>
+                                            <option value="27">Pelaksana</option>                                    
+                                            <option value="28">Pemberi Dukungan</option>                                    
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn btn-danger btn-delete" type="button">
+                                            <i class="ace-icon fa fa-remove bigger-110"></i>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
+
+                                <div class="col-sm-9">
+                                    <span class="plus input-group-addon">
+                                        <i class="fa fa-plus bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- RIGHT COLUMN -->
             <div class="col-sm-6">
@@ -493,6 +564,77 @@ echo js_asset('jquery-ui.js', 'ace');
                         </div>
                     </div>
                 </div>
+                <div class="widget-box collapsed">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Kejahatan Non Teror</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main template-group">
+                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                    <div class="col-sm-9">
+                                        <div class="input-daterange input-group">
+                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-exchange"></i>
+                                            </span>
+
+                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                    <div class="col-sm-9">
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                            <option value="">&nbsp;</option>
+                                            <option value="29">Pemberi Perintah</option>
+                                            <option value="30">Perencana</option>
+                                            <option value="31">Pelaksana</option>                                    
+                                            <option value="32">Pemberi Dukungan</option>                                    
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn btn-danger btn-delete" type="button">
+                                            <i class="ace-icon fa fa-remove bigger-110"></i>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Pekerjaan </label>
+
+                                <div class="col-sm-9">
+                                    <span class="plus input-group-addon">
+                                        <i class="fa fa-plus bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -579,81 +721,81 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <input type="text" id="recentjob" placeholder="Pekerjaan Terakhir" class="form-control" name="recent_job" />
                             </div>
                         </div>
-                        
-                <div class="widget-box collapsed" >
-                    <div class="widget-header">
-                        <h4 class="widget-title">Riwayat Organisasi</h4>
 
-                        <div class="widget-toolbar">
-                            <a href="#" data-action="collapse">
-                                <i class="ace-icon fa fa-chevron-down"></i>
-                            </a>
-                        </div>
-                    </div>
+                        <div class="widget-box collapsed" >
+                            <div class="widget-header">
+                                <h4 class="widget-title">Riwayat Organisasi</h4>
 
-                    <div class="widget-body">
-                        <div class="widget-main template-group">
-                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
-                                    </div>
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-down"></i>
+                                    </a>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+                            </div>
 
-                                    <div class="col-sm-9">
-                                        <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-exchange"></i>
-                                            </span>
+                            <div class="widget-body">
+                                <div class="widget-main template-group">
+                                    <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
-                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                            </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
 
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-daterange input-group">
+                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-exchange"></i>
+                                                    </span>
 
-                                    <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                            <option value="">&nbsp;</option>
-                                            <option value="15">Anggota Baiat</option>
-                                            <option value="16">Anggota non-Baiat</option>
-                                            <option value="17">Amir</option>                                    
-                                            <option value="18">Komandan militer</option>                                    
-                                            <option value="19">Dewan Pimpinan/Pimpinan Wilayah</option>                                    
-                                            <option value="20">Pemberi dukungan permanen/rutin</option>                                    
-                                            <option value="20">Pemberi dukungan insidental</option>                                    
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
-                                    <div class="col-sm-9">
-                                        <button class="btn btn-danger btn-delete" type="button">
-                                            <i class="ace-icon fa fa-remove bigger-110"></i>
-                                            Hapus
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Riwayat Organisasi </label>
+                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                                </div>
 
-                                <div class="col-sm-9">
-                                    <span class="input-group-addon plus">
-                                        <i class="fa fa-plus bigger-110"></i>
-                                    </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                            <div class="col-sm-9">
+                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                                    <option value="">&nbsp;</option>
+                                                    <option value="15">Anggota Baiat</option>
+                                                    <option value="16">Anggota non-Baiat</option>
+                                                    <option value="17">Amir</option>                                    
+                                                    <option value="18">Komandan militer</option>                                    
+                                                    <option value="19">Dewan Pimpinan/Pimpinan Wilayah</option>                                    
+                                                    <option value="20">Pemberi dukungan permanen/rutin</option>                                    
+                                                    <option value="21">Pemberi dukungan insidental</option>                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                            <div class="col-sm-9">
+                                                <button class="btn btn-danger btn-delete" type="button">
+                                                    <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Riwayat Organisasi </label>
+
+                                        <div class="col-sm-9">
+                                            <span class="input-group-addon plus">
+                                                <i class="fa fa-plus bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
             </div>

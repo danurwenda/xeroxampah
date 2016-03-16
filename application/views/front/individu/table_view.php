@@ -18,7 +18,6 @@
                     <tr>
                         <th>Nama</th>
                         <th>Alias</th>
-                        <th>Jaringan</th>
                         <th>Tempat, tanggal lahir</th>
                         <th></th>
                     </tr>
