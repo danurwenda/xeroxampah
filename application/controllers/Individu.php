@@ -55,7 +55,7 @@ class Individu extends Member_Controller {
             $born_date = null;
         } else {
             //convert to SQL-compliant format
-            $born_date = date_format(date_create_from_format('d/m/Y',$born_date), 'Y-m-d');
+            $born_date = date_format(date_create_from_format('d/m/Y', $born_date), 'Y-m-d');
         }
         $born_place = $this->input->post('born_place');
         $nationality = $this->input->post('nationality');
@@ -82,8 +82,45 @@ class Individu extends Member_Controller {
         foreach ($fields as $field) {
             $data[$field] = $$field;
         }
+
+        //START TRANSACTION
+        $this->db->trans_start();
         $this->db->insert('individu', $data);
         $new_id = $this->db->insert_id('individu_individu_id_seq');
+
+        // ADD EDGES
+        $this->load->model('edge_model');
+        // ORGANISASI
+        $org_edges = $this->input->post('org_edge');
+        $org_ids = $this->input->post('org_id');
+        $org_starts = $this->input->post('org_start');
+        $org_ends = $this->input->post('org_end');
+        $this->load->model('organization_model');
+        for ($i = 0; $i < count($org_edges); $i++) {
+            $org_edge = $org_edges[$i];
+            $org_id = $org_ids[$i];
+            if (!empty($org_id)) {
+
+                //insert atau lookup
+                $org_id = $this->organization_model->insert_or_lookup($org_id);
+                if ($org_id != null) {
+                    //insert ke table relasi (edge)
+                    $attr = [];
+                    $end = $org_ends[$i];
+                    if (!empty($end)) {
+                        //convert to SQL-compliant format
+                        $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
+                    }
+                    $start = $org_starts[$i];
+                    if (!empty($start)) {
+                        //convert to SQL-compliant format
+                        $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                    }
+                    $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
+                }
+            }
+        }
+        $this->db->trans_complete();
         /*
           //parental relationship
           $father_id = null;

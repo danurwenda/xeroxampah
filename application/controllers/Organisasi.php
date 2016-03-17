@@ -20,7 +20,23 @@ class Organisasi extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
-    
+    /**
+     * serves autocomplete 
+     */
+    function search() {
+        $r = $this->db
+                ->where('UPPER(org_name) LIKE', '%' . strtoupper($this->input->get('term', true)) . '%')
+                ->get('organization')
+                ->result_array();
+        $ret = [];
+        foreach ($r as $i) {
+            //craft return
+            $i['label'] = $i['org_name'];
+            $i['value'] = $i['org_name'];
+            $ret[] = $i;
+        }
+        echo json_encode($ret);
+    }
     function add(){
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';

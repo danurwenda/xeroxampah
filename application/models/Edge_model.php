@@ -8,13 +8,22 @@ defined('BASEPATH')OR
  *
  * @author Administrator
  */
-class Organization_model extends CI_Model {
+class Edge_model extends CI_Model {
 
-    public $table = 'organization';
-    public $primary_key = 'org_id';
+    public $table = 'edge';
+    public $primary_key = 'edge_id';
 
     public function __construct() {
         parent::__construct();
+    }
+
+    public function insert($source, $target, $edge, $json) {
+        $this->db->insert($this->table, [
+            'source_id' => $source,
+            'target_id' => $target,
+            'weight_id' => $edge,
+            'properties' => $json
+        ]);
     }
 
     public function insert_or_lookup($org_id) {

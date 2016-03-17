@@ -239,7 +239,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                        <input type="text" placeholder="Nama" class="form-control" name="job_place[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -247,12 +247,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <input type="text" class="input-sm form-control" name="job_start[]" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-exchange"></i>
                                             </span>
 
-                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                            <input type="text" class="input-sm form-control" name="job_end[]" />
                                         </div>
 
                                     </div>
@@ -297,7 +297,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                        <input type="text" placeholder="Nama" class="form-control" name="teror_place[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -305,12 +305,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <input type="text" class="input-sm form-control" name="teror_start[]" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-exchange"></i>
                                             </span>
 
-                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                            <input type="text" class="input-sm form-control" name="teror_end[]" />
                                         </div>
 
                                     </div>
@@ -319,8 +319,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                            <option value="">&nbsp;</option>
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="teror-edge[]">
+
                                             <option value="25">Pemberi Perintah</option>
                                             <option value="26">Perencana</option>
                                             <option value="27">Pelaksana</option>                                    
@@ -458,8 +458,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                            <option value="">&nbsp;</option>
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-edge[]">
+
                                             <option value="22">Mudir/Pengasuh</option>
                                             <option value="23">Pendiri</option>
                                             <option value="24">Pengajar</option>                                    
@@ -508,7 +508,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                        <input type="text" placeholder="Nama" class="form-control organisasi-autocomplete ui-autocomplete-input" name="org_id[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -516,12 +516,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <input type="text" class="input-sm form-control" name="org_start[]" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-exchange"></i>
                                             </span>
 
-                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                            <input type="text" class="input-sm form-control" name="org_end[]" />
                                         </div>
 
                                     </div>
@@ -530,8 +530,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                            <option value="">&nbsp;</option>
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="org_edge[]">
+
                                             <option value="15">Anggota Baiat</option>
                                             <option value="16">Anggota non-Baiat</option>
                                             <option value="17">Amir</option>                                    
@@ -582,7 +582,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                        <input type="text" placeholder="Nama" class="form-control" name="nteror_place[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -590,12 +590,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                            <input type="text" class="input-sm form-control" name="nteror_start[]" />
                                             <span class="input-group-addon">
                                                 <i class="fa fa-exchange"></i>
                                             </span>
 
-                                            <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                            <input type="text" class="input-sm form-control" name="nteror_end[]" />
                                         </div>
 
                                     </div>
@@ -604,8 +604,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                            <option value="">&nbsp;</option>
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="nteror-edge[]">
+
                                             <option value="29">Pemberi Perintah</option>
                                             <option value="30">Perencana</option>
                                             <option value="31">Pelaksana</option>                                    
@@ -624,7 +624,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Pekerjaan </label>
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
 
                                 <div class="col-sm-9">
                                     <span class="plus input-group-addon">
@@ -740,7 +740,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                                <input type="text" placeholder="Nama" class="organisasi-autocomplete form-control" name="edu_place[]" />
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -763,7 +763,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                             <div class="col-sm-9">
                                                 <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
-                                                    <option value="">&nbsp;</option>
+
                                                     <option value="15">Anggota Baiat</option>
                                                     <option value="16">Anggota non-Baiat</option>
                                                     <option value="17">Amir</option>                                    
@@ -789,6 +789,148 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                         <div class="col-sm-9">
                                             <span class="input-group-addon plus">
+                                                <i class="fa fa-plus bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-box collapsed">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Kejahatan Teror</h4>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main template-group">
+                                    <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                            <div class="col-sm-9">
+                                                <div class="input-daterange input-group">
+                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-exchange"></i>
+                                                    </span>
+
+                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                            <div class="col-sm-9">
+                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+
+                                                    <option value="25">Pemberi Perintah</option>
+                                                    <option value="26">Perencana</option>
+                                                    <option value="27">Pelaksana</option>                                    
+                                                    <option value="28">Pemberi Dukungan</option>                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                            <div class="col-sm-9">
+                                                <button class="btn btn-danger btn-delete" type="button">
+                                                    <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
+
+                                        <div class="col-sm-9">
+                                            <span class="plus input-group-addon">
+                                                <i class="fa fa-plus bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-box collapsed">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Kejahatan Non Teror</h4>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main template-group">
+                                    <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                            <div class="col-sm-9">
+                                                <div class="input-daterange input-group">
+                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-exchange"></i>
+                                                    </span>
+
+                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                            <div class="col-sm-9">
+                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+
+                                                    <option value="29">Pemberi Perintah</option>
+                                                    <option value="30">Perencana</option>
+                                                    <option value="31">Pelaksana</option>                                    
+                                                    <option value="32">Pemberi Dukungan</option>                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                            <div class="col-sm-9">
+                                                <button class="btn btn-danger btn-delete" type="button">
+                                                    <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
+
+                                        <div class="col-sm-9">
+                                            <span class="plus input-group-addon">
                                                 <i class="fa fa-plus bigger-110"></i>
                                             </span>
                                         </div>
@@ -831,7 +973,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div>
                                 <select class="chosen-select" data-placeholder="Pilih Relasi..." id="fam-field">
-                                    <option value="">&nbsp;</option>
+
                                     <option value="48">Saudara</option>
                                     <option value="49">Pasangan</option>
                                     <option value="50">Anak</option>                                    

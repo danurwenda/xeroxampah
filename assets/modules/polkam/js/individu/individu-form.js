@@ -54,7 +54,7 @@ jQuery(function ($) {
 
 
     });
-    // RIWAYAT PENGGUNAAN NAMA & RIWAYAT ORGANISASI
+    // EXPANDABLE FIELDS
     //handle "hapus" button
     $('.template-group').on(ace.click_event, '.btn-delete', function () {
         $(this).parents('.form-template').first().remove();
@@ -66,7 +66,9 @@ jQuery(function ($) {
                 .removeClass('template hide')
                 .insertBefore($(this).parents('.form-group').first());
         //initiate jquery plugins/UI
-        clone.find('.input-daterange').datepicker({autoclose: true});
+        clone.find('.input-daterange').datepicker({autoclose: true,
+            format: "dd/mm/yyyy"});
+        clone.find('.organisasi-autocomplete').autocomplete(organisasi_autocomplete_config)
         clone.find('.date-picker')
                 .datepicker({
                     autoclose: true,
@@ -79,7 +81,8 @@ jQuery(function ($) {
         })
     })
     // RIWAYAT PENDIDIKAN
-    $('.input-daterange').datepicker({autoclose: true});
+    $('.input-daterange').datepicker({autoclose: true,
+        format: "dd/mm/yyyy"});
     $('#edu-widget').on('change', '.edu-select', function () {
         var select = $(this);
         var row = $('<div class="form-group">' +
@@ -174,9 +177,9 @@ jQuery(function ($) {
             return li;
         };
     })
-    //pesantren
+    //organisasi
 
-    $('.pesantren-autocomplete').autocomplete(pesantren_autocomplete_config);
+    $('.organisasi-autocomplete').autocomplete(organisasi_autocomplete_config);
     //masjid
 
     $('.masjid-autocomplete').autocomplete(masjid_autocomplete_config);
@@ -213,79 +216,8 @@ jQuery(function ($) {
 
     //when the form is submitted, add additional hidden from wysiwyg
     $('#individu_form').on('submit', function (e) {
-        //put the editor's HTML into hidden_input and it will be sent to server along with other fields
-        //formal education
-        var formaledu = $(this).find('input[name="formaledu"]');
-        if (formaledu.length === 0) {
-            //create
-            formaledu = $('<input type="hidden" name="formaledu" />')
-                    .appendTo(this);
-        }
-        formaledu.val($('#formaledu-editor').html());
-        //nonformal education
-        var nonformaledu = $(this).find('input[name="nonformaledu"]');
-        if (nonformaledu.length === 0) {
-            //create
-            nonformaledu = $('<input type="hidden" name="nonformaledu" />')
-                    .appendTo(this);
-        }
-        //nonformal education
-        var military = $(this).find('input[name="military"]');
-        if (military.length === 0) {
-            //create
-            military = $('<input type="hidden" name="military" />')
-                    .appendTo(this);
-        }
-        military.val($('#military-editor').html());
-        //riwayat organisasi
-        var organisasi = $(this).find('input[name="organisasi"]');
-        if (organisasi.length === 0) {
-            //create
-            organisasi = $('<input type="hidden" name="organisasi" />')
-                    .appendTo(this);
-        }
-        organisasi.val($('#organisasi-editor').html());
-        //riwayat job
-        var job = $(this).find('input[name="job"]');
-        if (job.length === 0) {
-            //create
-            job = $('<input type="hidden" name="job" />')
-                    .appendTo(this);
-        }
-        job.val($('#job-editor').html());
-        //riwayat radikal
-        var radikal = $(this).find('input[name="radikal"]');
-        if (radikal.length === 0) {
-            //create
-            radikal = $('<input type="hidden" name="radikal" />')
-                    .appendTo(this);
-        }
-        radikal.val($('#radikal-editor').html());
-        //riwayat teror
-        var teror = $(this).find('input[name="teror"]');
-        if (teror.length === 0) {
-            //create
-            teror = $('<input type="hidden" name="teror" />')
-                    .appendTo(this);
-        }
-        teror.val($('#teror-editor').html());
-        //riwayat perbuatan
-        var perbuatan = $(this).find('input[name="perbuatan"]');
-        if (perbuatan.length === 0) {
-            //create
-            perbuatan = $('<input type="hidden" name="perbuatan" />')
-                    .appendTo(this);
-        }
-        perbuatan.val($('#perbuatan-editor').html());
-        //riwayat relasi
-        var relasi = $(this).find('input[name="relasi"]');
-        if (relasi.length === 0) {
-            //create
-            relasi = $('<input type="hidden" name="relasi" />')
-                    .appendTo(this);
-        }
-        relasi.val($('#relasi-editor').html());
-
+        //delete all hidden templates
+        $(this).find('.template.hide').remove();
         //REPLACE AUTOCOMPLETE WITH ID
         var ac_inputs = $(this).find('input.ui-autocomplete-input');
         ac_inputs.each(function (i) {
@@ -295,9 +227,12 @@ jQuery(function ($) {
             }
         });
 
+
         //refresh csrf from csrf hidden form, in case it's already changed
         var csrf = $(this).find('input[name="' + $('#csrfform :hidden').attr('name') + '"]')
         csrf.val($('#csrfform :hidden').val())
+
+//        e.preventDefault();
     });
 
 });
@@ -311,14 +246,14 @@ var individu_autocomplete_config = {
         $(this).data('reference_id', ui.item.individu_id);
     }
 };
-var pesantren_autocomplete_config = {
-    source: base_url + "school/search",
+var organisasi_autocomplete_config = {
+    source: base_url + "organisasi/search",
     minLength: 4,
     create: function (e) {
         $(this).next('.ui-helper-hidden-accessible').remove();
     },
     select: function (e, ui) {
-        $(this).data('reference_id', ui.item.id);
+        $(this).data('reference_id', ui.item.org_id);
     }
 };
 var masjid_autocomplete_config = {
@@ -353,8 +288,8 @@ function expandInputGroup(input_group) {
     input.each(function (i) {
         if ($(this).hasClass('individu-autocomplete')) {
             $(this).autocomplete(individu_autocomplete_config);
-        } else if ($(this).hasClass('pesantren-autocomplete')) {
-            $(this).autocomplete(pesantren_autocomplete_config);
+        } else if ($(this).hasClass('organisasi-autocomplete')) {
+            $(this).autocomplete(organisasi_autocomplete_config);
         } else if ($(this).hasClass('masjid-autocomplete')) {
             $(this).autocomplete(masjid_autocomplete_config);
         }
