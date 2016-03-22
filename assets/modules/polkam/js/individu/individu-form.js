@@ -1,5 +1,27 @@
 jQuery(function ($) {
+    // NONTEROR
+    $('#nonteror-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'nonteror/post', // the url where we want to POST
+            data: $('#nonteror-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
 
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#nonteror-modal-form form')[0].reset();
+        $('#nonteror-modal-form').modal('hide');
+    });
     // FAMILY
     $('#family-modal-form .btn-primary').click(function (c) {
         $('#family-modal-form').modal('hide');
@@ -52,7 +74,8 @@ jQuery(function ($) {
         //initiate jquery plugins/UI
         clone.find('.input-daterange').datepicker({autoclose: true,
             format: "dd/mm/yyyy"});
-        clone.find('.organisasi-autocomplete').autocomplete(organisasi_autocomplete_config)
+        clone.find('.organisasi-select2').select2(organisasi_select_config)
+        clone.find('.nonteror-select2').select2(nonteror_select_config);
         clone.find('.date-picker')
                 .datepicker({
                     autoclose: true,
@@ -120,6 +143,13 @@ jQuery(function ($) {
             .next().on(ace.click_event, function () {
         $(this).prev().focus();
     });
+    $('.time-picker').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false
+    }).next().on(ace.click_event, function () {
+        $(this).prev().focus();
+    });
 
     //create wysiwyg editor
     $('.wysiwyg-editor').css({'height': '200px'}).ace_wysiwyg({
@@ -142,12 +172,8 @@ jQuery(function ($) {
     // AUTO COMPLETES
     // input type di autocomplete ini akan auto-add jika bukan reference
     //individu
-    $('select.individu-autocomplete').select2(individu_select_config);
+    $('select.individu-select2').select2(individu_select_config);
 
-
-    //organisasi
-
-    $('.organisasi-autocomplete').autocomplete(organisasi_autocomplete_config);
     //masjid
 
     $('.masjid-autocomplete').autocomplete(masjid_autocomplete_config);
@@ -173,15 +199,6 @@ jQuery(function ($) {
         console.log('sesuatu');
     });
 
-    //PLUS button adding new row
-    $('.expandable').next().on(ace.click_event, function () {
-        var input_group = $(this).parents('div.input-group').first();
-        expandInputGroup(input_group);
-    });
-
-
-
-
     //when the form is submitted, add additional hidden from wysiwyg
     $('#individu_form').on('submit', function (e) {
         //delete all hidden templates
@@ -204,7 +221,7 @@ jQuery(function ($) {
     });
 
 });
-function formatIndividu(individu) {
+function formatIndividuList(individu) {
     if (individu.loading)
         return individu.text;
 
@@ -249,18 +266,93 @@ var individu_select_config = {
         return markup;
     },
     minimumInputLength: 1,
-    templateResult: formatIndividu,
+    templateResult: formatIndividuList,
     templateSelection: formatIndividuSelection
 };
-var organisasi_autocomplete_config = {
-    source: base_url + "organisasi/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
-    },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.org_id);
+function formatNonTerorList(nt) {
+    if (nt.loading)
+        return nt.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + nt.pidana + ' ' + nt.korban + "</div>";
+
+    if (nt.nilai) {
+        markup += "<div class='select2-result-repository__description'>Nilai : " + nt.nilai + "</div>";
     }
+
+    markup += "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.tanggal + "</div>" +
+            "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatNonTerorSelection(nt) {
+    return nt.pidana + ' ' + nt.korban;
+}
+var nonteror_select_config = {
+    ajax: {
+        url: base_url + "nonteror/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatNonTerorList,
+    templateSelection: formatNonTerorSelection
+};
+function formatOrganisasiList(org) {
+
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + org.org_name + "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatOrganisasiSelection(org) {
+    return org.org_name;
+}
+var organisasi_select_config = {
+    ajax: {
+        url: base_url + "organisasi/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatOrganisasiList,
+    templateSelection: formatOrganisasiSelection
 };
 var masjid_autocomplete_config = {
     source: base_url + "masjid/search",
@@ -282,28 +374,3 @@ var lapas_autocomplete_config = {
         $(this).data('reference_id', ui.item.id);
     }
 };
-function expandInputGroup(input_group) {
-    var group = input_group.parent();
-    var clone = input_group.clone();
-    var minus = $('<i class="fa fa-minus bigger-110"></i>').on(ace.click_event, function () {
-        $(this).parents('div.input-group').first().remove();
-    });
-    clone.find('.input-group-addon').empty().append(minus);
-    //bersih2 value
-    var input = clone.find('input');
-    input.each(function (i) {
-        if ($(this).hasClass('individu-autocomplete')) {
-            $(this).autocomplete(individu_autocomplete_config);
-        } else if ($(this).hasClass('organisasi-autocomplete')) {
-            $(this).autocomplete(organisasi_autocomplete_config);
-        } else if ($(this).hasClass('masjid-autocomplete')) {
-            $(this).autocomplete(masjid_autocomplete_config);
-        }
-    });
-    input.val('');
-
-    //append
-    clone.appendTo(group);
-    return input;
-}
-    

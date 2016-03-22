@@ -32,7 +32,6 @@ class Individu extends Member_Controller {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
         $data['title'] = 'Tambah Individu';
         $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'ace', 'asset' => 'chosen.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
@@ -256,6 +255,15 @@ class Individu extends Member_Controller {
                 }
             }
         }
+        //NON TEROR
+        $nteror_edges = $this->input->post('nonteror_edge');
+        $nterors = $this->input->post('nonteror'); //may be null
+        for ($i = 0; $i < count($nteror_edges); $i++) {
+            if (!empty($nterors[$i])) {
+                //insert ke table relasi
+                $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+            }
+        }
         $this->db->trans_complete();
         /*
           //parental relationship
@@ -442,7 +450,7 @@ class Individu extends Member_Controller {
             //craft return
             $i['label'] = $i['individu_name'];
             $i['value'] = $i['individu_name'];
-            $i['id']=0+$i['individu_id'];
+            $i['id'] = 0 + $i['individu_id'];
             $ret[] = $i;
         }
         echo json_encode($ret);

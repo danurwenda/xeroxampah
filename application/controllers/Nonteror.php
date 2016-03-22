@@ -11,42 +11,48 @@
  *
  * @author Slurp
  */
-class Organisasi extends Member_Controller {
+class Nonteror extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('organization_model');
+        $this->load->model('nonteror_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+
     /**
      * serves autocomplete 
      */
     function search() {
+        //explode term by space
+        $terms = explode(' ', $this->input->get('term', true));
+        foreach ($terms as $term) {
+            $this->db->or_where('UPPER(korban) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(pidana) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(tempat) LIKE', '%' . strtoupper($term) . '%');
+        }
         $r = $this->db
-                ->where('UPPER(org_name) LIKE', '%' . strtoupper($this->input->get('term', true)) . '%')
-                ->get('organization')
+                ->get('nonteror')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['label'] = $i['org_name'];
-            $i['value'] = $i['org_name'];
-            $i['id']=$i['org_id']+0;
+            $i['id'] = $i['nonteror_id'] + 0;
             $ret[] = $i;
         }
         echo json_encode($ret);
     }
-    function add(){
+
+    function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets']=[
-            ['module'=>'polkam','asset'=>'select2.min.js']
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/add_view', $data);
@@ -79,17 +85,26 @@ class Organisasi extends Member_Controller {
     //REST-like
     function post() {
         if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('org_id');
-            $nama = $this->input->post('org_name');
-            $address = $this->input->post('address');
-            $website = $this->input->post('website');
-            $email = $this->input->post('email');
-            $phone = $this->input->post('phone');
-            $desc = $this->input->post('description');
-            $source = $this->input->post('source_id');
+            $id = $this->input->post('nonteror_id');
+            $tanggal = $this->input->post('date');
+            if (empty($tanggal)) {
+                $tanggal = null;
+            } else {
+                //convert to SQL-compliant format
+                $tanggal = date_format(date_create_from_format('d/m/Y', $tanggal), 'Y-m-d');
+            }
+            $waktu = $this->input->post('time');
+            $pidana = $this->input->post('pidana');
+            $korban = $this->input->post('korban');
+            $nilai = $this->input->post('nilai');
+            if (empty($nilai)) {
+                $nilai = null;
+            }
+            $tempat = $this->input->post('tempat');
+            $motif = $this->input->post('motif');
             if ($id) {
                 //edit
-                if ($this->organization_model->update($id, $nama, $address, $website, $email, $phone, $desc, $source)) {
+                if ($this->nonteror_model->update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -97,7 +112,7 @@ class Organisasi extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($this->organization_model->create($nama, $address, $website, $email, $phone, $desc, $source)) {
+                if ($this->nonteror_model->create($tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;

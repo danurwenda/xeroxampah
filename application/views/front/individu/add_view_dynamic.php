@@ -372,7 +372,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <select style="width: 100%" id="father" class="form-control individu-autocomplete" name="father" ></select>
+                                        <select style="width: 100%" id="father" class="form-control individu-select2" name="father" ></select>
                                         <span class="input-group-addon" data-toggle="modal" data-target="#individu-modal-form">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
@@ -385,7 +385,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <select style="width: 100%" id="mother" class="form-control individu-autocomplete" name="mother" ></select>
+                                        <select style="width: 100%" id="mother" class="form-control individu-select2" name="mother" ></select>
                                         <span class="input-group-addon">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
@@ -508,7 +508,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control organisasi-autocomplete ui-autocomplete-input" name="org_id[]" />
+                                        <select style="width: 100%" class="form-control organisasi-select2 ui-autocomplete-input" name="org_id[]" ></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -579,32 +579,22 @@ echo js_asset('jquery-ui.js', 'ace');
                         <div class="widget-main template-group">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="nteror_place[]" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
-
-                                    <div class="col-sm-9">
-                                        <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="nteror_start[]" />
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-exchange"></i>
+                                        <div class="input-group">
+                                            <select style="width: 100%" id="father" class="form-control nonteror-select2" name="nonteror[]" ></select>
+                                            <span class="input-group-addon" data-toggle="modal" data-target="#nonteror-modal-form">
+                                                <i class="fa fa-plus bigger-110"></i>
                                             </span>
-
-                                            <input type="text" class="input-sm form-control" name="nteror_end[]" />
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="nteror-edge[]">
+                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
 
                                             <option value="29">Pemberi Perintah</option>
                                             <option value="30">Perencana</option>
@@ -694,6 +684,102 @@ echo js_asset('jquery-ui.js', 'ace');
         </div>
     </div>
 </div>
+<div id="nonteror-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Event Kejahatan NonTeror</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <!-- Tempat -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi event </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="tempat" />
+                            </div>
+                        </div>
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tanggal </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Tanggal Kejadian" class="form-control date-picker" name="date" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>     
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Waktu -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Waktu </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="time-picker form-control" name="time" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Jenis Pidana -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Jenis Pidana </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="pidana" />
+                            </div>
+                        </div>
+                        <!-- Korban -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Korban </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="korban" />
+                            </div>
+                        </div>
+                        <!-- Kerugian -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kerugian </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class=" form-control" name="nilai" />
+                            </div>
+                        </div>
+                        <!-- Motif -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Motif </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class=" form-control" name="motif" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="individu-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog">
@@ -740,7 +826,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Nama" class="organisasi-autocomplete form-control" name="edu_place[]" />
+                                                <select style="width: 100%" class="form-control organisasi-select2 ui-autocomplete-input" name="org_id[]" ></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -1006,7 +1092,10 @@ echo js_asset('jquery.dataTables.bootstrap.js', 'ace');
 echo js_asset('bootbox.js', 'ace');
 echo js_asset('jquery.hotkeys.js', 'ace');
 echo js_asset('bootstrap-wysiwyg.js', 'ace');
+echo css_asset('datepicker.css', 'ace');
 echo js_asset('date-time/bootstrap-datepicker.js', 'ace');
+echo css_asset('bootstrap-timepicker.css', 'ace');
+echo js_asset('date-time/bootstrap-timepicker.js', 'ace');
 echo js_asset('individu/individu-form.js', 'polkam');
 if (isset($edit_id)) {
     echo js_asset('individu/individu-load.js', 'polkam');
