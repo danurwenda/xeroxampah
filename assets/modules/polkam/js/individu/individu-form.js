@@ -12,30 +12,14 @@ jQuery(function ($) {
         var text = $('#fam-field option[value="' + selected + '"]').text();
         clone.find('label')
                 .html(text);
-        clone.find('input')
-                .attr('placeholder', text)
+        clone.find('select')
                 .attr('name', 'relation_' + selected + '[]')
                 //make it autocomplete
-                .autocomplete(individu_autocomplete_config)
-                .autocomplete("instance")._renderItem = function (ul, item) {
-            var li = $("<li>");
-            if (item.label) {
-                li.append(item.label);
-            }
-            if (item.born_date) {
-                var bd = new Date(item.born_date);
-                li.append(
-                        "<br>Lahir :" +
-                        item.born_place + ', ' + bd.getDate() + '-' + (bd.getMonth() + 1) + '-' + bd.getYear()
-                        );
-            }
-            li.appendTo(ul);
-            return li;
-        };
+                .select2(individu_select_config);
         if (selected == 49) {
             //tambah field kapan nikah
             var date = $('<div class="input-group">' +
-                    '<input class="form-control date-picker" id="born_date" name="born_date" type="text" data-date-format="dd/mm/yyyy">' +
+                    '<input class="form-control date-picker" name="married_date[]" type="text" data-date-format="dd/mm/yyyy">' +
                     '<span class="input-group-addon">' +
                     '<i class="fa fa-calendar bigger-110"></i>' +
                     '</span></div>');
@@ -158,25 +142,9 @@ jQuery(function ($) {
     // AUTO COMPLETES
     // input type di autocomplete ini akan auto-add jika bukan reference
     //individu
+    $('select.individu-autocomplete').select2(individu_select_config);
 
-    $('.individu-autocomplete').autocomplete(individu_autocomplete_config);
-    $('.individu-autocomplete').each(function (i) {
-        $(this).autocomplete("instance")._renderItem = function (ul, item) {
-            var li = $("<li>");
-            if (item.label) {
-                li.append(item.label);
-            }
-            if (item.born_date) {
-                var bd = new Date(item.born_date);
-                li.append(
-                        "<br>Lahir :" +
-                        item.born_place + ', ' + bd.getDate() + '-' + (bd.getMonth() + 1) + '-' + bd.getYear()
-                        );
-            }
-            li.appendTo(ul);
-            return li;
-        };
-    })
+
     //organisasi
 
     $('.organisasi-autocomplete').autocomplete(organisasi_autocomplete_config);
@@ -236,15 +204,53 @@ jQuery(function ($) {
     });
 
 });
-var individu_autocomplete_config = {
-    source: base_url + "individu/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
-    },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.individu_id);
+function formatIndividu(individu) {
+    if (individu.loading)
+        return individu.text;
+
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + individu.individu_name + "</div>";
+
+    if (individu.alias) {
+        markup += "<div class='select2-result-repository__description'>Alias : " + individu.alias + "</div>";
     }
+
+    markup += "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>TTL : " + individu.born_place + ', ' + individu.born_date + "</div>" +
+            "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatIndividuSelection(repo) {
+    return repo.individu_name || repo.alias;
+}
+var individu_select_config = {
+    ajax: {
+        url: base_url + "individu/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatIndividu,
+    templateSelection: formatIndividuSelection
 };
 var organisasi_autocomplete_config = {
     source: base_url + "organisasi/search",

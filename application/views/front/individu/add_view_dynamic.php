@@ -372,7 +372,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input type="text" id="father" placeholder="Ayah" class="form-control individu-autocomplete" name="father" />
+                                        <select style="width: 100%" id="father" class="form-control individu-autocomplete" name="father" ></select>
                                         <span class="input-group-addon" data-toggle="modal" data-target="#individu-modal-form">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
@@ -385,7 +385,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input type="text" id="mother" placeholder="Ibu" class="form-control individu-autocomplete" name="mother" />
+                                        <select style="width: 100%" id="mother" class="form-control individu-autocomplete" name="mother" ></select>
                                         <span class="input-group-addon">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
@@ -397,7 +397,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input type="text" placeholder="Ibu" class="form-control" name="mother" />
+                                        <select style="width: 100%" class="form-control"></select>
                                         <span class="input-group-addon">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
