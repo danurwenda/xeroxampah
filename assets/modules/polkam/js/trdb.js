@@ -20,3 +20,8 @@ function removeTags(html) {
     } while (html !== oldHtml);
     return html.replace(/</g, '&lt;');
 }
+//enable select2 on bootstrap modal
+//https://github.com/select2/select2/issues/1436
+jQuery(function ($) {
+$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+})

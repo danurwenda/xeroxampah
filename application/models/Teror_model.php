@@ -8,10 +8,10 @@ defined('BASEPATH')OR
  *
  * @author Administrator
  */
-class Nonteror_model extends CI_Model {
+class Teror_model extends CI_Model {
 
-    public $table = 'nonteror';
-    public $primary_key = 'nonteror_id';
+    public $table = 'teror';
+    public $primary_key = 'teror_id';
 
     public function __construct() {
         parent::__construct();
@@ -49,29 +49,27 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
+                    'serangan' => $serangan,
+                    'sasaran' => $sasaran,
                     'motif' => $motif
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         return $this->db->insert(
                         $this->table, array(
                     'tempat' => $tempat,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
+                    'serangan' => $serangan,
+                    'sasaran' => $sasaran,
                     'motif' => $motif
                         )
         );

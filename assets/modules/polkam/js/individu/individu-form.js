@@ -1,4 +1,34 @@
 jQuery(function ($) {
+    // ============== MODALS TO CREATE ENTITY ==========================
+    // INDIVIDU
+    $('#individu-modal-form .btn-primary').click(function (e) {
+        var form = $('#individu-modal-form form')
+        //serialize the form, except those in hidden template
+        ,h = form.find(":input:not(.template :input)").serialize();
+        console.log(h)
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'individu/submit', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                    //reset and close modal
+                    form[0].reset();
+                    //reset expandable
+                    form.find('.btn-delete').click();
+                    $('#individu-modal-form').modal('hide');
+                });
+    });
+
     // NONTEROR
     $('#nonteror-modal-form .btn-primary').click(function (e) {
         //serialize the form
@@ -21,6 +51,29 @@ jQuery(function ($) {
         //reset and close modal
         $('#nonteror-modal-form form')[0].reset();
         $('#nonteror-modal-form').modal('hide');
+    });
+    // TEROR
+    $('#teror-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'teror/post', // the url where we want to POST
+            data: $('#teror-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#teror-modal-form form')[0].reset();
+        $('#teror-modal-form').modal('hide');
     });
     // FAMILY
     $('#family-modal-form .btn-primary').click(function (c) {
@@ -76,6 +129,8 @@ jQuery(function ($) {
             format: "dd/mm/yyyy"});
         clone.find('.organisasi-select2').select2(organisasi_select_config)
         clone.find('.nonteror-select2').select2(nonteror_select_config);
+        console.log('trorselect')
+        clone.find('.teror-select2').select2(teror_select_config);
         clone.find('.date-picker')
                 .datepicker({
                     autoclose: true,
@@ -316,8 +371,54 @@ var nonteror_select_config = {
     templateResult: formatNonTerorList,
     templateSelection: formatNonTerorSelection
 };
-function formatOrganisasiList(org) {
+function formatTerorList(nt) {
+    if (nt.loading)
+        return nt.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + nt.serangan + ' ' + nt.sasaran + "</div>";
 
+
+
+    markup += "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.tanggal + "</div>" +
+            "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatTerorSelection(nt) {
+    return nt.serangan + ' ' + nt.sasaran;
+}
+var teror_select_config = {
+    ajax: {
+        url: base_url + "teror/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatTerorList,
+    templateSelection: formatTerorSelection
+};
+function formatOrganisasiList(org) {
+    if (org.loading)
+        return org.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
             "<div class='select2-result-repository__title'>" + org.org_name + "</div>" +

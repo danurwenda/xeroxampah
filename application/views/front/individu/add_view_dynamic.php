@@ -294,32 +294,22 @@ echo js_asset('jquery-ui.js', 'ace');
                         <div class="widget-main template-group">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" placeholder="Nama" class="form-control" name="teror_place[]" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
-
-                                    <div class="col-sm-9">
-                                        <div class="input-daterange input-group">
-                                            <input type="text" class="input-sm form-control" name="teror_start[]" />
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-exchange"></i>
+                                        <div class="input-group">
+                                            <select style="width: 100%" class="form-control teror-select2" name="teror[]" ></select>
+                                            <span class="input-group-addon" data-toggle="modal" data-target="#teror-modal-form">
+                                                <i class="fa fa-plus bigger-110"></i>
                                             </span>
-
-                                            <input type="text" class="input-sm form-control" name="teror_end[]" />
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="teror-edge[]">
+                                        <select data-placeholder="Pilih Relasi..." name="teror_edge[]">
 
                                             <option value="25">Pemberi Perintah</option>
                                             <option value="26">Perencana</option>
@@ -386,7 +376,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <div class="col-sm-9">
                                     <div class="input-group">
                                         <select style="width: 100%" id="mother" class="form-control individu-select2" name="mother" ></select>
-                                        <span class="input-group-addon">
+                                        <span class="input-group-addon" data-toggle="modal" data-target="#individu-modal-form">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
                                     </div>
@@ -398,7 +388,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <div class="col-sm-9">
                                     <div class="input-group">
                                         <select style="width: 100%" class="form-control"></select>
-                                        <span class="input-group-addon">
+                                        <span class="input-group-addon" data-toggle="modal" data-target="#individu-modal-form">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
                                     </div>
@@ -530,7 +520,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="org_edge[]">
+                                        <select data-placeholder="Pilih Relasi..." name="org_edge[]">
 
                                             <option value="15">Anggota Baiat</option>
                                             <option value="16">Anggota non-Baiat</option>
@@ -583,7 +573,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-group">
-                                            <select style="width: 100%" id="father" class="form-control nonteror-select2" name="nonteror[]" ></select>
+                                            <select style="width: 100%" class="form-control nonteror-select2" name="nonteror[]" ></select>
                                             <span class="input-group-addon" data-toggle="modal" data-target="#nonteror-modal-form">
                                                 <i class="fa fa-plus bigger-110"></i>
                                             </span>
@@ -594,7 +584,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select class="edu-select" data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
+                                        <select data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
 
                                             <option value="29">Pemberi Perintah</option>
                                             <option value="30">Perencana</option>
@@ -780,6 +770,94 @@ echo js_asset('jquery-ui.js', 'ace');
         </div>
     </div>
 </div>
+<div id="teror-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Event Kejahatan Teror</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <!-- Tempat -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi event </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="tempat" />
+                            </div>
+                        </div>
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tanggal </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Tanggal Kejadian" class="form-control date-picker" name="date" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>     
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Waktu -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Waktu </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="time-picker form-control" name="time" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Model Serangan -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Model Serangan </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="serangan" />
+                            </div>
+                        </div>
+                        <!-- Sasaran -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sasaran </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="sasaran" />
+                            </div>
+                        </div>
+                        <!-- Motif -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Motif </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class=" form-control" name="motif" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="individu-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog">
@@ -790,13 +868,13 @@ echo js_asset('jquery-ui.js', 'ace');
             </div>
 
             <div class="modal-body">
-                <div class="row form-horizontal">
+                <form class="row form-horizontal">
                     <div class="col-xs-12">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
 
                             <div class="col-sm-9">
-                                <input type="text" id="name" placeholder="Nama Individu" class="form-control" name="name" />
+                                <input type="text" placeholder="Nama Individu" class="form-control" name="individu_name" />
                             </div>
                         </div>
                         <!-- RECENT JOB -->
@@ -807,7 +885,6 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <input type="text" id="recentjob" placeholder="Pekerjaan Terakhir" class="form-control" name="recent_job" />
                             </div>
                         </div>
-
                         <div class="widget-box collapsed" >
                             <div class="widget-header">
                                 <h4 class="widget-title">Riwayat Organisasi</h4>
@@ -834,12 +911,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                             <div class="col-sm-9">
                                                 <div class="input-daterange input-group">
-                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
+                                                    <input type="text" class="input-sm form-control" name="org_start[]" />
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-exchange"></i>
                                                     </span>
 
-                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
+                                                    <input type="text" class="input-sm form-control" name="org_end[]" />
                                                 </div>
 
                                             </div>
@@ -848,7 +925,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                             <div class="col-sm-9">
-                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                                <select data-placeholder="Pilih Relasi..." name="org_edge[]">
 
                                                     <option value="15">Anggota Baiat</option>
                                                     <option value="16">Anggota non-Baiat</option>
@@ -856,7 +933,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                                     <option value="18">Komandan militer</option>                                    
                                                     <option value="19">Dewan Pimpinan/Pimpinan Wilayah</option>                                    
                                                     <option value="20">Pemberi dukungan permanen/rutin</option>                                    
-                                                    <option value="21">Pemberi dukungan insidental</option>                                    
+                                                    <option value="20">Pemberi dukungan insidental</option>                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -897,32 +974,22 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <div class="widget-main template-group">
                                     <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
-
-                                            <div class="col-sm-9">
-                                                <div class="input-daterange input-group">
-                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-exchange"></i>
+                                                <div class="input-group">
+                                                    <select style="width: 100%" class="form-control teror-select2" name="teror[]" ></select>
+                                                    <span class="input-group-addon" data-toggle="modal" data-target="#teror-modal-form">
+                                                        <i class="fa fa-plus bigger-110"></i>
                                                     </span>
-
-                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                             <div class="col-sm-9">
-                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                                <select data-placeholder="Pilih Relasi..." name="teror_edge[]">
 
                                                     <option value="25">Pemberi Perintah</option>
                                                     <option value="26">Perencana</option>
@@ -953,6 +1020,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                 </div>
                             </div>
                         </div>
+
                         <div class="widget-box collapsed">
                             <div class="widget-header">
                                 <h4 class="widget-title">Kejahatan Non Teror</h4>
@@ -968,32 +1036,22 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <div class="widget-main template-group">
                                     <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Nama" class="form-control" name="edu_place[]" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
-
-                                            <div class="col-sm-9">
-                                                <div class="input-daterange input-group">
-                                                    <input type="text" class="input-sm form-control" name="edu_start[]" />
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-exchange"></i>
+                                                <div class="input-group">
+                                                    <select style="width: 100%" class="form-control nonteror-select2" name="nonteror[]" ></select>
+                                                    <span class="input-group-addon" data-toggle="modal" data-target="#nonteror-modal-form">
+                                                        <i class="fa fa-plus bigger-110"></i>
                                                     </span>
-
-                                                    <input type="text" class="input-sm form-control" name="edu_end[]" />
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                             <div class="col-sm-9">
-                                                <select class="edu-select" data-placeholder="Pilih Relasi..." name="edu-field[]">
+                                                <select data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
 
                                                     <option value="29">Pemberi Perintah</option>
                                                     <option value="30">Perencana</option>
@@ -1023,9 +1081,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div></div>
+                </form>
             </div>
 
             <div class="modal-footer">
