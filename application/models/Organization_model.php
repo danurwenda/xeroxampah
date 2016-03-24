@@ -12,6 +12,7 @@ class Organization_model extends CI_Model {
 
     public $table = 'organization';
     public $primary_key = 'org_id';
+    private $sequence = 'organization_org_id_seq';
 
     public function __construct() {
         parent::__construct();
@@ -63,18 +64,24 @@ class Organization_model extends CI_Model {
         );
     }
 
-    public function create($org_name, $address, $website, $email, $phone, $description, $source) {
-        return $this->db->insert(
-                        $this->table, array(
-                    'org_name' => $org_name,
-                    'address' => $address,
-                    'website' => $website,
-                    'email' => $email,
-                    'phone' => $phone,
-                    'description' => $description,
-                    'source_id' => $source
-                        )
+    public function create($org_name, $address) {
+        $this->db->insert(
+                $this->table, array(
+            'org_name' => $org_name,
+            'daerah' => $address
+                )
         );
+        return $this->last_id();
+    }
+
+    private function last_id() {
+        return $this->db->insert_id($this->sequence);
+    }
+
+    public function neo4j_insert_query($id) {
+        $prop = "org_name:'" . $this->get($id)->org_name . "',";
+        $prop.="org_id:" . $id;
+        return "MERGE(Organisasi_$id:Organisasi { $prop } )";
     }
 
 }

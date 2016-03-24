@@ -3,14 +3,35 @@ jQuery(function ($) {
     // INDIVIDU
     $('#individu-modal-form .btn-primary').click(function (e) {
         var form = $('#individu-modal-form form')
-        //serialize the form, except those in hidden template
-        ,h = form.find(":input:not(.template :input)").serialize();
-        console.log(h)
+                //serialize the form, except those in hidden template
+                , h = form.find(":input:not(.template :input)").serialize();
+        // process the form
+        if (true)
+            $.ajax({
+                type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                url: base_url + 'individu/submit', // the url where we want to POST
+                data: h, // our data object
+                dataType: 'json', // what type of data do we expect back from the server
+                encode: true
+            })
+                    // using the done promise callback
+                    .done(function (data) {
+                        //reset and close modal
+                        form[0].reset();
+                        //reset expandable
+                        form.find('.btn-delete').click();
+                        $('#individu-modal-form').modal('hide');
+                    });
+    });
+
+    // ORGANISASI
+    $('#organisasi-modal-form .btn-primary').click(function (e) {
+        //serialize the form
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'individu/submit', // the url where we want to POST
-            data: h, // our data object
+            url: base_url + 'organisasi/post', // the url where we want to POST
+            data: $('#organisasi-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
         })
@@ -21,14 +42,34 @@ jQuery(function ($) {
                     console.log(data);
 
                     // here we will handle errors and validation messages
-                    //reset and close modal
-                    form[0].reset();
-                    //reset expandable
-                    form.find('.btn-delete').click();
-                    $('#individu-modal-form').modal('hide');
                 });
+        //reset and close modal
+        $('#organisasi-modal-form form')[0].reset();
+        $('#organisasi-modal-form').modal('hide');
     });
+    // SEKOLAH
+    $('#sekolah-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'sekolah/post', // the url where we want to POST
+            data: $('#sekolah-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
 
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#sekolah-modal-form form')[0].reset();
+        $('#sekolah-modal-form').modal('hide');
+    });
     // NONTEROR
     $('#nonteror-modal-form .btn-primary').click(function (e) {
         //serialize the form
@@ -128,9 +169,20 @@ jQuery(function ($) {
         clone.find('.input-daterange').datepicker({autoclose: true,
             format: "dd/mm/yyyy"});
         clone.find('.organisasi-select2').select2(organisasi_select_config)
+        clone.find('.sekolah-select2').select2(sekolah_select_config)
         clone.find('.nonteror-select2').select2(nonteror_select_config);
         console.log('trorselect')
         clone.find('.teror-select2').select2(teror_select_config);
+        clone.find('.month-picker')
+                .datepicker({
+                    autoclose: true,
+                    format: "dd/mm/yyyy",
+                    todayHighlight: true
+                })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        })
         clone.find('.date-picker')
                 .datepicker({
                     autoclose: true,
@@ -145,7 +197,7 @@ jQuery(function ($) {
     // RIWAYAT PENDIDIKAN
     $('.input-daterange').datepicker({autoclose: true,
         format: "dd/mm/yyyy"});
-    $('#edu-widget').on('change', '.edu-select', function () {
+    $('#edu-widget').on('change', '.edu-edge', function () {
         var select = $(this);
         var row = $('<div class="form-group">' +
                 '<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>' +
@@ -156,12 +208,10 @@ jQuery(function ($) {
         switch (val) {
             case 22:
                 //mudir
-                alert('mudir')
                 break;
             case 23:
                 //pendiri
                 //tambah info : sumber dana
-                alert('pendiri')
                 break;
             case 24:
                 //pengajar
@@ -172,12 +222,10 @@ jQuery(function ($) {
                 break;
             case 51:
                 //santri/murid
-                alert('santri')
                 break;
             case 52:
                 //staf
                 //tambah info : posisi
-                alert('staf')
                 break;
             default:
                 alert('def')
@@ -454,6 +502,45 @@ var organisasi_select_config = {
     minimumInputLength: 1,
     templateResult: formatOrganisasiList,
     templateSelection: formatOrganisasiSelection
+};
+function formatSekolahList(org) {
+    if (org.loading)
+        return org.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatSekolahSelection(org) {
+    return org.name;
+}
+var sekolah_select_config = {
+    ajax: {
+        url: base_url + "sekolah/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatSekolahList,
+    templateSelection: formatSekolahSelection
 };
 var masjid_autocomplete_config = {
     source: base_url + "masjid/search",

@@ -32,15 +32,19 @@ class Individu extends Member_Controller {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
         $data['title'] = 'Tambah Individu';
         $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'chosen.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
-            ['module' => 'ace', 'asset' => 'chosen.jquery.js'],
             ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('individu/add_view_dynamic', $data);
+    }
+
+    function tes() {
+        $q = "merge(Individu_2:Individu{individu_id:2,individu_name:'Yusuf'})";
+        postNeoQuery($q);
+        echo 'dor';
     }
 
     function submit() {
@@ -131,9 +135,12 @@ class Individu extends Member_Controller {
         }
 
         //START TRANSACTION
+        //preparing Neo4J Query
+        $n4jq = [];
         $this->db->trans_start();
-        $this->db->insert('individu', $data);
-        $new_id = $this->db->insert_id('individu_individu_id_seq');
+
+        $new_id = $this->individu_model->insert($data);
+        $n4jq[] = $this->individu_model->neo4j_insert_query($new_id);
 
         // ADD EDGES
         $this->load->model('edge_model');
@@ -150,7 +157,8 @@ class Individu extends Member_Controller {
             }
         }
         if (!empty($father_id)) {
-            $this->edge_model->insert($father_id, $new_id, 46, null);
+            $eid = $this->edge_model->insert($father_id, $new_id, 46, null);
+            $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
         }
         $mother = $this->input->post('mother');
         if (is_numeric($mother)) {
@@ -164,7 +172,8 @@ class Individu extends Member_Controller {
             }
         }
         if (!empty($mother_id)) {
-            $this->edge_model->insert($mother_id, $new_id, 47, null);
+            $eid = $this->edge_model->insert($mother_id, $new_id, 47, null);
+            $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
         }
 
         $saudaras = $this->input->post('relation_48');
@@ -181,7 +190,8 @@ class Individu extends Member_Controller {
                     }
                 }
                 if (!empty($saudara_id)) {
-                    $this->edge_model->insert($new_id, $saudara_id, 48, null);
+                    $eid = $this->edge_model->insert($new_id, $saudara_id, 48, null);
+                    $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }
         }
@@ -208,26 +218,55 @@ class Individu extends Member_Controller {
                     $mar['from'] = date_format(date_create_from_format('d/m/Y', $marriage_date), 'Y-m-d');
                     $mar = json_encode($mar);
                 }
-                $this->edge_model->insert($new_id, $pasangan_id, 49, $mar);
+                $eid = $this->edge_model->insert($new_id, $pasangan_id, 49, $mar);
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
         $anaks = $this->input->post('relation_50');
-        if(!empty($anaks)){
-        foreach ($anaks as $anak) {
-            if (is_numeric($anak)) {
-                //check db
-                $anak = $this->db->get_where('individu', ['individu_id' => $anak]);
-                if ($anak->num_rows() > 0) {
-                    //ada
-                    $anak_id = $anak->row()->individu_id;
-                } else {
-                    $anak_id = null;
+        if (!empty($anaks)) {
+            foreach ($anaks as $anak) {
+                if (is_numeric($anak)) {
+                    //check db
+                    $anak = $this->db->get_where('individu', ['individu_id' => $anak]);
+                    if ($anak->num_rows() > 0) {
+                        //ada
+                        $anak_id = $anak->row()->individu_id;
+                    } else {
+                        $anak_id = null;
+                    }
+                }
+                if (!empty($anak_id)) {
+                    $eid = $this->edge_model->insert($new_id, $anak_id, 50, null);
+                    $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }
-            if (!empty($anak_id)) {
-                $this->edge_model->insert($new_id, $anak_id, 50, null);
+        }
+        // SEKOLAH
+        $sch_edges = $this->input->post('edu_edge');
+        $sch_ids = $this->input->post('school_id');
+        $sch_starts = $this->input->post('edu_start');
+        $sch_ends = $this->input->post('edu_end');
+        $this->load->model('sekolah_model');
+        for ($i = 0; $i < count($sch_edges); $i++) {
+            $sch_edge = $sch_edges[$i];
+            $sch_id = $sch_ids[$i];
+            if (!empty($sch_id)) {
+                //insert ke table relasi (edge)
+                $attr = [];
+                $end = $sch_ends[$i];
+                if (!empty($end)) {
+                    //convert to SQL-compliant format
+                    $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
+                }
+                $start = $sch_starts[$i];
+                if (!empty($start)) {
+                    //convert to SQL-compliant format
+                    $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                }
+                $eid = $this->edge_model->insert($new_id, $sch_id, $sch_edge, json_encode($attr));
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
-        }}
+        }
         // ORGANISASI
         $org_edges = $this->input->post('org_edge');
         $org_ids = $this->input->post('org_id');
@@ -239,23 +278,20 @@ class Individu extends Member_Controller {
             $org_id = $org_ids[$i];
             if (!empty($org_id)) {
 
-                //insert atau lookup
-                $org_id = $this->organization_model->insert_or_lookup($org_id);
-                if ($org_id != null) {
-                    //insert ke table relasi (edge)
-                    $attr = [];
-                    $end = $org_ends[$i];
-                    if (!empty($end)) {
-                        //convert to SQL-compliant format
-                        $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
-                    }
-                    $start = $org_starts[$i];
-                    if (!empty($start)) {
-                        //convert to SQL-compliant format
-                        $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
-                    }
-                    $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
+                //insert ke table relasi (edge)
+                $attr = [];
+                $end = $org_ends[$i];
+                if (!empty($end)) {
+                    //convert to SQL-compliant format
+                    $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
                 }
+                $start = $org_starts[$i];
+                if (!empty($start)) {
+                    //convert to SQL-compliant format
+                    $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                }
+                $eid = $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
         //NON TEROR
@@ -273,13 +309,37 @@ class Individu extends Member_Controller {
         for ($i = 0; $i < count($teror_edges); $i++) {
             if (!empty($terors[$i])) {
                 //insert ke table relasi
-                $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                $eid=$this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
+        // RIWAYAT PENGGUNAAN NAMA
+        $old_names = $this->input->post('old_name');
+        $old_names = $this->input->post('lokasi_nama');
+        $old_names = $this->input->post('nama_date');
         $this->db->trans_complete();
+
+        // SQL DATABASE DONE
+        //================POST TO NEO4J=============================
+        //dengan harapan fungsi ini synchronous
+        //karena memang harus dieksekusi sesuai urutan
+        //query pertama harus dieksekusi pertama, karena itu bikin node
+        //query yang lain mau async juga gpp
+
         if ($this->input->is_ajax_request()) {
-            echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
+            echo json_encode(
+                    [
+                        $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()
+            ]);
+            foreach ($n4jq as $q) {
+                postNeoQuery($q);
+            }
         } else {
+            foreach ($n4jq as $q) {
+                echo $q;
+                echo "<br/>";
+                postNeoQuery($q);
+            }
             //back to table
             redirect('individu');
         }

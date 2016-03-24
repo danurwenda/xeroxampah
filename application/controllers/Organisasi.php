@@ -20,33 +20,38 @@ class Organisasi extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+
     /**
      * serves autocomplete 
      */
     function search() {
+        //explode term by space
+        $terms = explode(' ', $this->input->get('term', true));
+        foreach ($terms as $term) {
+            $this->db->or_where('UPPER(org_name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(daerah) LIKE', '%' . strtoupper($term) . '%');
+        }
         $r = $this->db
-                ->where('UPPER(org_name) LIKE', '%' . strtoupper($this->input->get('term', true)) . '%')
                 ->get('organization')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['label'] = $i['org_name'];
-            $i['value'] = $i['org_name'];
-            $i['id']=$i['org_id']+0;
+            $i['id'] = $i['org_id'] + 0;
             $ret[] = $i;
         }
         echo json_encode($ret);
     }
-    function add(){
+
+    function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets']=[
-            ['module'=>'polkam','asset'=>'select2.min.js']
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/add_view', $data);
@@ -81,15 +86,10 @@ class Organisasi extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             $id = $this->input->post('org_id');
             $nama = $this->input->post('org_name');
-            $address = $this->input->post('address');
-            $website = $this->input->post('website');
-            $email = $this->input->post('email');
-            $phone = $this->input->post('phone');
-            $desc = $this->input->post('description');
-            $source = $this->input->post('source_id');
+            $address = $this->input->post('daerah');
             if ($id) {
                 //edit
-                if ($this->organization_model->update($id, $nama, $address, $website, $email, $phone, $desc, $source)) {
+                if ($this->organization_model->update($id, $nama, $address)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -97,7 +97,9 @@ class Organisasi extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($this->organization_model->create($nama, $address, $website, $email, $phone, $desc, $source)) {
+                if ($new_id=$this->organization_model->create($nama, $address)) {
+                    //insert to neo4j
+                    postNeoQuery($this->organization_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;

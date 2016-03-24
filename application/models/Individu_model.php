@@ -12,6 +12,7 @@ class Individu_model extends CI_Model {
 
     public $table = 'individu';
     public $primary_key = 'individu_id';
+    private $sequence = 'individu_individu_id_seq';
 
     public function __construct() {
         parent::__construct();
@@ -102,11 +103,11 @@ class Individu_model extends CI_Model {
                 $individu->schools = $m;
             }
             //network
-            if(isset($individu->network)){
-                $network = $this->db->get_where('net',['net_id'=>$individu->network])->row();
-                $individu->network=[
-                    'net_id'=>$network->net_id,
-                    'net_name'=>$network->net_name
+            if (isset($individu->network)) {
+                $network = $this->db->get_where('net', ['net_id' => $individu->network])->row();
+                $individu->network = [
+                    'net_id' => $network->net_id,
+                    'net_name' => $network->net_name
                 ];
             }
             return $individu;
@@ -137,22 +138,19 @@ class Individu_model extends CI_Model {
         );
     }
 
-    public function create($nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn, $source_id) {
-        return $this->db->insert(
-                        $this->table, array(
-                    'name' => $nama,
-                    'alias' => $alias,
-                    'born_date' => $born_date,
-                    'born_place' => $born_place,
-                    'nationality' => $nationality,
-                    'detention_history' => $detention_history,
-                    'detention_status' => $detention_status,
-                    'education' => $education,
-                    'family_conn' => $family_conn,
-                    'affiliation' => $affiliation,
-                    'source_id' => $source_id,
-                        )
-        );
+    public function insert($data) {
+        $this->db->insert($this->table, $data);
+        return $this->last_id();
+    }
+
+    private function last_id() {
+        return $this->db->insert_id($this->sequence);
+    }
+
+    public function neo4j_insert_query($id) {        
+        $prop="individu_name:'".$this->get($id)->individu_name."',";
+        $prop.="individu_id:".$id;
+        return "MERGE(Individu$id:Individu { $prop } )";
     }
 
 }

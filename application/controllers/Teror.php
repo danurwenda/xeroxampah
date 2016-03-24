@@ -109,7 +109,9 @@ class Teror extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                if ($new_id=$this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                   //insert to neo4j
+                   postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;

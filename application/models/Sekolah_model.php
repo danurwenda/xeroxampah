@@ -8,10 +8,11 @@ defined('BASEPATH')OR
  *
  * @author Administrator
  */
-class Nonteror_model extends CI_Model {
+class Sekolah_model extends CI_Model {
 
-    public $table = 'nonteror';
-    public $primary_key = 'nonteror_id';
+    public $table = 'school';
+    public $primary_key = 'school_id';
+    private $sequence = 'school_school_id_seq';
 
     public function __construct() {
         parent::__construct();
@@ -49,33 +50,25 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function update($id, $nama, $address, $city) {
         return $this->db->update(
                         $this->table, array(
-                    'tempat' => $tempat,
-                    'tanggal' => $tanggal,
-                    'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
-                    'motif' => $motif
+                    'name' => $nama,
+                    'address' => $address,
+                    'city' => $city
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function create($nama, $address, $city) {
         $this->db->insert(
-                        $this->table, array(
-                    'tempat' => $tempat,
-                    'tanggal' => $tanggal,
-                    'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
-                    'motif' => $motif
-                        )
+                $this->table, array(
+            'name' => $nama,
+            'address' => $address,
+            'city' => $city
+                )
         );
-         return $this->last_id();
+        return $this->last_id();
     }
 
     private function last_id() {
@@ -83,15 +76,9 @@ class Nonteror_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $teror = $this->get($id);
-        if(!empty($teror->tempat))
-        $prop = "tempat:'" . $teror->tempat . "',";
-        $prop .= "pidana:'" . $teror->pidana . "',";
-        $prop .= "korban:'" . $teror->korban . "',";
-        $prop .= "tanggal:'" . $teror->tanggal . "',";
-        $prop .= "waktu:'" . $teror->waktu . "',";
-        $prop.="teror_id:" . $id;
-        return "MERGE(Nonteror_$id:Nonteror { $prop } )";
+        $prop = "name:'" . $this->get($id)->name . "',";
+        $prop.="school_id:" . $id;
+        return "MERGE(Sekolah_$id:Sekolah { $prop } )";
     }
 
 }
