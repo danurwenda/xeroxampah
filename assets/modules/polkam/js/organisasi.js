@@ -18,16 +18,8 @@ jQuery(function ($) {
         //mapping nth-column to data source
         columns: [
             {data: 'org_name'}, //nama organisasi
-            {data: 'address'}, //alamat
-            {
-                //long desc
-                data: 'description',
-                render: function (data, type, full, meta) {
-                    return type === 'display' && data.length > 60 ?
-                            '<span title="' + removeTags(data) + '">' + removeTags(data).substr(0, 58) + '...</span>' :
-                            data;
-                }
-            },
+            {data: 'daerah'}, //alamat
+            
             {
                 //actions
                 width: '100px',

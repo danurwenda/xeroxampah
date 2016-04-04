@@ -74,7 +74,7 @@ class Organisasi extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('org_name,address,description,org_id')
+                    ->select('org_name,daerah,org_id')
                     ->add_column('DT_RowId', 'row_$1', 'org_id')
                     ->from('organization');
             echo $this->datatables->generate();
@@ -97,7 +97,7 @@ class Organisasi extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id=$this->organization_model->create($nama, $address)) {
+                if ($new_id = $this->organization_model->create($nama, $address)) {
                     //insert to neo4j
                     postNeoQuery($this->organization_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);

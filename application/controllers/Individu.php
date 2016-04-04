@@ -90,12 +90,12 @@ class Individu extends Member_Controller {
                 $end = $job_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $job['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
+                    $job['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
                 }
                 $start = $job_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $job['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                    $job['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
                 }
                 //add to array
                 $job_history[] = $job;
@@ -256,14 +256,39 @@ class Individu extends Member_Controller {
                 $end = $sch_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
+                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
                 }
                 $start = $sch_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
                 }
                 $eid = $this->edge_model->insert($new_id, $sch_id, $sch_edge, json_encode($attr));
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+            }
+        }
+        // LAPAS
+        $lapas_edge = 56;
+        $lapas_ids = $this->input->post('lapas_id');
+        $lapas_starts = $this->input->post('lapas_start');
+        $lapas_ends = $this->input->post('lapas_end');
+        for ($i = 0; $i < count($lapas_ids); $i++) {
+            $lapas_id = $lapas_ids[$i];
+            if (!empty($lapas_id)) {
+
+                //insert ke table relasi (edge)
+                $attr = [];
+                $end = $lapas_ends[$i];
+                if (!empty($end)) {
+                    //convert to SQL-compliant format
+                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
+                }
+                $start = $lapas_starts[$i];
+                if (!empty($start)) {
+                    //convert to SQL-compliant format
+                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
+                }
+                $eid = $this->edge_model->insert($new_id, $lapas_id, $lapas_edge, json_encode($attr));
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
@@ -283,12 +308,12 @@ class Individu extends Member_Controller {
                 $end = $org_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $attr['until'] = date_format(date_create_from_format('d/m/Y', $end), 'Y-m-d');
+                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
                 }
                 $start = $org_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $attr['from'] = date_format(date_create_from_format('d/m/Y', $start), 'Y-m-d');
+                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
                 }
                 $eid = $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
@@ -309,7 +334,7 @@ class Individu extends Member_Controller {
         for ($i = 0; $i < count($teror_edges); $i++) {
             if (!empty($terors[$i])) {
                 //insert ke table relasi
-                $eid=$this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }

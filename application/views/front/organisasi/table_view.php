@@ -18,8 +18,7 @@
                 <thead>
                     <tr>
                         <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>Deskripsi</th>
+                        <th>Daerah</th>
                         <th></th>
                     </tr>
                 </thead>

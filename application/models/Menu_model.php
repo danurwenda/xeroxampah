@@ -59,9 +59,9 @@ class Menu_model extends CI_Model {
             //cek parent
             if (isset($menu->parent_menu) && ($parent = $this->get($menu->parent_menu))) {
                 if (isset($parent->parent_menu) && ($gparent = $this->get($parent->parent_menu))) {
-                    $bc .= $this->create_breadcrumb_li(anchor(empty($gparent->alias)?'dashboard/show/' . $gparent->menu_id:$gparent->alias, $gparent->display_name));
+                    $bc .= $this->create_breadcrumb_li(anchor(empty($gparent->alias) ? 'dashboard/show/' . $gparent->menu_id : $gparent->alias, $gparent->display_name));
                 }
-                $bc .= $this->create_breadcrumb_li(anchor(empty($parent->alias)?'dashboard/show/' . $parent->menu_id:$parent->alias, $parent->display_name));
+                $bc .= $this->create_breadcrumb_li(anchor(empty($parent->alias) ? 'dashboard/show/' . $parent->menu_id : $parent->alias, $parent->display_name));
             }
             $bc.=$this->create_breadcrumb_li($menu->display_name);
         }
@@ -88,6 +88,7 @@ class Menu_model extends CI_Model {
     public function get_children($parent) {
         return $this->db
                         ->where('parent_menu', $parent)
+                        ->where('active', true)
                         ->order_by('menu_id')
                         ->get($this->table)
                         ->result();

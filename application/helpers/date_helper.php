@@ -36,12 +36,12 @@ function arrayToString($arr) {
     }
     return substr($label_prop, 0, -1);
 }
-
 function postNeoQuery($q) {
+
     $url = 'https://tci.polkam.go.id:7473/db/data/cypher';
     $data = array('query' => $q, 'params' => []);
 
-// use key 'http' even if you send the request to https://...
+    // use key 'http' even if you send the request to https://...
     $options = array(
         'http' => array(
             'header' => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -51,6 +51,6 @@ function postNeoQuery($q) {
     );
     $context = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
-    if ($result === FALSE) { /* Handle error */
+    if ($result === FALSE) {
     }
 }

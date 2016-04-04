@@ -70,6 +70,29 @@ jQuery(function ($) {
         $('#sekolah-modal-form form')[0].reset();
         $('#sekolah-modal-form').modal('hide');
     });
+    // LAPAS
+    $('#lapas-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'lapas/post', // the url where we want to POST
+            data: $('#lapas-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#lapas-modal-form form')[0].reset();
+        $('#lapas-modal-form').modal('hide');
+    });
     // NONTEROR
     $('#nonteror-modal-form .btn-primary').click(function (e) {
         //serialize the form
@@ -168,10 +191,16 @@ jQuery(function ($) {
         //initiate jquery plugins/UI
         clone.find('.input-daterange').datepicker({autoclose: true,
             format: "dd/mm/yyyy"});
+        clone.find('.monthpicker').datepicker({
+            autoclose: true,
+            format: "mm-yyyy",
+            startView: "months",
+            minViewMode: "months"
+        });
         clone.find('.organisasi-select2').select2(organisasi_select_config)
+        clone.find('.lapas-select2').select2(lapas_select_config)
         clone.find('.sekolah-select2').select2(sekolah_select_config)
         clone.find('.nonteror-select2').select2(nonteror_select_config);
-        console.log('trorselect')
         clone.find('.teror-select2').select2(teror_select_config);
         clone.find('.month-picker')
                 .datepicker({
@@ -463,6 +492,45 @@ var teror_select_config = {
     minimumInputLength: 1,
     templateResult: formatTerorList,
     templateSelection: formatTerorSelection
+};
+function formatLapasList(l) {
+    if (l.loading)
+        return l.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatLapasSelection(l) {
+    return l.name;
+}
+var lapas_select_config = {
+    ajax: {
+        url: base_url + "lapas/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatLapasList,
+    templateSelection: formatLapasSelection
 };
 function formatOrganisasiList(org) {
     if (org.loading)
