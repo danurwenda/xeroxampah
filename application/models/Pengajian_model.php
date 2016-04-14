@@ -62,12 +62,12 @@ class Pengajian_model extends CI_Model {
 
     public function create($nama, $topik, $mesjid, $pesantren) {
         $this->db->insert(
-                $this->table, array(
+                $this->table, [
             'name' => $nama,
             'topik' => $topik,
             'masjid' => $mesjid,
             'pesantren' => $pesantren
-                )
+                ]
         );
         return $this->last_id();
     }

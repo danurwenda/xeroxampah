@@ -38,7 +38,7 @@ function arrayToString($arr) {
 }
 
 function postNeoQuery($q) {
-    if (false) {
+    if (true) {
         $url = 'https://tci.polkam.go.id:7473/db/data/cypher';
         $data = array('query' => $q, 'params' => []);
 
