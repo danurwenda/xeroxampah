@@ -56,7 +56,7 @@ function postNeoQuery($q) {
         curl_setopt($curl, CURLOPT_POST, sizeof($data));
 
 // This is the fields to post in the form of an array.
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
 
 //execute the post
         $result = curl_exec($curl);
