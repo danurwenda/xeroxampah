@@ -383,6 +383,7 @@ class Individu extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             echo json_encode(
                     [
+                        'q'=>$n4jq,
                         $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()
             ]);
             foreach ($n4jq as $q) {
@@ -390,7 +391,7 @@ class Individu extends Member_Controller {
             }
         } else {
             foreach ($n4jq as $q) {
-//                echo $q;
+                echo $q;
                 echo "<br/>";
                 postNeoQuery($q);
             }

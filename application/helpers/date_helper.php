@@ -37,34 +37,62 @@ function arrayToString($arr) {
     return substr($label_prop, 0, -1);
 }
 
+function postNeoQueryArr($arrQ) {
+    if (true) {
+        $statements = [];
+        foreach ($arrQ as $q) {
+            $statements[] = ['statement' => $q];
+        }
+        $data = [
+            'statements' => $statements
+        ];
+        $data_string = json_encode($data);
+        print_r($data_string);
+//open connection
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://tci.polkam.go.id:7473/db/data/transaction/commit');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
+//curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//execute post
+        $result = curl_exec($ch);
+//echo
+        echo $result;
+//close connection
+        curl_close($ch);
+    }
+}
+
 function postNeoQuery($q) {
     if (true) {
-        // Define URL where the form resides
-        $form_url = "https://tci.polkam.go.id:7473/db/data/cypher";
-
-// This is the data to POST to the form. The KEY of the array is the name of the field. The value is the value posted.
-        $data = array('query' => $q, 'params' => []);
-
-
-// Initialize cURL
-        $curl = curl_init();
-
-// Set the options
-        curl_setopt($curl, CURLOPT_URL, $form_url);
-
-// This sets the number of fields to post
-        curl_setopt($curl, CURLOPT_POST, sizeof($data));
-
-// This is the fields to post in the form of an array.
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-
-//execute the post
-        $result = curl_exec($curl);
-
-//close the connection
-        curl_close($curl);
-        if ($result === FALSE) {
-            
-        }
+        $data = [
+            'statements' => [
+                [
+                    'statement' => $q
+                ]
+            ]
+        ];
+        $data_string = json_encode($data);
+        print_r($data_string);
+//open connection
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://tci.polkam.go.id:7473/db/data/transaction/commit');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
+//curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//execute post
+        $result = curl_exec($ch);
+//echo
+        echo $result;
+//close connection
+        curl_close($ch);
     }
 }
