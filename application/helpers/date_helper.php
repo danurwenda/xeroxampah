@@ -39,19 +39,30 @@ function arrayToString($arr) {
 
 function postNeoQuery($q) {
     if (true) {
-        $url = 'https://tci.polkam.go.id:7473/db/data/cypher';
-        $data = array('query' => $q, 'params' => []);
+        // Define URL where the form resides
+        $form_url = "'https://tci.polkam.go.id:7473/db/data/cypher'";
 
-        // use key 'http' even if you send the request to https://...
-        $options = array(
-            'http' => array(
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+// This is the data to POST to the form. The KEY of the array is the name of the field. The value is the value posted.
+    $data = array('query' => $q, 'params' => []);
+        
+
+// Initialize cURL
+        $curl = curl_init();
+
+// Set the options
+        curl_setopt($curl, CURLOPT_URL, $form_url);
+
+// This sets the number of fields to post
+        curl_setopt($curl, CURLOPT_POST, sizeof($data));
+
+// This is the fields to post in the form of an array.
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+//execute the post
+        $result = curl_exec($curl);
+
+//close the connection
+        curl_close($curl);
         if ($result === FALSE) {
             
         }
