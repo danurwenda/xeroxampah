@@ -56,25 +56,14 @@ class Individu extends Member_Controller {
         //SQL doesn't accept empty string as a valid date
         if (empty($born_date)) {
             $born_date = null;
-        } else {
-            //convert to SQL-compliant format
-            $born_date = date_format(date_create_from_format('d/m/Y', $born_date), 'Y-m-d');
         }
         $born_place = $this->input->post('born_place');
         $nationality = $this->input->post('nationality');
         $source_id = $this->input->post('source_id');
         $address = $this->input->post('address');
         $religion = $this->input->post('religion');
-        $recent_job = $this->input->post('recent_job');
+        $gender = $this->input->post('gender');
         $recent_edu = $this->input->post('recent_edu');
-        $lokasi_penangkapan_terakhir = $this->input->post('lokasi_tangkap');
-        $waktu_penangkapan_terakhir = $this->input->post('tangkap_date');
-        if (empty($waktu_penangkapan_terakhir)) {
-            $waktu_penangkapan_terakhir = null;
-        } else {
-            //convert to SQL-compliant format
-            $waktu_penangkapan_terakhir = date_format(date_create_from_format('d/m/Y', $waktu_penangkapan_terakhir), 'Y-m-d');
-        }
         //field field ga jelas simpan sebagai json
         $properties = [];
         //jobs ini simpan sebagai json aja
@@ -90,12 +79,12 @@ class Individu extends Member_Controller {
                 $end = $job_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $job['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
+                    $job['until'] = $end;
                 }
                 $start = $job_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $job['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
+                    $job['from'] = $start;
                 }
                 //add to array
                 $job_history[] = $job;
@@ -105,7 +94,41 @@ class Individu extends Member_Controller {
         if (!empty($job_history)) {
             $properties['jobs'] = $job_history;
         }
-
+        //PENANGKAPAN 
+        $tangkap_history=[];
+        $tangkap_lokasis = $this->input->post('tangkap_lokasi');
+        $tangkap_dates = $this->input->post('tangkap_date'); //may be null
+        for ($i = 0; $i < count($tangkap_lokasis); $i++) {
+            if (!empty($tangkap_dates[$i])) {
+                //insert ke JSON
+                $tangkap_history[]=[
+                    'date'=>$tangkap_dates[$i],
+                    'location'=>$tangkap_lokasis[$i]
+                ];
+            }
+        }
+        if (!empty($tangkap_history)) {
+            $properties['tangkaps'] = $tangkap_history;
+        }
+        // RIWAYAT PENGGUNAAN NAMA
+        $nama_history=[];
+        $old_names = $this->input->post('old_name');
+        $lokasi_namas = $this->input->post('lokasi_nama');
+        $nama_dates = $this->input->post('nama_date');
+        for ($i = 0; $i < count($old_names); $i++) {
+            if (!empty($old_names[$i])) {
+                //insert ke JSON
+                $nama_history[]=[
+                    'nama'=>$old_names[$i],
+                    'location'=>$lokasi_namas[$i],
+                    'time'=>$nama_dates[$i]
+                ];
+            }
+        }
+        
+        if (!empty($nama_history)) {
+            $properties['namas'] = $nama_history;
+        }
         //process properties as json only if it's not empty
         if (!empty($properties)) {
             $properties = json_encode($properties);
@@ -123,10 +146,8 @@ class Individu extends Member_Controller {
             'source_id',
             'address',
             'religion',
-            'recent_job',
             'recent_edu',
-            'lokasi_penangkapan_terakhir',
-            'waktu_penangkapan_terakhir',
+            'gender',
             'properties'
         ];
         $data = [];
@@ -214,8 +235,7 @@ class Individu extends Member_Controller {
                 //barangkali ada tanggal 
                 $marriage_date = $kawins[$i];
                 if (!empty($marriage_date)) {
-                    //convert to SQL-compliant format
-                    $mar['from'] = date_format(date_create_from_format('d/m/Y', $marriage_date), 'Y-m-d');
+                    $mar['from'] = $marriage_date;
                     $mar = json_encode($mar);
                 }
                 $eid = $this->edge_model->insert($new_id, $pasangan_id, 49, $mar);
@@ -256,12 +276,12 @@ class Individu extends Member_Controller {
                 $end = $sch_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
+                    $attr['until'] = $end;
                 }
                 $start = $sch_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
+                    $attr['from'] = $start;
                 }
                 $eid = $this->edge_model->insert($new_id, $sch_id, $sch_edge, json_encode($attr));
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
@@ -281,12 +301,12 @@ class Individu extends Member_Controller {
                 $end = $lapas_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
+                    $attr['until'] = $end;
                 }
                 $start = $lapas_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
+                    $attr['from'] = $start;
                 }
                 $eid = $this->edge_model->insert($new_id, $lapas_id, $lapas_edge, json_encode($attr));
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
@@ -308,14 +328,25 @@ class Individu extends Member_Controller {
                 $end = $org_ends[$i];
                 if (!empty($end)) {
                     //convert to SQL-compliant format
-                    $attr['until'] = date_format(date_create_from_format('d-m-Y', '01-' . $end), 'Y-m-d');
+                    $attr['until'] = $end;
                 }
                 $start = $org_starts[$i];
                 if (!empty($start)) {
                     //convert to SQL-compliant format
-                    $attr['from'] = date_format(date_create_from_format('d-m-Y', '01-' . $start), 'Y-m-d');
+                    $attr['from'] = $start;
                 }
                 $eid = $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+            }
+        }
+        
+        //PENGAJIAN 
+        $pengajian_edges = $this->input->post('pengajian_edge');
+        $pengajians = $this->input->post('pengajian_id'); //may be null
+        for ($i = 0; $i < count($pengajian_edges); $i++) {
+            if (!empty($pengajians[$i])) {
+                //insert ke table relasi
+                $eid = $this->edge_model->insert($new_id, $pengajians[$i], $pengajian_edges[$i], null);
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
@@ -325,7 +356,8 @@ class Individu extends Member_Controller {
         for ($i = 0; $i < count($nteror_edges); $i++) {
             if (!empty($nterors[$i])) {
                 //insert ke table relasi
-                $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+                $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
         // TEROR
@@ -338,10 +370,7 @@ class Individu extends Member_Controller {
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
-        // RIWAYAT PENGGUNAAN NAMA
-        $old_names = $this->input->post('old_name');
-        $old_names = $this->input->post('lokasi_nama');
-        $old_names = $this->input->post('nama_date');
+        
         $this->db->trans_complete();
 
         // SQL DATABASE DONE
@@ -361,7 +390,7 @@ class Individu extends Member_Controller {
             }
         } else {
             foreach ($n4jq as $q) {
-                echo $q;
+//                echo $q;
                 echo "<br/>";
                 postNeoQuery($q);
             }
@@ -387,6 +416,9 @@ class Individu extends Member_Controller {
      * serves autocomplete 
      */
     function search() {
+        if ($gender = $this->input->get('gender', true)) {
+            $this->db->where('gender', $gender);
+        }
         $r = $this->db
                 ->where('UPPER(individu_name) LIKE', '%' . strtoupper($this->input->get('term', true)) . '%')
                 ->get('individu')

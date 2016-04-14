@@ -19,11 +19,36 @@ jQuery(function ($) {
                         //reset and close modal
                         form[0].reset();
                         //reset expandable
-                        form.find('.btn-delete').click();
+                        form.find('.btn-delete:not(.template *)').click();
                         $('#individu-modal-form').modal('hide');
                     });
     });
 
+    // PENGAJIAN
+    $('#pengajian-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        var x = $('#pengajian-modal-form form').serialize();
+        console.log(x)
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'pengajian/post', // the url where we want to POST
+            data: x, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#pengajian-modal-form form')[0].reset();
+        $('#pengajian-modal-form').modal('hide');
+    });
     // ORGANISASI
     $('#organisasi-modal-form .btn-primary').click(function (e) {
         //serialize the form
@@ -158,19 +183,10 @@ jQuery(function ($) {
         if (selected == 49) {
             //tambah field kapan nikah
             var date = $('<div class="input-group">' +
-                    '<input class="form-control date-picker" name="married_date[]" type="text" data-date-format="dd/mm/yyyy">' +
-                    '<span class="input-group-addon">' +
-                    '<i class="fa fa-calendar bigger-110"></i>' +
-                    '</span></div>');
-            date.find('input').datepicker({
-                autoclose: true,
-                format: "dd/mm/yyyy",
-                todayHighlight: true
+                    '<input class="form-control combodate" name="married_date[]" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" /></div>');
+            date.find('input').combodate({
+                minYear: 1950
             })
-                    //show datepicker when clicking on the icon
-                    .next().on(ace.click_event, function () {
-                $(this).prev().focus();
-            });
             clone.find('.input-group')
                     .after(date);
         }
@@ -189,43 +205,25 @@ jQuery(function ($) {
                 .removeClass('template hide')
                 .insertBefore($(this).parents('.form-group').first());
         //initiate jquery plugins/UI
-        clone.find('.input-daterange').datepicker({autoclose: true,
-            format: "dd/mm/yyyy"});
-        clone.find('.monthpicker').datepicker({
-            autoclose: true,
-            format: "mm-yyyy",
-            startView: "months",
-            minViewMode: "months"
+        clone.find('.combodate').combodate();
+        clone.find('.monthpicker').combodate({
+            format: "YYYY-MM-DD",
+            template: "MMM YYYY"
         });
         clone.find('.organisasi-select2').select2(organisasi_select_config)
         clone.find('.lapas-select2').select2(lapas_select_config)
         clone.find('.sekolah-select2').select2(sekolah_select_config)
+        clone.find('.masjid-select2').select2(masjid_select_config)
+        clone.find('.pengajian-select2').select2(pengajian_select_config)
         clone.find('.nonteror-select2').select2(nonteror_select_config);
         clone.find('.teror-select2').select2(teror_select_config);
         clone.find('.month-picker')
-                .datepicker({
-                    autoclose: true,
-                    format: "dd/mm/yyyy",
-                    todayHighlight: true
+                .combodate({
+                    format: "YYYY-MM-DD",
+                    template: 'MMM YYYY'
                 })
-                //show datepicker when clicking on the icon
-                .next().on(ace.click_event, function () {
-            $(this).prev().focus();
-        })
-        clone.find('.date-picker')
-                .datepicker({
-                    autoclose: true,
-                    format: "dd/mm/yyyy",
-                    todayHighlight: true
-                })
-                //show datepicker when clicking on the icon
-                .next().on(ace.click_event, function () {
-            $(this).prev().focus();
-        })
     })
     // RIWAYAT PENDIDIKAN
-    $('.input-daterange').datepicker({autoclose: true,
-        format: "dd/mm/yyyy"});
     $('#edu-widget').on('change', '.edu-edge', function () {
         var select = $(this);
         var row = $('<div class="form-group">' +
@@ -261,20 +259,13 @@ jQuery(function ($) {
 
         }
     });
-
+    $('#pengajian-modal-form .sekolah-select2').select2(sekolah_select_config)
+    $('#pengajian-modal-form .masjid-select2').select2(masjid_select_config)
 
     //popover
     $('[data-rel=popover]').popover({container: 'body'});
-    //create datepicker
-    $('.date-picker').datepicker({
-        autoclose: true,
-        format: "dd/mm/yyyy",
-        todayHighlight: true
-    })
-            //show datepicker when clicking on the icon
-            .next().on(ace.click_event, function () {
-        $(this).prev().focus();
-    });
+    //combodate
+    $('.combodate:not(.template *)').combodate();
     $('.time-picker').timepicker({
         minuteStep: 1,
         showSeconds: true,
@@ -304,6 +295,8 @@ jQuery(function ($) {
     // AUTO COMPLETES
     // input type di autocomplete ini akan auto-add jika bukan reference
     //individu
+    $('select.male-select2').select2(male_select_config);
+    $('select.female-select2').select2(female_select_config);
     $('select.individu-select2').select2(individu_select_config);
 
     //masjid
@@ -325,31 +318,17 @@ jQuery(function ($) {
     };
     $('.network-autocomplete').autocomplete(network_autocomplete_config);
 
-    //PLUS button adding new field
-    $('#family-plus span').on(ace.click_event, function () {
-        //kasih opsi pasangan, saudara dan anak
-        console.log('sesuatu');
-    });
-
     //when the form is submitted, add additional hidden from wysiwyg
-    $('#individu_form').on('submit', function (e) {
+    $('#individu_form').submit(function (e) {
+//        e.preventDefault();
         //delete all hidden templates
         $(this).find('.template.hide').remove();
-        //REPLACE AUTOCOMPLETE WITH ID
-        var ac_inputs = $(this).find('input.ui-autocomplete-input');
-        ac_inputs.each(function (i) {
-            var id = $(this).data('reference_id');
-            if (id) {
-                $(this).val(id);
-            }
-        });
-
 
         //refresh csrf from csrf hidden form, in case it's already changed
         var csrf = $(this).find('input[name="' + $('#csrfform :hidden').attr('name') + '"]')
         csrf.val($('#csrfform :hidden').val())
 
-//        e.preventDefault();
+        console.log($(this).serializeArray());
     });
 
 });
@@ -376,6 +355,58 @@ function formatIndividuList(individu) {
 function formatIndividuSelection(repo) {
     return repo.individu_name || repo.alias;
 }
+var male_select_config = {
+    ajax: {
+        url: base_url + "individu/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                gender: 'Laki-laki',
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatIndividuList,
+    templateSelection: formatIndividuSelection
+};
+var female_select_config = {
+    ajax: {
+        url: base_url + "individu/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                gender: 'Perempuan',
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatIndividuList,
+    templateSelection: formatIndividuSelection
+};
 var individu_select_config = {
     ajax: {
         url: base_url + "individu/search",
@@ -571,6 +602,46 @@ var organisasi_select_config = {
     templateResult: formatOrganisasiList,
     templateSelection: formatOrganisasiSelection
 };
+function formatPengajianList(ngaji) {
+    if (ngaji.loading)
+        return ngaji.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + ngaji.name + "</div>" +
+            (ngaji.lokasi?("<div class='select2-result-repository__title'>" + ngaji.lokasi + "</div>"):'') +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatPengajianSelection(org) {
+    return org.name;
+}
+var pengajian_select_config = {
+    ajax: {
+        url: base_url + "pengajian/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatPengajianList,
+    templateSelection: formatPengajianSelection
+};
 function formatSekolahList(org) {
     if (org.loading)
         return org.text;
@@ -609,6 +680,45 @@ var sekolah_select_config = {
     minimumInputLength: 1,
     templateResult: formatSekolahList,
     templateSelection: formatSekolahSelection
+};
+function formatMasjidList(org) {
+    if (org.loading)
+        return org.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
+            "</div></div>";
+
+    return markup;
+}
+
+function formatMasjidSelection(org) {
+    return org.name;
+}
+var masjid_select_config = {
+    ajax: {
+        url: base_url + "masjid/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1,
+    templateResult: formatMasjidList,
+    templateSelection: formatMasjidSelection
 };
 var masjid_autocomplete_config = {
     source: base_url + "masjid/search",

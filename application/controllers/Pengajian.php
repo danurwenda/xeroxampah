@@ -11,11 +11,11 @@
  *
  * @author Slurp
  */
-class Masjid extends Member_Controller {
+class Pengajian extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('sekolah_model');
+        $this->load->model('pengajian_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
@@ -27,16 +27,27 @@ class Masjid extends Member_Controller {
         //explode term by space
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
-            $this->db->or_where('UPPER(name) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(address) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(pengajian.name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(topik) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(masjid.name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(school.name) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->get('masjid')
+                ->select('pengajian_id,masjid,pesantren,masjid.name mname,school.name sname, topik, pengajian.name name')
+                ->join('masjid','masjid.masjid_id=pengajian.masjid','left')
+                ->join('school','school.school_id=pengajian.pesantren','left')
+                ->get('pengajian')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['id'] = $i['masjid_id'] + 0;
+            $i['id'] = $i['pengajian_id'] + 0;
+            //ubah mesjid/pesantren jadi lokasi
+            if($i['masjid']){
+                $i['lokasi']=  $i['mname'];
+            }else if($i['pesantren']){
+                $i['lokasi']=  $i['sname'];
+            }
             $ret[] = $i;
         }
         echo json_encode($ret);
@@ -82,13 +93,14 @@ class Masjid extends Member_Controller {
     //REST-like
     function post() {
         if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('school_id');
+            $id = $this->input->post('pengajian_id');
             $nama = $this->input->post('name');
-            $address = $this->input->post('address');
-            $city = $this->input->post('city');
+            $topik = $this->input->post('topik');
+            $mesjid = $this->input->post('masjid');
+            $pesantren = $this->input->post('pesantren');
             if ($id) {
                 //edit
-                if ($this->sekolah_model->update($id, $nama, $address, $city)) {
+                if ($this->pengajian_model->update($id, $nama, $topik,$mesjid,$pesantren)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -96,9 +108,9 @@ class Masjid extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id=$this->sekolah_model->create($nama, $address, $city)) {
+                if ($new_id=$this->pengajian_model->create($nama, $topik,$mesjid,$pesantren)) {
                     //insert to neo4j
-                    postNeoQuery($this->sekolah_model->neo4j_insert_query($new_id));
+                    postNeoQuery($this->pengajian_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -108,11 +120,11 @@ class Masjid extends Member_Controller {
     }
 
     function get($id) {
-        echo json_encode($this->sekolah_model->get($id));
+        echo json_encode($this->pengajian_model->get($id));
     }
 
     function delete($id) {
-        if ($this->sekolah_model->delete($id)) {
+        if ($this->pengajian_model->delete($id)) {
             echo 1;
         } else {
             echo 0;
