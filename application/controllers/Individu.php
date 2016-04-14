@@ -383,7 +383,6 @@ class Individu extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             echo json_encode(
                     [
-                        'q'=>$n4jq,
                         $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()
             ]);
             foreach ($n4jq as $q) {

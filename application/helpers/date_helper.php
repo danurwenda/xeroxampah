@@ -47,7 +47,7 @@ function postNeoQueryArr($arrQ) {
             'statements' => $statements
         ];
         $data_string = json_encode($data);
-        print_r($data_string);
+        //print_r($data_string);
 //open connection
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://tci.polkam.go.id:7473/db/data/transaction/commit');
@@ -61,7 +61,7 @@ function postNeoQueryArr($arrQ) {
 //execute post
         $result = curl_exec($ch);
 //echo
-        echo $result;
+        //echo $result;
 //close connection
         curl_close($ch);
     }
@@ -77,7 +77,7 @@ function postNeoQuery($q) {
             ]
         ];
         $data_string = json_encode($data);
-        print_r($data_string);
+        //print_r($data_string);
 //open connection
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://tci.polkam.go.id:7473/db/data/transaction/commit');
@@ -91,7 +91,7 @@ function postNeoQuery($q) {
 //execute post
         $result = curl_exec($ch);
 //echo
-        echo $result;
+        //echo $result;
 //close connection
         curl_close($ch);
     }
