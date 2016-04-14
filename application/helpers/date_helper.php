@@ -40,11 +40,11 @@ function arrayToString($arr) {
 function postNeoQuery($q) {
     if (true) {
         // Define URL where the form resides
-        $form_url = "'https://tci.polkam.go.id:7473/db/data/cypher'";
+        $form_url = "https://tci.polkam.go.id:7473/db/data/cypher";
 
 // This is the data to POST to the form. The KEY of the array is the name of the field. The value is the value posted.
-    $data = array('query' => $q, 'params' => []);
-        
+        $data = array('query' => $q, 'params' => []);
+
 
 // Initialize cURL
         $curl = curl_init();
