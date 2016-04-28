@@ -89,9 +89,6 @@ class Nonteror extends Member_Controller {
             $tanggal = $this->input->post('date');
             if (empty($tanggal)) {
                 $tanggal = null;
-            } else {
-                //convert to SQL-compliant format
-                $tanggal = date_format(date_create_from_format('d/m/Y', $tanggal), 'Y-m-d');
             }
             $waktu = $this->input->post('time');
             $pidana = $this->input->post('pidana');

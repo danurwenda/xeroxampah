@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Sekolah
+ * Description of School
  *
  * @author Slurp
  */
@@ -20,6 +20,7 @@ class Pengajian extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+
     /**
      * serves autocomplete 
      */
@@ -34,8 +35,8 @@ class Pengajian extends Member_Controller {
         }
         $r = $this->db
                 ->select('pengajian_id,masjid,pesantren,masjid.name mname,school.name sname, topik, pengajian.name name')
-                ->join('masjid','masjid.masjid_id=pengajian.masjid','left')
-                ->join('school','school.school_id=pengajian.pesantren','left')
+                ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
+                ->join('school', 'school.school_id=pengajian.pesantren', 'left')
                 ->get('pengajian')
                 ->result_array();
         $ret = [];
@@ -43,24 +44,25 @@ class Pengajian extends Member_Controller {
             //craft return
             $i['id'] = $i['pengajian_id'] + 0;
             //ubah mesjid/pesantren jadi lokasi
-            if($i['masjid']){
-                $i['lokasi']=  $i['mname'];
-            }else if($i['pesantren']){
-                $i['lokasi']=  $i['sname'];
+            if ($i['masjid']) {
+                $i['lokasi'] = $i['mname'];
+            } else if ($i['pesantren']) {
+                $i['lokasi'] = $i['sname'];
             }
             $ret[] = $i;
         }
         echo json_encode($ret);
     }
-    function add(){
+
+    function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets']=[
-            ['module'=>'polkam','asset'=>'select2.min.js']
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/add_view', $data);
@@ -85,7 +87,7 @@ class Pengajian extends Member_Controller {
             $this->datatables
                     ->select('org_name,address,description,org_id')
                     ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('sekolah');
+                    ->from('school');
             echo $this->datatables->generate();
         }
     }
@@ -94,13 +96,32 @@ class Pengajian extends Member_Controller {
     function post() {
         if ($this->input->is_ajax_request()) {
             $id = $this->input->post('pengajian_id');
-            $nama = $this->input->post('name');
             $topik = $this->input->post('topik');
-            $mesjid = $this->input->post('masjid');
-            $pesantren = $this->input->post('pesantren');
+            //kalau ada masjid name, pakai itu
+            $masjid_name = $this->input->post('masjid_name');
+            if (!empty($masjid_name)) {
+                //bikin masjid
+                $this->load->model('masjid_model');
+                $mesjid = $this->masjid_model->create($masjid_name, $this->input->post('masjid_address'), $this->input->post('masjid_city'));
+                //insert to neo
+                postNeoQuery($this->masjid_model->neo4j_insert_query($mesjid));
+            } else {
+                $mesjid = $this->input->post('masjid');
+            }
+            //kalau ada pesantren name, pakai itu
+            $pesantren_name = $this->input->post('pesantren_name');
+            if (!empty($pesantren_name)) {
+                //bikin pesantren
+                $this->load->model('school_model');
+                $pesantren = $this->school_model->create($pesantren_name, $this->input->post('pesantren_address'), $this->input->post('pesantren_city'));
+                //insert to neo
+                postNeoQuery($this->school_model->neo4j_insert_query($pesantren));
+            } else {
+                $pesantren = $this->input->post('pesantren');
+            }
             if ($id) {
                 //edit
-                if ($this->pengajian_model->update($id, $nama, $topik,$mesjid,$pesantren)) {
+                if ($this->pengajian_model->update($id, $topik, $mesjid, $pesantren)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -108,7 +129,7 @@ class Pengajian extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id=$this->pengajian_model->create($nama, $topik,$mesjid,$pesantren)) {
+                if ($new_id = $this->pengajian_model->create($topik, $mesjid, $pesantren)) {
                     //insert to neo4j
                     postNeoQuery($this->pengajian_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);

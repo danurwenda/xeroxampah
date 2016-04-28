@@ -7,19 +7,20 @@
  */
 
 /**
- * Description of Sekolah
+ * Description of Latihan
  *
  * @author Slurp
  */
-class Sekolah extends Member_Controller {
+class Latihan extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('sekolah_model');
+        $this->load->model('latihan_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+
     /**
      * serves autocomplete 
      */
@@ -27,42 +28,44 @@ class Sekolah extends Member_Controller {
         //explode term by space
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
-            $this->db->or_where('UPPER(name) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(city) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(tempat) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(materi) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(motif) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->get('school')
+                ->get('latihan')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['id'] = $i['school_id'] + 0;
+            $i['id'] = $i['latihan_id'] + 0;
             $ret[] = $i;
         }
         echo json_encode($ret);
     }
-    function add(){
+
+    function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'Tambah Organisasi';
+        $data['title'] = 'Tambah Latihan';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets']=[
-            ['module'=>'polkam','asset'=>'select2.min.js']
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/add_view', $data);
+        $this->template->display('latihan/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'tr.db | Organisasi';
+        $data['title'] = 'tr.db | Latihan';
         $data['css_assets'] = array(
             ['module' => 'ace', 'asset' => 'chosen.css']
         );
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/table_view', $data);
+        $this->template->display('latihan/table_view', $data);
     }
 
     /**
@@ -74,7 +77,7 @@ class Sekolah extends Member_Controller {
             $this->datatables
                     ->select('org_name,address,description,org_id')
                     ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('sekolah');
+                    ->from('latihan');
             echo $this->datatables->generate();
         }
     }
@@ -82,13 +85,22 @@ class Sekolah extends Member_Controller {
     //REST-like
     function post() {
         if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('school_id');
-            $nama = $this->input->post('name');
-            $address = $this->input->post('address');
-            $city = $this->input->post('city');
+            $id = $this->input->post('latihan_id');
+            $sejak = $this->input->post('sejak');
+            if (empty($sejak)) {
+                $sejak = null;
+            }
+            $hingga = $this->input->post('hingga');
+            if (empty($hingga)) {
+                $hingga = null;
+            }
+            $materi = $this->input->post('materi');
+
+            $tempat = $this->input->post('tempat');
+            $motif = $this->input->post('motif');
             if ($id) {
                 //edit
-                if ($this->sekolah_model->update($id, $nama, $address, $city)) {
+                if ($this->latihan_model->update($id, $tempat, $sejak, $hingga, $materi, $motif)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -96,9 +108,9 @@ class Sekolah extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id=$this->sekolah_model->create($nama, $address, $city)) {
+                if ($new_id = $this->latihan_model->create($tempat, $sejak, $hingga, $materi, $motif)) {
                     //insert to neo4j
-                    postNeoQuery($this->sekolah_model->neo4j_insert_query($new_id));
+                    postNeoQuery($this->latihan_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -108,11 +120,11 @@ class Sekolah extends Member_Controller {
     }
 
     function get($id) {
-        echo json_encode($this->sekolah_model->get($id));
+        echo json_encode($this->latihan_model->get($id));
     }
 
     function delete($id) {
-        if ($this->sekolah_model->delete($id)) {
+        if ($this->latihan_model->delete($id)) {
             echo 1;
         } else {
             echo 0;

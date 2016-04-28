@@ -416,6 +416,129 @@ echo js_asset('jquery-ui.js', 'ace');
                         </div>
                     </div>
                 </div>
+                <div class="widget-box collapsed">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Latihan Senjata</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main template-group">
+                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                    <div class="col-sm-9">
+                                        <select data-placeholder="Pilih Relasi..." name="latsen_edge[]">
+                                            <option value="33">Pelatih</option>
+                                            <option value="34">Pemberi Perintah</option>
+                                            <option value="35">Perencana</option>
+                                            <option value="36">Pelaksana</option>                                    
+                                            <option value="37">Pemberi Dukungan</option>                                    
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <select style="width: 100%" class="form-control latsen-select2" name="latsen[]" ></select>
+                                            <span class="input-group-addon" data-toggle="modal" data-target="#latsen-modal-form">
+                                                <i class="fa fa-plus bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn btn-danger btn-delete" type="button">
+                                            <i class="ace-icon fa fa-remove bigger-110"></i>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
+
+                                <div class="col-sm-9">
+                                    <span class="plus input-group-addon">
+                                        <i class="fa fa-plus bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget-box collapsed">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Latihan Militer Non-Senjata</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main template-group">
+                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                    <div class="col-sm-9">
+                                        <select data-placeholder="Pilih Relasi..." name="latihan_edge[]">
+                                            <option value="38">Pelatih</option>
+                                            <option value="39">Pemberi Perintah</option>
+                                            <option value="40">Perencana</option>
+                                            <option value="41">Pelaksana</option>                                    
+                                            <option value="42">Pemberi Dukungan</option>                                     
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <select style="width: 100%" class="form-control latihan-select2" name="latihan[]" ></select>
+                                            <span class="input-group-addon" data-toggle="modal" data-target="#latihan-modal-form">
+                                                <i class="fa fa-plus bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn btn-danger btn-delete" type="button">
+                                            <i class="ace-icon fa fa-remove bigger-110"></i>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Catatan </label>
+
+                                <div class="col-sm-9">
+                                    <span class="plus input-group-addon">
+                                        <i class="fa fa-plus bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <!-- RIGHT COLUMN -->
@@ -518,8 +641,8 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-group">
-                                            <select style="width: 100%" class="form-control sekolah-select2" name="school_id[]"></select>
-                                            <span class="input-group-addon" data-toggle="modal" data-target="#sekolah-modal-form">
+                                            <select style="width: 100%" class="form-control school-select2" name="school_id[]"></select>
+                                            <span class="input-group-addon" data-toggle="modal" data-target="#school-modal-form">
                                                 <i class="fa fa-plus bigger-110"></i>
                                             </span>
                                         </div> </div>
@@ -823,6 +946,147 @@ echo js_asset('jquery-ui.js', 'ace');
         </div>
     </div>
 </div>
+<div id="latsen-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Event Latihan Militer Senjata</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <!-- Tempat -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi event </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="tempat" />
+                            </div>
+                        </div>
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Waktu </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="monthpicker input-sm form-control" name="sejak" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-exchange"></i>
+                                    </span>
+
+                                    <input type="text" class="monthpicker input-sm form-control" name="hingga" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- materi latihan -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Materi Latihan </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="materi" />
+                            </div>
+                        </div>
+                        <!-- motif -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Motif </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="motif" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="latihan-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Event Latihan Militer Non-Senjata</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <!-- Tempat -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi event </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="tempat" />
+                            </div>
+                        </div>
+                        <!-- Tanggal -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Waktu </label>
+
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input type="text" class="monthpicker input-sm form-control" name="sejak" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-exchange"></i>
+                                    </span>
+
+                                    <input type="text" class="monthpicker input-sm form-control" name="hingga" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- materi latihan -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Materi Latihan </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="materi" />
+                            </div>
+                        </div>
+                        <!-- motif -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Motif </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="motif" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="nonteror-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1049,12 +1313,12 @@ echo js_asset('jquery-ui.js', 'ace');
         </div>
     </div>
 </div>
-<div id="sekolah-modal-form" class="modal" tabindex="-1">
+<div id="school-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger">Tambah Sekolah</h4>
+                <h4 class="blue bigger">Tambah School</h4>
             </div>
 
             <div class="modal-body">
@@ -1115,14 +1379,6 @@ echo js_asset('jquery-ui.js', 'ace');
             <div class="modal-body">
                 <form class="row form-horizontal">
                     <div class="col-xs-12">
-                        <!-- Name -->
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
-
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="name" />
-                            </div>
-                        </div>
                         <!-- Topik -->
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Topik </label>
@@ -1138,13 +1394,95 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <select style="width: 100%" class="form-control masjid-select2 " name="masjid" ></select>
                             </div>
                         </div>
+                        <div class="widget-box collapsed">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Tambah Masjid</h4>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main template-group">
+                                    <div class="form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Masjid </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Nama" class="form-control" name="masjid_name" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat Masjid </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Alamat" class="form-control" name="masjid_address" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Kota" class="form-control" name="masjid_city" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Pesantren </label>
 
                             <div class="col-sm-9">
-                                <select style="width: 100%" class="form-control sekolah-select2 " name="pesantren" ></select>
+                                <select style="width: 100%" class="form-control school-select2 " name="pesantren" ></select>
                             </div>
                         </div>
+                        <div class="widget-box collapsed">
+                            <div class="widget-header">
+                                <h4 class="widget-title">Tambah Pesantren</h4>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main template-group">
+                                    <div class="form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Pesantren </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Nama" class="form-control" name="pesantren_name" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat Pesantren </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Alamat" class="form-control" name="pesantren_address" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
+
+                                            <div class="col-sm-9">
+                                                <input type="text" placeholder="Kota" class="form-control" name="pesantren_city" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </form>
             </div>
@@ -1236,6 +1574,13 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="Alamat" class="form-control" name="address" />
                             </div>
                         </div>
                         <div class="widget-box collapsed">
@@ -1564,6 +1909,7 @@ echo js_asset('combodate.js', 'polkam');
 echo css_asset('bootstrap-timepicker.css', 'ace');
 echo js_asset('date-time/bootstrap-timepicker.js', 'ace');
 echo js_asset('individu/individu-form.js', 'polkam');
+echo js_asset('individu/configs.js', 'polkam');
 if (isset($edit_id)) {
     echo js_asset('individu/individu-load.js', 'polkam');
     ?>

@@ -7,20 +7,19 @@
  */
 
 /**
- * Description of Organization
+ * Description of School
  *
  * @author Slurp
  */
-class Teror extends Member_Controller {
+class School extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('teror_model');
+        $this->load->model('school_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
-
     /**
      * serves autocomplete 
      */
@@ -28,31 +27,29 @@ class Teror extends Member_Controller {
         //explode term by space
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
-            $this->db->or_where('UPPER(sasaran) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(serangan) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(tempat) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(city) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->get('teror')
+                ->get('school')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['id'] = $i['teror_id'] + 0;
+            $i['id'] = $i['school_id'] + 0;
             $ret[] = $i;
         }
         echo json_encode($ret);
     }
-
-    function add() {
+    function add(){
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
+        $data['js_assets']=[
+            ['module'=>'polkam','asset'=>'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/add_view', $data);
@@ -77,7 +74,7 @@ class Teror extends Member_Controller {
             $this->datatables
                     ->select('org_name,address,description,org_id')
                     ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('organization');
+                    ->from('school');
             echo $this->datatables->generate();
         }
     }
@@ -85,20 +82,13 @@ class Teror extends Member_Controller {
     //REST-like
     function post() {
         if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('teror_id');
-            $tanggal = $this->input->post('date');
-            if (empty($tanggal)) {
-                $tanggal = null;
-            }
-            $waktu = $this->input->post('time');
-            $serangan = $this->input->post('serangan');
-            $sasaran = $this->input->post('sasaran');
-
-            $tempat = $this->input->post('tempat');
-            $motif = $this->input->post('motif');
+            $id = $this->input->post('school_id');
+            $nama = $this->input->post('name');
+            $address = $this->input->post('address');
+            $city = $this->input->post('city');
             if ($id) {
                 //edit
-                if ($this->teror_model->update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                if ($this->school_model->update($id, $nama, $address, $city)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -106,9 +96,9 @@ class Teror extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id = $this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                if ($new_id=$this->school_model->create($nama, $address, $city)) {
                     //insert to neo4j
-                    postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
+                    postNeoQuery($this->school_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -118,11 +108,11 @@ class Teror extends Member_Controller {
     }
 
     function get($id) {
-        echo json_encode($this->organization_model->get($id));
+        echo json_encode($this->school_model->get($id));
     }
 
     function delete($id) {
-        if ($this->organization_model->delete($id)) {
+        if ($this->school_model->delete($id)) {
             echo 1;
         } else {
             echo 0;

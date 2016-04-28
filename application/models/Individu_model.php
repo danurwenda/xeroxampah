@@ -84,7 +84,7 @@ class Individu_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {        
-        $prop="individu_name:'".$this->get($id)->individu_name."',";
+        $prop="individu_name:'".addslashes($this->get($id)->individu_name)."',";
         $prop.="individu_id:".$id;
         return "MERGE(Individu$id:Individu { $prop } )";
     }

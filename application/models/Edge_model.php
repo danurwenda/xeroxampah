@@ -53,18 +53,27 @@ class Edge_model extends CI_Model {
             case 2:
                 //individu-organisasi
                 return "match (a:Individu{individu_id:$edge->source_id}),(b:Organisasi{org_id:$edge->target_id}) $create_clause";
-            default:
             case 3:
-                //individu-sekolah
-                return "match (a:Individu{individu_id:$edge->source_id}),(b:Sekolah{school_id:$edge->target_id}) $create_clause";
-            default:
+                //individu-school
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:School{school_id:$edge->target_id}) $create_clause";
             case 6:
                 //individu-teror
                 return "match (a:Individu{individu_id:$edge->source_id}),(b:Teror{teror_id:$edge->target_id}) $create_clause";
-            default:
             case 7:
                 //individu-nonteror
                 return "match (a:Individu{individu_id:$edge->source_id}),(b:Nonteror{nonteror_id:$edge->target_id}) $create_clause";
+            case 9:
+                //individu-pengajian
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:Pengajian{pengajian_id:$edge->target_id}) $create_clause";
+            case 12:
+                //individu-pengajian
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:Lapas{lapas_id:$edge->target_id}) $create_clause";
+            case 8:
+                //individu-latihan militer senjata
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:Latsen{latsen_id:$edge->target_id}) $create_clause";
+            case 11:
+                //individu-latihan militer non senjata
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:Latihan{latihan_id:$edge->target_id}) $create_clause";
             default:
                 break;
         }

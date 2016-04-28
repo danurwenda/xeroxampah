@@ -29,7 +29,6 @@ jQuery(function ($) {
         //serialize the form
         // process the form
         var x = $('#pengajian-modal-form form').serialize();
-        console.log(x)
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
             url: base_url + 'pengajian/post', // the url where we want to POST
@@ -72,14 +71,14 @@ jQuery(function ($) {
         $('#organisasi-modal-form form')[0].reset();
         $('#organisasi-modal-form').modal('hide');
     });
-    // SEKOLAH
-    $('#sekolah-modal-form .btn-primary').click(function (e) {
+    // SCHOOL
+    $('#school-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'sekolah/post', // the url where we want to POST
-            data: $('#sekolah-modal-form form').serialize(), // our data object
+            url: base_url + 'school/post', // the url where we want to POST
+            data: $('#school-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
         })
@@ -92,8 +91,8 @@ jQuery(function ($) {
                     // here we will handle errors and validation messages
                 });
         //reset and close modal
-        $('#sekolah-modal-form form')[0].reset();
-        $('#sekolah-modal-form').modal('hide');
+        $('#school-modal-form form')[0].reset();
+        $('#school-modal-form').modal('hide');
     });
     // LAPAS
     $('#lapas-modal-form .btn-primary').click(function (e) {
@@ -145,10 +144,12 @@ jQuery(function ($) {
     $('#teror-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
+        var x = $('#teror-modal-form form').serialize();
+        console.log(x)
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
             url: base_url + 'teror/post', // the url where we want to POST
-            data: $('#teror-modal-form form').serialize(), // our data object
+            data: x, // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
         })
@@ -163,6 +164,52 @@ jQuery(function ($) {
         //reset and close modal
         $('#teror-modal-form form')[0].reset();
         $('#teror-modal-form').modal('hide');
+    });
+    // LATIHAN
+    $('#latihan-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'latihan/post', // the url where we want to POST
+            data: $('#latihan-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#latihan-modal-form form')[0].reset();
+        $('#latihan-modal-form').modal('hide');
+    });
+    // LATSEN
+    $('#latsen-modal-form .btn-primary').click(function (e) {
+        //serialize the form
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'latsen/post', // the url where we want to POST
+            data: $('#latsen-modal-form form').serialize(), // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+        //reset and close modal
+        $('#latsen-modal-form form')[0].reset();
+        $('#latsen-modal-form').modal('hide');
     });
     // FAMILY
     $('#family-modal-form .btn-primary').click(function (c) {
@@ -212,16 +259,13 @@ jQuery(function ($) {
         });
         clone.find('.organisasi-select2').select2(organisasi_select_config)
         clone.find('.lapas-select2').select2(lapas_select_config)
-        clone.find('.sekolah-select2').select2(sekolah_select_config)
+        clone.find('.school-select2').select2(school_select_config)
         clone.find('.masjid-select2').select2(masjid_select_config)
         clone.find('.pengajian-select2').select2(pengajian_select_config)
         clone.find('.nonteror-select2').select2(nonteror_select_config);
         clone.find('.teror-select2').select2(teror_select_config);
-        clone.find('.month-picker')
-                .combodate({
-                    format: "YYYY-MM-DD",
-                    template: 'MMM YYYY'
-                })
+        clone.find('.latsen-select2').select2(latsen_select_config);
+        clone.find('.latihan-select2').select2(latihan_select_config);
     })
     // RIWAYAT PENDIDIKAN
     $('#edu-widget').on('change', '.edu-edge', function () {
@@ -259,7 +303,7 @@ jQuery(function ($) {
 
         }
     });
-    $('#pengajian-modal-form .sekolah-select2').select2(sekolah_select_config)
+    $('#pengajian-modal-form .school-select2').select2(school_select_config)
     $('#pengajian-modal-form .masjid-select2').select2(masjid_select_config)
 
     //popover
@@ -298,7 +342,10 @@ jQuery(function ($) {
     $('select.male-select2').select2(male_select_config);
     $('select.female-select2').select2(female_select_config);
     $('select.individu-select2').select2(individu_select_config);
-
+    $('.modal .monthpicker').combodate({
+        format: "YYYY-MM-DD",
+        template: "MMM YYYY"
+    });
     //masjid
 
     $('.masjid-autocomplete').autocomplete(masjid_autocomplete_config);
@@ -321,6 +368,13 @@ jQuery(function ($) {
     //when the form is submitted, add additional hidden from wysiwyg
     $('#individu_form').submit(function (e) {
 //        e.preventDefault();
+        //cek incomplete date
+        $('.monthpicker+.combodate .year').each(function(i){
+            //cek apakah ada yang cuma diisi tahunnya doank
+            if($(this).val() && !$(this).prev().val()){
+                $(this).prev().val(6).trigger('change');
+            }
+        });
         //delete all hidden templates
         $(this).find('.template.hide').remove();
 
@@ -332,411 +386,3 @@ jQuery(function ($) {
     });
 
 });
-function formatIndividuList(individu) {
-    if (individu.loading)
-        return individu.text;
-
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + individu.individu_name + "</div>";
-
-    if (individu.alias) {
-        markup += "<div class='select2-result-repository__description'>Alias : " + individu.alias + "</div>";
-    }
-
-    markup += "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>TTL : " + individu.born_place + ', ' + individu.born_date + "</div>" +
-            "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatIndividuSelection(repo) {
-    return repo.individu_name || repo.alias;
-}
-var male_select_config = {
-    ajax: {
-        url: base_url + "individu/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                gender: 'Laki-laki',
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatIndividuList,
-    templateSelection: formatIndividuSelection
-};
-var female_select_config = {
-    ajax: {
-        url: base_url + "individu/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                gender: 'Perempuan',
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatIndividuList,
-    templateSelection: formatIndividuSelection
-};
-var individu_select_config = {
-    ajax: {
-        url: base_url + "individu/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatIndividuList,
-    templateSelection: formatIndividuSelection
-};
-function formatNonTerorList(nt) {
-    if (nt.loading)
-        return nt.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + nt.pidana + ' ' + nt.korban + "</div>";
-
-    if (nt.nilai) {
-        markup += "<div class='select2-result-repository__description'>Nilai : " + nt.nilai + "</div>";
-    }
-
-    markup += "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.tanggal + "</div>" +
-            "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatNonTerorSelection(nt) {
-    return nt.pidana + ' ' + nt.korban;
-}
-var nonteror_select_config = {
-    ajax: {
-        url: base_url + "nonteror/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatNonTerorList,
-    templateSelection: formatNonTerorSelection
-};
-function formatTerorList(nt) {
-    if (nt.loading)
-        return nt.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + nt.serangan + ' ' + nt.sasaran + "</div>";
-
-
-
-    markup += "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.tanggal + "</div>" +
-            "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatTerorSelection(nt) {
-    return nt.serangan + ' ' + nt.sasaran;
-}
-var teror_select_config = {
-    ajax: {
-        url: base_url + "teror/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatTerorList,
-    templateSelection: formatTerorSelection
-};
-function formatLapasList(l) {
-    if (l.loading)
-        return l.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatLapasSelection(l) {
-    return l.name;
-}
-var lapas_select_config = {
-    ajax: {
-        url: base_url + "lapas/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatLapasList,
-    templateSelection: formatLapasSelection
-};
-function formatOrganisasiList(org) {
-    if (org.loading)
-        return org.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.org_name + "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatOrganisasiSelection(org) {
-    return org.org_name;
-}
-var organisasi_select_config = {
-    ajax: {
-        url: base_url + "organisasi/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatOrganisasiList,
-    templateSelection: formatOrganisasiSelection
-};
-function formatPengajianList(ngaji) {
-    if (ngaji.loading)
-        return ngaji.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + ngaji.name + "</div>" +
-            (ngaji.lokasi?("<div class='select2-result-repository__title'>" + ngaji.lokasi + "</div>"):'') +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatPengajianSelection(org) {
-    return org.name;
-}
-var pengajian_select_config = {
-    ajax: {
-        url: base_url + "pengajian/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatPengajianList,
-    templateSelection: formatPengajianSelection
-};
-function formatSekolahList(org) {
-    if (org.loading)
-        return org.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatSekolahSelection(org) {
-    return org.name;
-}
-var sekolah_select_config = {
-    ajax: {
-        url: base_url + "sekolah/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatSekolahList,
-    templateSelection: formatSekolahSelection
-};
-function formatMasjidList(org) {
-    if (org.loading)
-        return org.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
-            "</div></div>";
-
-    return markup;
-}
-
-function formatMasjidSelection(org) {
-    return org.name;
-}
-var masjid_select_config = {
-    ajax: {
-        url: base_url + "masjid/search",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                term: params.term, // search term
-                page: params.page
-            };
-        },
-        processResults: function (data, params) {
-            return {
-                results: data
-            };
-        },
-        cache: true
-    },
-    escapeMarkup: function (markup) {
-        return markup;
-    },
-    minimumInputLength: 1,
-    templateResult: formatMasjidList,
-    templateSelection: formatMasjidSelection
-};
-var masjid_autocomplete_config = {
-    source: base_url + "masjid/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
-    },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.id);
-    }
-};
-var lapas_autocomplete_config = {
-    source: base_url + "lapas/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
-    },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.id);
-    }
-};

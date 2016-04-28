@@ -95,15 +95,15 @@ class Individu extends Member_Controller {
             $properties['jobs'] = $job_history;
         }
         //PENANGKAPAN 
-        $tangkap_history=[];
+        $tangkap_history = [];
         $tangkap_lokasis = $this->input->post('tangkap_lokasi');
         $tangkap_dates = $this->input->post('tangkap_date'); //may be null
         for ($i = 0; $i < count($tangkap_lokasis); $i++) {
             if (!empty($tangkap_dates[$i])) {
                 //insert ke JSON
-                $tangkap_history[]=[
-                    'date'=>$tangkap_dates[$i],
-                    'location'=>$tangkap_lokasis[$i]
+                $tangkap_history[] = [
+                    'date' => $tangkap_dates[$i],
+                    'location' => $tangkap_lokasis[$i]
                 ];
             }
         }
@@ -111,21 +111,21 @@ class Individu extends Member_Controller {
             $properties['tangkaps'] = $tangkap_history;
         }
         // RIWAYAT PENGGUNAAN NAMA
-        $nama_history=[];
+        $nama_history = [];
         $old_names = $this->input->post('old_name');
         $lokasi_namas = $this->input->post('lokasi_nama');
         $nama_dates = $this->input->post('nama_date');
         for ($i = 0; $i < count($old_names); $i++) {
             if (!empty($old_names[$i])) {
                 //insert ke JSON
-                $nama_history[]=[
-                    'nama'=>$old_names[$i],
-                    'location'=>$lokasi_namas[$i],
-                    'time'=>$nama_dates[$i]
+                $nama_history[] = [
+                    'nama' => $old_names[$i],
+                    'location' => $lokasi_namas[$i],
+                    'time' => $nama_dates[$i]
                 ];
             }
         }
-        
+
         if (!empty($nama_history)) {
             $properties['namas'] = $nama_history;
         }
@@ -261,12 +261,12 @@ class Individu extends Member_Controller {
                 }
             }
         }
-        // SEKOLAH
+        // SCHOOL
         $sch_edges = $this->input->post('edu_edge');
         $sch_ids = $this->input->post('school_id');
         $sch_starts = $this->input->post('edu_start');
         $sch_ends = $this->input->post('edu_end');
-        $this->load->model('sekolah_model');
+        $this->load->model('school_model');
         for ($i = 0; $i < count($sch_edges); $i++) {
             $sch_edge = $sch_edges[$i];
             $sch_id = $sch_ids[$i];
@@ -339,7 +339,7 @@ class Individu extends Member_Controller {
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
-        
+
         //PENGAJIAN 
         $pengajian_edges = $this->input->post('pengajian_edge');
         $pengajians = $this->input->post('pengajian_id'); //may be null
@@ -370,7 +370,27 @@ class Individu extends Member_Controller {
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
-        
+        // LATSEN
+        $latsen_edges = $this->input->post('latsen_edge');
+        $latsens = $this->input->post('latsen'); //may be null
+        for ($i = 0; $i < count($latsen_edges); $i++) {
+            if (!empty($latsens[$i])) {
+                //insert ke table relasi
+                $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], null);
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+            }
+        }
+        // LATIHAN
+        $latihan_edges = $this->input->post('latihan_edge');
+        $latihans = $this->input->post('latihan'); //may be null
+        for ($i = 0; $i < count($latihan_edges); $i++) {
+            if (!empty($latihans[$i])) {
+                //insert ke table relasi
+                $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], null);
+                $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+            }
+        }
+
         $this->db->trans_complete();
 
         // SQL DATABASE DONE
@@ -383,15 +403,14 @@ class Individu extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             echo json_encode(
                     [
-                        $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()
+                        $this->security->get_csrf_token_name() => $this->security->get_csrf_hash(),
+                        'qs' => $n4jq
             ]);
             foreach ($n4jq as $q) {
                 postNeoQuery($q);
             }
         } else {
             foreach ($n4jq as $q) {
-                echo $q;
-                echo "<br/>";
                 postNeoQuery($q);
             }
             //back to table

@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Sekolah
+ * Description of School
  *
  * @author Slurp
  */
@@ -15,7 +15,7 @@ class Masjid extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('sekolah_model');
+        $this->load->model('school_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
@@ -74,7 +74,7 @@ class Masjid extends Member_Controller {
             $this->datatables
                     ->select('org_name,address,description,org_id')
                     ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('sekolah');
+                    ->from('school');
             echo $this->datatables->generate();
         }
     }
@@ -88,7 +88,7 @@ class Masjid extends Member_Controller {
             $city = $this->input->post('city');
             if ($id) {
                 //edit
-                if ($this->sekolah_model->update($id, $nama, $address, $city)) {
+                if ($this->school_model->update($id, $nama, $address, $city)) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -96,9 +96,9 @@ class Masjid extends Member_Controller {
             } else {
                 //add
                 //insert to db
-                if ($new_id=$this->sekolah_model->create($nama, $address, $city)) {
+                if ($new_id=$this->school_model->create($nama, $address, $city)) {
                     //insert to neo4j
-                    postNeoQuery($this->sekolah_model->neo4j_insert_query($new_id));
+                    postNeoQuery($this->school_model->neo4j_insert_query($new_id));
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
                     echo 0;
@@ -108,11 +108,11 @@ class Masjid extends Member_Controller {
     }
 
     function get($id) {
-        echo json_encode($this->sekolah_model->get($id));
+        echo json_encode($this->school_model->get($id));
     }
 
     function delete($id) {
-        if ($this->sekolah_model->delete($id)) {
+        if ($this->school_model->delete($id)) {
             echo 1;
         } else {
             echo 0;

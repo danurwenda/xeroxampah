@@ -8,10 +8,11 @@ defined('BASEPATH')OR
  *
  * @author Administrator
  */
-class Nonteror_model extends CI_Model {
+class Latihan_model extends CI_Model {
 
-    public $table = 'nonteror';
-    public $primary_key = 'nonteror_id';
+    public $table = 'latihan';
+    public $primary_key = 'latihan_id';
+    private $sequence = 'latihan_latihan_id_seq';
 
     public function __construct() {
         parent::__construct();
@@ -49,33 +50,29 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function update($id, $tempat, $sejak, $hingga, $materi, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
-                    'tanggal' => $tanggal,
-                    'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
+                    'sejak' => $sejak,
+                    'hingga' => $hingga,
+                    'materi' => $materi,
                     'motif' => $motif
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function create($tempat, $sejak, $hingga, $materi, $motif) {
         $this->db->insert(
-                        $this->table, array(
-                    'tempat' => $tempat,
-                    'tanggal' => $tanggal,
-                    'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
-                    'motif' => $motif
-                        )
+                $this->table, array(
+            'tempat' => $tempat,
+            'sejak' => $sejak,
+            'hingga' => $hingga,
+            'materi' => $materi,
+            'motif' => $motif
+                )
         );
-         return $this->last_id();
+        return $this->last_id();
     }
 
     private function last_id() {
@@ -83,15 +80,14 @@ class Nonteror_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $teror = $this->get($id);
-        if(!empty($teror->tempat))
-        $prop = "tempat:'" . $teror->tempat . "',";
-        $prop .= "pidana:'" . $teror->pidana . "',";
-        $prop .= "korban:'" . $teror->korban . "',";
-        $prop .= "tanggal:'" . $teror->tanggal . "',";
-        $prop .= "waktu:'" . $teror->waktu . "',";
-        $prop.="nonteror_id:" . $id;
-        return "MERGE(Nonteror_$id:Nonteror { $prop } )";
+        $latihan = $this->get($id);
+        $prop = "tempat:'" . addslashes($latihan->tempat) . "',";
+        $prop .= "materi:'" . addslashes($latihan->materi) . "',";
+        $prop .= "motif:'" . addslashes($latihan->motif) . "',";
+        $prop .= "sejak:'" . $latihan->sejak . "',";
+        $prop .= "hingga:'" . $latihan->hingga . "',";
+        $prop.="latihan_id:" . $id;
+        return "MERGE(Latihan_$id:Latihan { $prop } )";
     }
 
 }

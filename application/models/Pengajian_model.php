@@ -18,20 +18,20 @@ class Pengajian_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert_or_lookup($org_id) {
+    public function insert_or_lookup($pengajian_id) {
         $oid = null;
-        if (is_numeric($org_id)) {
+        if (is_numeric($pengajian_id)) {
             //lookup
             //check db
-            $org = $this->db->get_where('organization', ['org_id' => $org_id]);
-            if ($org->num_rows() > 0) {
+            $pengajian = $this->db->get_where('pengajian', ['pengajian_id' => $pengajian_id]);
+            if ($pengajian->num_rows() > 0) {
                 //ada
-                $oid = $org->row()->org_id;
+                $oid = $pengajian->row()->pengajian_id;
             }
         } else {
-            //raw name, insert into organization
-            $this->db->insert('organization', ['org_name' => $org_id]);
-            $oid = $this->db->insert_id('organization_org_id_seq');
+            //raw name, insert into pengajian
+            $this->db->insert('pengajian', ['pengajian_name' => $pengajian_id]);
+            $oid = $this->db->insert_id('pengajian_pengajian_id_seq');
         }
         return $oid;
     }
@@ -50,20 +50,18 @@ class Pengajian_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $nama, $topik, $mesjid, $pesantren) {
+    public function update($id, $topik, $mesjid, $pesantren) {
         return $this->db->update(
                         $this->table, array(
-                    'name' => $nama,
                     'address' => $address,
                     'city' => $city
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($nama, $topik, $mesjid, $pesantren) {
+    public function create($topik, $mesjid, $pesantren) {
         $this->db->insert(
                 $this->table, [
-            'name' => $nama,
             'topik' => $topik,
             'masjid' => $mesjid,
             'pesantren' => $pesantren
@@ -77,7 +75,7 @@ class Pengajian_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . $this->get($id)->name . "',";
+        $prop = "name:'" . $this->get($id)->topik . "',";
         $prop.="pengajian_id:" . $id;
         return "MERGE(Pengajian_$id:Pengajian { $prop } )";
     }
