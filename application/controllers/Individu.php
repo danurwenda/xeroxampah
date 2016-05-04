@@ -38,7 +38,7 @@ class Individu extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('individu/add_view_dynamic', $data);
+        $this->template->display('individu/add_view', $data);
     }
 
     function tes() {

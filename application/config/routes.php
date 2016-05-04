@@ -62,3 +62,7 @@ $route['organisasi/(:num)']['PUT'] = 'organisasi/update/$1';
 $route['individu/(:num)']['DELETE'] = 'individu/delete/$1';
 $route['individu']['POST'] = 'individu/create';
 $route['individu/(:num)']['PUT'] = 'individu/update/$1';
+//masjid
+$route['masjid/(:num)']['DELETE'] = 'masjid/delete/$1';
+$route['masjid']['POST'] = 'masjid/create';
+$route['masjid/(:num)']['PUT'] = 'masjid/update/$1';

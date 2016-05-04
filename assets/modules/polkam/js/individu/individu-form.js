@@ -230,7 +230,7 @@ jQuery(function ($) {
         if (selected == 49) {
             //tambah field kapan nikah
             var date = $('<div class="input-group">' +
-                    '<input class="form-control combodate" name="married_date[]" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" /></div>');
+                    '<input class="form-control combofulldate" name="married_date[]" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" /></div>');
             date.find('input').combodate({
                 minYear: 1950
             })
@@ -252,7 +252,7 @@ jQuery(function ($) {
                 .removeClass('template hide')
                 .insertBefore($(this).parents('.form-group').first());
         //initiate jquery plugins/UI
-        clone.find('.combodate').combodate();
+        clone.find('.combofulldate').combodate();
         clone.find('.monthpicker').combodate({
             format: "YYYY-MM-DD",
             template: "MMM YYYY"
@@ -309,7 +309,7 @@ jQuery(function ($) {
     //popover
     $('[data-rel=popover]').popover({container: 'body'});
     //combodate
-    $('.combodate:not(.template *)').combodate();
+    $('.combofulldate:not(.template *)').combodate();
     $('.time-picker').timepicker({
         minuteStep: 1,
         showSeconds: true,
@@ -371,6 +371,12 @@ jQuery(function ($) {
         //cek incomplete date
         $('.monthpicker+.combodate .year').each(function(i){
             //cek apakah ada yang cuma diisi tahunnya doank
+            if($(this).val() && !$(this).prev().val()){
+                $(this).prev().val(6).trigger('change');
+            }
+        });
+        $('.combofulldate+.combodate .year').each(function(i){
+            //cek apakah ini keisi tahunnya doank
             if($(this).val() && !$(this).prev().val()){
                 $(this).prev().val(6).trigger('change');
             }

@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of School
+ * Description of Masjid
  *
  * @author Slurp
  */
@@ -15,11 +15,12 @@ class Masjid extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('school_model');
+        $this->load->model('masjid_model');
         $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+
     /**
      * serves autocomplete 
      */
@@ -41,28 +42,36 @@ class Masjid extends Member_Controller {
         }
         echo json_encode($ret);
     }
-    function add(){
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'Tambah Organisasi';
+
+    function add() {
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
+        $data['title'] = 'Tambah Masjid';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'datepicker.css'],
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
-        $data['js_assets']=[
-            ['module'=>'polkam','asset'=>'select2.min.js']
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/add_view', $data);
+        $this->template->display('masjid/add_view', $data);
     }
 
     function index() {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'tr.db | Organisasi';
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
+        $data['title'] = 'tr.db | Masjid';
         $data['css_assets'] = array(
             ['module' => 'ace', 'asset' => 'chosen.css']
         );
-        $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/table_view', $data);
+        $this->template->display('masjid/table_view', $data);
+    }
+
+    function edit($id) {
+        //load form and populate
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
+        $data['title'] = 'Ubah Masjid';
+        $data['edit_id'] = $id;
+        $this->template->display('masjid/add_view', $data);
     }
 
     /**
@@ -72,47 +81,58 @@ class Masjid extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('org_name,address,description,org_id')
-                    ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('school');
+                    ->select('name,address,city,masjid_id')
+                    ->add_column('DT_RowId', 'row_$1', 'masjid_id')
+                    ->from('masjid');
             echo $this->datatables->generate();
         }
     }
 
     //REST-like
-    function post() {
-        if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('school_id');
-            $nama = $this->input->post('name');
-            $address = $this->input->post('address');
-            $city = $this->input->post('city');
-            if ($id) {
-                //edit
-                if ($this->school_model->update($id, $nama, $address, $city)) {
+    function submit() {
+        $id = $this->input->post('masjid_id');
+        $nama = $this->input->post('name');
+        $address = $this->input->post('address');
+        $city = $this->input->post('city');
+        if ($id) {
+            //edit
+            if ($this->masjid_model->update($id, $nama, $address, $city)) {
+                //update to neo4j
+                postNeoQuery($this->masjid_model->neo4j_update_query($id, $nama, $address, $city));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('masjid');
                 }
             } else {
-                //add
-                //insert to db
-                if ($new_id=$this->school_model->create($nama, $address, $city)) {
-                    //insert to neo4j
-                    postNeoQuery($this->school_model->neo4j_insert_query($new_id));
+                echo 0;
+            }
+        } else {
+            //add
+            //insert to db
+            if ($new_id = $this->masjid_model->create($nama, $address, $city)) {
+                //insert to neo4j
+                postNeoQuery($this->masjid_model->neo4j_insert_query($new_id));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('masjid');
                 }
+            } else {
+                echo 0;
             }
         }
     }
 
     function get($id) {
-        echo json_encode($this->school_model->get($id));
+        echo json_encode($this->masjid_model->get($id));
     }
 
     function delete($id) {
-        if ($this->school_model->delete($id)) {
+        if ($this->masjid_model->delete($id)) {
+            postNeoQuery($this->masjid_model->neo4j_delete_query($id));
             echo 1;
         } else {
             echo 0;
