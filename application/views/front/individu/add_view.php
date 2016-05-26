@@ -9,7 +9,7 @@ echo js_asset('jquery-ui.js', 'ace');
 <div class="row">
     <div class="col-xs-12">
         <h3 class="header smaller lighter blue"><?php echo isset($edit_id) ? 'Ubah' : 'Tambah'; ?> Individu</h3>
-        <?php echo form_open('individu/submit', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'individu_form']); ?>
+        <?php echo form_open('individu', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'individu_form']); ?>
         <div class="row">
             <div class="col-xs-6 col-sm-6">
                 <!-- NAMA -->
@@ -77,10 +77,12 @@ echo js_asset('jquery-ui.js', 'ace');
 
                     <div class="col-sm-9">
                         <select class="form-control" name="religion" >
-                            <option value="Sunni">Sunni</option>
-                            <option value="Syiah">Syiah</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Protestan">Protestan</option>
                             <option value="Katolik">Katolik</option>
-                            <option value="Kejawen">Kejawen</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Budha">Budha</option>
+                            <option value="Konghucu">Konghucu</option>
                         </select>
                     </div>
                 </div>
@@ -132,7 +134,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="tangkap-widget">
                             <div class="form-template template hide" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi </label>
@@ -185,7 +187,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="nama-widget">
                             <div class="form-template template hide" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
@@ -246,7 +248,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="job-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
@@ -305,7 +307,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="lapas-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lapas </label>
@@ -368,7 +370,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group"  id="edu-widget">
+                        <div class="widget-main template-group"  id="pengajian-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -428,7 +430,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="latsen-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -490,7 +492,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="latihan-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -645,7 +647,8 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <span class="input-group-addon" data-toggle="modal" data-target="#school-modal-form">
                                                 <i class="fa fa-plus bigger-110"></i>
                                             </span>
-                                        </div> </div>
+                                        </div> 
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
@@ -696,7 +699,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="org-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -722,7 +725,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                                     <div class="col-sm-9">
                                         <div class="input-group">
-                                            <select style="width: 100%" class="form-control organisasi-select2" name="org_id[]"></select>
+                                            <select style="width: 100%" class="form-control organisasi-select2" name="organisasi_id[]"></select>
                                             <span class="input-group-addon" data-toggle="modal" data-target="#organisasi-modal-form">
                                                 <i class="fa fa-plus bigger-110"></i>
                                             </span>
@@ -778,7 +781,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="teror-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -839,7 +842,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
 
                     <div class="widget-body">
-                        <div class="widget-main template-group">
+                        <div class="widget-main template-group" id="nonteror-widget">
                             <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
@@ -1197,7 +1200,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Organisasi </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="org_name" />
+                                <input type="text" class="form-control" name="name" />
                             </div>
                         </div>
                         <!-- Daerah -->
@@ -1252,7 +1255,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input class="form-control combofulldate" name="date" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" />
+                                    <input class="form-control combofulldate" name="tanggal" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" />
 
                                 </div>
                             </div>
@@ -1263,7 +1266,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <div class="input-group">
-                                    <input type="text" class="time-picker form-control" name="time" />
+                                    <input type="text" class="time-picker form-control" name="waktu" />
                                     <span class="input-group-addon">
                                         <i class="fa fa-clock-o bigger-110"></i>
                                     </span>
@@ -1332,20 +1335,20 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <input type="text" class="form-control" name="name" />
                             </div>
                         </div>
-                        <!-- Kota -->
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
-
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" name="city" />
-                            </div>
-                        </div>
                         <!-- Alamat -->
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat </label>
 
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="address" />
+                            </div>
+                        </div>
+                        <!-- Kota -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="city" />
                             </div>
                         </div>
 
@@ -1528,6 +1531,14 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <input type="text" class="form-control" name="address" />
                             </div>
                         </div>
+                        <!-- Kota -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="city" />
+                            </div>
+                        </div>
 
                     </div>
                 </form>
@@ -1661,7 +1672,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
 
                                             <div class="col-sm-9">
-                                                <select style="width: 100%" class="form-control organisasi-select2 " name="org_id[]" ></select>
+                                                <select style="width: 100%" class="form-control organisasi-select2 " name="organisasi_id[]" ></select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -1905,7 +1916,7 @@ echo js_asset('bootbox.js', 'ace');
 echo js_asset('jquery.hotkeys.js', 'ace');
 echo js_asset('bootstrap-wysiwyg.js', 'ace');
 echo js_asset('moment.js', 'polkam');
-echo js_asset('combofulldate.js', 'polkam');
+echo js_asset('combodate.js', 'polkam');
 echo css_asset('bootstrap-timepicker.css', 'ace');
 echo js_asset('date-time/bootstrap-timepicker.js', 'ace');
 echo js_asset('individu/individu-form.js', 'polkam');

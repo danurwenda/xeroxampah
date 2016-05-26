@@ -10,7 +10,7 @@ echo js_asset('jquery-ui.js', 'ace');
     <div class="col-xs-12">
         <h3 class="header smaller lighter blue"><?php echo isset($edit_id) ? 'Ubah' : 'Tambah'; ?> Masjid</h3>
         <div class="row">
-            <?php echo form_open('masjid/submit', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'masjid_form']); ?>
+            <?php echo form_open('masjid', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'masjid_form']); ?>
             <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Nama :</label>
 

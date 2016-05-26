@@ -56,13 +56,41 @@ $route['translate_uri_dashes'] = FALSE;
 $route['master'] = 'dashboard/show/1';
 //organisasi
 $route['organisasi/(:num)']['DELETE'] = 'organisasi/delete/$1';
-$route['organisasi']['POST'] = 'organisasi/create';
+$route['organisasi']['POST'] = 'organisasi/submit';
 $route['organisasi/(:num)']['PUT'] = 'organisasi/update/$1';
 //individu
 $route['individu/(:num)']['DELETE'] = 'individu/delete/$1';
-$route['individu']['POST'] = 'individu/create';
+$route['individu']['POST'] = 'individu/submit';
 $route['individu/(:num)']['PUT'] = 'individu/update/$1';
 //masjid
 $route['masjid/(:num)']['DELETE'] = 'masjid/delete/$1';
-$route['masjid']['POST'] = 'masjid/create';
+$route['masjid']['POST'] = 'masjid/submit';
 $route['masjid/(:num)']['PUT'] = 'masjid/update/$1';
+//school
+$route['school/(:num)']['DELETE'] = 'school/delete/$1';
+$route['school']['POST'] = 'school/submit';
+$route['school/(:num)']['PUT'] = 'school/update/$1';
+//lapas
+$route['lapas/(:num)']['DELETE'] = 'lapas/delete/$1';
+$route['lapas']['POST'] = 'lapas/submit';
+$route['lapas/(:num)']['PUT'] = 'lapas/update/$1';
+//pengajian
+$route['pengajian/(:num)']['DELETE'] = 'pengajian/delete/$1';
+$route['pengajian']['POST'] = 'pengajian/submit';
+$route['pengajian/(:num)']['PUT'] = 'pengajian/update/$1';
+//latsen
+$route['latsen/(:num)']['DELETE'] = 'latsen/delete/$1';
+$route['latsen']['POST'] = 'latsen/submit';
+$route['latsen/(:num)']['PUT'] = 'latsen/update/$1';
+//latihan
+$route['latihan/(:num)']['DELETE'] = 'latihan/delete/$1';
+$route['latihan']['POST'] = 'latihan/submit';
+$route['latihan/(:num)']['PUT'] = 'latihan/update/$1';
+//teror
+$route['teror/(:num)']['DELETE'] = 'teror/delete/$1';
+$route['teror']['POST'] = 'teror/submit';
+$route['teror/(:num)']['PUT'] = 'teror/update/$1';
+//nonteror
+$route['nonteror/(:num)']['DELETE'] = 'nonteror/delete/$1';
+$route['nonteror']['POST'] = 'nonteror/submit';
+$route['nonteror/(:num)']['PUT'] = 'nonteror/update/$1';

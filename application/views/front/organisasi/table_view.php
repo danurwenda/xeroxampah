@@ -74,9 +74,6 @@
 echo js_asset('jquery.dataTables.js', 'ace');
 echo js_asset('jquery.dataTables.bootstrap.js', 'ace');
 echo js_asset('bootbox.js', 'ace');
-echo js_asset('chosen.jquery.js', 'ace');
-echo js_asset('jquery.hotkeys.js', 'ace');
-echo js_asset('bootstrap-wysiwyg.js', 'ace');
-echo js_asset('organisasi.js', 'polkam');
+echo js_asset('organisasi/organisasi-table.js', 'polkam');
 ?>
 <!-- PAGE CONTENT ENDS -->

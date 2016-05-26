@@ -52,7 +52,7 @@ class Edge_model extends CI_Model {
                 break;
             case 2:
                 //individu-organisasi
-                return "match (a:Individu{individu_id:$edge->source_id}),(b:Organisasi{org_id:$edge->target_id}) $create_clause";
+                return "match (a:Individu{individu_id:$edge->source_id}),(b:Organisasi{organisasi_id:$edge->target_id}) $create_clause";
             case 3:
                 //individu-school
                 return "match (a:Individu{individu_id:$edge->source_id}),(b:School{school_id:$edge->target_id}) $create_clause";
@@ -79,20 +79,20 @@ class Edge_model extends CI_Model {
         }
     }
 
-    public function insert_or_lookup($org_id) {
+    public function insert_or_lookup($organisasi_id) {
         $oid = null;
-        if (is_numeric($org_id)) {
+        if (is_numeric($organisasi_id)) {
             //lookup
             //check db
-            $org = $this->db->get_where('organization', ['org_id' => $org_id]);
+            $org = $this->db->get_where('organisasi', ['organisasi_id' => $organisasi_id]);
             if ($org->num_rows() > 0) {
                 //ada
-                $oid = $org->row()->org_id;
+                $oid = $org->row()->organisasi_id;
             }
         } else {
-            //raw name, insert into organization
-            $this->db->insert('organization', ['org_name' => $org_id]);
-            $oid = $this->db->insert_id('organization_org_id_seq');
+            //raw name, insert into organisasi
+            $this->db->insert('organisasi', ['org_name' => $organisasi_id]);
+            $oid = $this->db->insert_id('organisasi_organisasi_id_seq');
         }
         return $oid;
     }

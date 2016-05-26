@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Organization
+ * Description of Organisasi
  *
  * @author Slurp
  */
@@ -15,8 +15,7 @@ class Organisasi extends Member_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('organization_model');
-        $this->load->model('source_model');
+        $this->load->model('organisasi_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
@@ -28,16 +27,16 @@ class Organisasi extends Member_Controller {
         //explode term by space
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
-            $this->db->or_where('UPPER(org_name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(name) LIKE', '%' . strtoupper($term) . '%');
             $this->db->or_where('UPPER(daerah) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->get('organization')
+                ->get('organisasi')
                 ->result_array();
         $ret = [];
         foreach ($r as $i) {
             //craft return
-            $i['id'] = $i['org_id'] + 0;
+            $i['id'] = $i['organisasi_id'] + 0;
             $ret[] = $i;
         }
         echo json_encode($ret);
@@ -46,25 +45,21 @@ class Organisasi extends Member_Controller {
     function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'Tambah Organisasi';
-        $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'datepicker.css'],
-            ['module' => 'polkam', 'asset' => 'select2.min.css']
-        ];
-        $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
-        ];
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
         $data['title'] = 'tr.db | Organisasi';
-        $data['css_assets'] = array(
-            ['module' => 'ace', 'asset' => 'chosen.css']
-        );
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('organisasi/table_view', $data);
+    }
+
+    function edit($id) {
+        //load form and populate
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
+        $data['title'] = 'Ubah Organisasi';
+        $data['edit_id'] = $id;
+        $this->template->display('organisasi/add_view', $data);
     }
 
     /**
@@ -74,46 +69,58 @@ class Organisasi extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('org_name,daerah,org_id')
-                    ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('organization');
+                    ->select('name,daerah,organisasi_id')
+                    ->add_column('DT_RowId', 'row_$1', 'organisasi_id')
+                    ->from('organisasi');
             echo $this->datatables->generate();
         }
     }
 
     //REST-like
-    function post() {
-        if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('org_id');
-            $nama = $this->input->post('org_name');
-            $address = $this->input->post('daerah');
-            if ($id) {
-                //edit
-                if ($this->organization_model->update($id, $nama, $address)) {
+    function submit() {
+        $id = $this->input->post('organisasi_id');
+        $nama = $this->input->post('name');
+        $daerah = $this->input->post('daerah');
+        $city = $this->input->post('city');
+        if ($id) {
+            //edit
+            if ($this->organisasi_model->update($id, $nama, $daerah)) {
+                //update to neo4j
+                postNeoQuery($this->organisasi_model->neo4j_update_query($id, $nama, $daerah));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('organisasi');
                 }
             } else {
-                //add
-                //insert to db
-                if ($new_id = $this->organization_model->create($nama, $address)) {
-                    //insert to neo4j
-                    postNeoQuery($this->organization_model->neo4j_insert_query($new_id));
+                echo 0;
+            }
+        } else {
+            //add
+            //insert to db
+            if ($new_id = $this->organisasi_model->create($nama, $daerah)) {
+                //insert to neo4j
+                postNeoQuery($this->organisasi_model->neo4j_insert_query($new_id));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('organisasi');
                 }
+            } else {
+                echo 0;
             }
         }
     }
 
     function get($id) {
-        echo json_encode($this->organization_model->get($id));
+        echo json_encode($this->organisasi_model->get($id));
     }
 
     function delete($id) {
-        if ($this->organization_model->delete($id)) {
+        if ($this->organisasi_model->delete($id)) {
+            postNeoQuery($this->organisasi_model->neo4j_delete_query($id));
             echo 1;
         } else {
             echo 0;

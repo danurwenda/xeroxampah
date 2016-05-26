@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Organization
+ * Description of Teror
  *
  * @author Slurp
  */
@@ -45,27 +45,41 @@ class Teror extends Member_Controller {
     }
 
     function add() {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'Tambah Organisasi';
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(8);
+        $data['title'] = 'Tambah Teror';
         $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'datepicker.css'],
-            ['module' => 'polkam', 'asset' => 'select2.min.css']
+            ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
         ];
         $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ['module' => 'polkam', 'asset' => 'combodate.js']
+            , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
+            , ['module' => 'polkam', 'asset' => 'moment.js']
         ];
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/add_view', $data);
+        $this->template->display('teror/add_view', $data);
     }
 
     function index() {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(2);
-        $data['title'] = 'tr.db | Organisasi';
-        $data['css_assets'] = array(
-            ['module' => 'ace', 'asset' => 'chosen.css']
-        );
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(8);
+        $data['title'] = 'tr.db | Teror';
         $data['sources'] = $this->source_model->get_all();
-        $this->template->display('organisasi/table_view', $data);
+        $this->template->display('teror/table_view', $data);
+    }
+
+    function edit($id) {
+        //load form and populate
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(8);
+        $data['title'] = 'Ubah Teror';
+        $data['css_assets'] = [
+            ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'combodate.js']
+            , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
+        ];
+        $data['edit_id'] = $id;
+        $this->template->display('teror/add_view', $data);
     }
 
     /**
@@ -75,54 +89,61 @@ class Teror extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('org_name,address,description,org_id')
-                    ->add_column('DT_RowId', 'row_$1', 'org_id')
-                    ->from('organization');
+                    ->select('tempat,tanggal,sasaran,teror_id')
+                    ->add_column('DT_RowId', 'row_$1', 'teror_id')
+                    ->from('teror');
             echo $this->datatables->generate();
         }
     }
 
     //REST-like
-    function post() {
-        if ($this->input->is_ajax_request()) {
-            $id = $this->input->post('teror_id');
-            $tanggal = $this->input->post('date');
-            if (empty($tanggal)) {
-                $tanggal = null;
-            }
-            $waktu = $this->input->post('time');
-            $serangan = $this->input->post('serangan');
-            $sasaran = $this->input->post('sasaran');
-
-            $tempat = $this->input->post('tempat');
-            $motif = $this->input->post('motif');
-            if ($id) {
-                //edit
-                if ($this->teror_model->update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+    function submit() {
+        $id = $this->input->post('teror_id');
+        $tempat = $this->input->post('tempat');
+        $serangan = $this->input->post('serangan');
+        $sasaran = $this->input->post('sasaran');
+        $tanggal = $this->input->post('tanggal');
+        $waktu = $this->input->post('waktu');
+        $motif = $this->input->post('motif');
+        if ($id) {
+            //edit
+            if ($this->teror_model->update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                //update to neo4j
+                postNeoQuery($this->teror_model->neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('teror');
                 }
             } else {
-                //add
-                //insert to db
-                if ($new_id = $this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
-                    //insert to neo4j
-                    postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
+                echo 0;
+            }
+        } else {
+            //add
+            //insert to db
+            if ($new_id = $this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+                //insert to neo4j
+                postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
+                if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
-                    echo 0;
+                    //back to table
+                    redirect('teror');
                 }
+            } else {
+                echo 0;
             }
         }
     }
 
     function get($id) {
-        echo json_encode($this->organization_model->get($id));
+        echo json_encode($this->teror_model->get($id));
     }
 
     function delete($id) {
-        if ($this->organization_model->delete($id)) {
+        if ($this->teror_model->delete($id)) {
+            postNeoQuery($this->teror_model->neo4j_delete_query($id));
             echo 1;
         } else {
             echo 0;

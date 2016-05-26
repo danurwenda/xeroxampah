@@ -12,27 +12,10 @@ class Nonteror_model extends CI_Model {
 
     public $table = 'nonteror';
     public $primary_key = 'nonteror_id';
+    private $sequence = 'nonteror_nonteror_id_seq';
 
     public function __construct() {
         parent::__construct();
-    }
-
-    public function insert_or_lookup($org_id) {
-        $oid = null;
-        if (is_numeric($org_id)) {
-            //lookup
-            //check db
-            $org = $this->db->get_where('organization', ['org_id' => $org_id]);
-            if ($org->num_rows() > 0) {
-                //ada
-                $oid = $org->row()->org_id;
-            }
-        } else {
-            //raw name, insert into organization
-            $this->db->insert('organization', ['org_name' => $org_id]);
-            $oid = $this->db->insert_id('organization_org_id_seq');
-        }
-        return $oid;
     }
 
     public function get($id) {
@@ -49,33 +32,31 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function update($id, $tempat, $tanggal, $waktu, $korban, $pidana, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
-                    'pidana' => $pidana,
                     'korban' => $korban,
-                    'nilai' => $nilai,
+                    'pidana' => $pidana,
                     'motif' => $motif
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($tempat, $tanggal, $waktu, $pidana, $korban, $nilai, $motif) {
+    public function create($tempat, $tanggal, $waktu, $korban, $pidana, $motif) {
         $this->db->insert(
-                        $this->table, array(
-                    'tempat' => $tempat,
-                    'tanggal' => $tanggal,
-                    'waktu' => $waktu,
-                    'pidana' => $pidana,
-                    'korban' => $korban,
-                    'nilai' => $nilai,
-                    'motif' => $motif
-                        )
+                $this->table, array(
+            'tempat' => $tempat,
+            'tanggal' => $tanggal,
+            'waktu' => $waktu,
+            'korban' => $korban,
+            'pidana' => $pidana,
+            'motif' => $motif
+                )
         );
-         return $this->last_id();
+        return $this->last_id();
     }
 
     private function last_id() {
@@ -83,15 +64,30 @@ class Nonteror_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $teror = $this->get($id);
-        if(!empty($teror->tempat))
-        $prop = "tempat:'" . $teror->tempat . "',";
-        $prop .= "pidana:'" . $teror->pidana . "',";
-        $prop .= "korban:'" . $teror->korban . "',";
-        $prop .= "tanggal:'" . $teror->tanggal . "',";
-        $prop .= "waktu:'" . $teror->waktu . "',";
+        $nonteror = $this->get($id);
+        $prop = "tempat:'" . $nonteror->tempat . "',";
+        $prop .= "korban:'" . $nonteror->korban . "',";
+        $prop .= "pidana:'" . $nonteror->pidana . "',";
+        $prop .= "nilai:'" . $nonteror->nilai . "',";
+        $prop .= "tanggal:'" . $nonteror->tanggal . "',";
+        $prop .= "waktu:'" . $nonteror->waktu . "',";
         $prop.="nonteror_id:" . $id;
         return "MERGE(Nonteror_$id:Nonteror { $prop } )";
+    }
+
+    public function neo4j_delete_query($id) {
+        return "match(n:Nonteror{nonteror_id:$id})detach delete n";
+    }
+
+    public function neo4j_update_query($id, $tempat, $tanggal, $waktu, $korban, $pidana,$nilai) {
+        return "match(n:Nonteror{nonteror_id:$id})set n.name='" . addslashes($nama)
+                . "',n.tempat='" . addslashes($tempat)
+                . "',n.pidana='" . addslashes($pidana)
+                . "',n.korban='" . addslashes($korban)
+                . "',n.nilai='" . addslashes($nilai)
+                . "',n.tanggal='" . addslashes($tanggal)
+                . "',n.waktu='" . addslashes($waktu)
+                . "' return n";
     }
 
 }

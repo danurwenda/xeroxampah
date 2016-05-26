@@ -16,7 +16,6 @@ class Masjid extends Member_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('masjid_model');
-        $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
@@ -46,23 +45,12 @@ class Masjid extends Member_Controller {
     function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
         $data['title'] = 'Tambah Masjid';
-        $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'datepicker.css'],
-            ['module' => 'polkam', 'asset' => 'select2.min.css']
-        ];
-        $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
-        ];
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('masjid/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
         $data['title'] = 'tr.db | Masjid';
-        $data['css_assets'] = array(
-            ['module' => 'ace', 'asset' => 'chosen.css']
-        );
         $this->template->display('masjid/table_view', $data);
     }
 

@@ -18,24 +18,6 @@ class Lapas_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert_or_lookup($org_id) {
-        $oid = null;
-        if (is_numeric($org_id)) {
-            //lookup
-            //check db
-            $org = $this->db->get_where('lapas', ['lapas_id' => $org_id]);
-            if ($org->num_rows() > 0) {
-                //ada
-                $oid = $org->row()->org_id;
-            }
-        } else {
-            //raw name, insert into lapas
-            $this->db->insert('lapas', ['name' => $org_id]);
-            $oid = $this->db->insert_id($this->sequence);
-        }
-        return $oid;
-    }
-
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -50,20 +32,22 @@ class Lapas_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $name, $address) {
+    public function update($id, $nama, $address, $city) {
         return $this->db->update(
                         $this->table, array(
-                    'name' => $name,
-                    'address' => $address
+                    'name' => $nama,
+                    'address' => $address,
+                    'city' => $city
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($name, $address) {
+    public function create($nama, $address, $city) {
         $this->db->insert(
                 $this->table, array(
-            'name' => $name,
-            'address' => $address
+            'name' => $nama,
+            'address' => $address,
+            'city' => $city
                 )
         );
         return $this->last_id();
@@ -74,9 +58,19 @@ class Lapas_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . $this->get($id)->name . "',";
+        $prop = "name:'" . addslashes($this->get($id)->name) . "',";
+        $prop.= "city:'" . addslashes($this->get($id)->city) . "',";
+        $prop.= "address:'" . addslashes($this->get($id)->address) . "',";
         $prop.="lapas_id:" . $id;
         return "MERGE(Lapas_$id:Lapas { $prop } )";
+    }
+
+    public function neo4j_delete_query($id) {
+        return "match(n:Lapas{lapas_id:$id})detach delete n";
+    }
+
+    public function neo4j_update_query($id, $nama, $address, $city) {
+        return "match(n:Lapas{lapas_id:$id})set n.name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.city='" . addslashes($city) . "' return n";
     }
 
 }

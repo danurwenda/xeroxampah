@@ -31,7 +31,7 @@ jQuery(function ($) {
         var x = $('#pengajian-modal-form form').serialize();
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'pengajian/post', // the url where we want to POST
+            url: base_url + 'pengajian', // the url where we want to POST
             data: x, // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -54,7 +54,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'organisasi/post', // the url where we want to POST
+            url: base_url + 'organisasi', // the url where we want to POST
             data: $('#organisasi-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -77,7 +77,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'school/post', // the url where we want to POST
+            url: base_url + 'school', // the url where we want to POST
             data: $('#school-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -100,7 +100,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'lapas/post', // the url where we want to POST
+            url: base_url + 'lapas', // the url where we want to POST
             data: $('#lapas-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -123,7 +123,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'nonteror/post', // the url where we want to POST
+            url: base_url + 'nonteror', // the url where we want to POST
             data: $('#nonteror-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -148,7 +148,7 @@ jQuery(function ($) {
         console.log(x)
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'teror/post', // the url where we want to POST
+            url: base_url + 'teror', // the url where we want to POST
             data: x, // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -171,7 +171,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'latihan/post', // the url where we want to POST
+            url: base_url + 'latihan', // the url where we want to POST
             data: $('#latihan-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true
@@ -194,7 +194,7 @@ jQuery(function ($) {
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: base_url + 'latsen/post', // the url where we want to POST
+            url: base_url + 'latsen', // the url where we want to POST
             data: $('#latsen-modal-form form').serialize(), // our data object
             dataType: 'json', // what type of data do we expect back from the server
             encode: true

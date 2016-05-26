@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Organization
+ * Description of Organisasi
  *
  * @author Slurp
  */
@@ -38,6 +38,20 @@ class Individu extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
+        $this->template->display('individu/add_view', $data);
+    }
+
+    function edit($id) {
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
+        $data['title'] = 'Ubah Individu';
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
+        ];
+        $data['sources'] = $this->source_model->get_all();
+        $data['edit_id'] = $id;
         $this->template->display('individu/add_view', $data);
     }
 
@@ -314,14 +328,14 @@ class Individu extends Member_Controller {
         }
         // ORGANISASI
         $org_edges = $this->input->post('org_edge');
-        $org_ids = $this->input->post('org_id');
+        $organisasi_ids = $this->input->post('organisasi_id');
         $org_starts = $this->input->post('org_start');
         $org_ends = $this->input->post('org_end');
-        $this->load->model('organization_model');
+        $this->load->model('organisasi_model');
         for ($i = 0; $i < count($org_edges); $i++) {
             $org_edge = $org_edges[$i];
-            $org_id = $org_ids[$i];
-            if (!empty($org_id)) {
+            $organisasi_id = $organisasi_ids[$i];
+            if (!empty($organisasi_id)) {
 
                 //insert ke table relasi (edge)
                 $attr = [];
@@ -335,7 +349,7 @@ class Individu extends Member_Controller {
                     //convert to SQL-compliant format
                     $attr['from'] = $start;
                 }
-                $eid = $this->edge_model->insert($new_id, $org_id, $org_edge, json_encode($attr));
+                $eid = $this->edge_model->insert($new_id, $organisasi_id, $org_edge, json_encode($attr));
                 $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
             }
         }
@@ -453,21 +467,6 @@ class Individu extends Member_Controller {
         echo json_encode($ret);
     }
 
-    function edit($id) {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
-        $data['title'] = 'Tambah Individu';
-        $data['css_assets'] = [
-            ['module' => 'ace', 'asset' => 'datepicker.css'],
-            ['module' => 'polkam', 'asset' => 'select2.min.css']
-        ];
-        $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
-        ];
-        $data['sources'] = $this->source_model->get_all();
-        $data['edit_id'] = $id;
-        $this->template->display('individu/add_view_dynamic', $data);
-    }
-
     function get($id) {
         echo json_encode($this->individu_model->get($id));
     }
@@ -478,6 +477,7 @@ class Individu extends Member_Controller {
 
     function delete($id) {
         if ($this->individu_model->delete($id)) {
+            postNeoQuery($this->individu_model->neo4j_delete_query($id));
             echo 1;
         } else {
             echo 0;

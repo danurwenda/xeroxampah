@@ -18,24 +18,6 @@ class Teror_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert_or_lookup($org_id) {
-        $oid = null;
-        if (is_numeric($org_id)) {
-            //lookup
-            //check db
-            $org = $this->db->get_where('organization', ['org_id' => $org_id]);
-            if ($org->num_rows() > 0) {
-                //ada
-                $oid = $org->row()->org_id;
-            }
-        } else {
-            //raw name, insert into organization
-            $this->db->insert('organization', ['org_name' => $org_id]);
-            $oid = $this->db->insert_id('organization_org_id_seq');
-        }
-        return $oid;
-    }
-
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -90,6 +72,20 @@ class Teror_model extends CI_Model {
         $prop .= "waktu:'" . $teror->waktu . "',";
         $prop.="teror_id:" . $id;
         return "MERGE(Teror_$id:Teror { $prop } )";
+    }
+
+    public function neo4j_delete_query($id) {
+        return "match(n:Teror{teror_id:$id})detach delete n";
+    }
+
+    public function neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran) {
+        return "match(n:Teror{teror_id:$id})set n.name='" . addslashes($nama)
+                . "',n.tempat='" . addslashes($tempat)
+                . "',n.sasaran='" . addslashes($sasaran)
+                . "',n.serangan='" . addslashes($serangan)
+                . "',n.tanggal='" . addslashes($tanggal)
+                . "',n.waktu='" . addslashes($waktu)
+                . "' return n";
     }
 
 }

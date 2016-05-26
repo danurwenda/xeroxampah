@@ -18,24 +18,6 @@ class School_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert_or_lookup($school_id) {
-        $oid = null;
-        if (is_numeric($school_id)) {
-            //lookup
-            //check db
-            $school = $this->db->get_where('school', ['school_id' => $school_id]);
-            if ($school->num_rows() > 0) {
-                //ada
-                $oid = $school->row()->school_id;
-            }
-        } else {
-            //raw name, insert into school
-            $this->db->insert('school', ['school_name' => $school_id]);
-            $oid = $this->db->insert_id('school_school_id_seq');
-        }
-        return $oid;
-    }
-
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -76,9 +58,19 @@ class School_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . $this->get($id)->name . "',";
+        $prop = "name:'" . addslashes($this->get($id)->name) . "',";
+        $prop .= "city:'" . addslashes($this->get($id)->city) . "',";
+        $prop .= "address:'" . addslashes($this->get($id)->address) . "',";
         $prop.="school_id:" . $id;
         return "MERGE(School_$id:School { $prop } )";
+    }
+
+    public function neo4j_delete_query($id) {
+        return "match(n:School{school_id:$id})detach delete n";
+    }
+
+    public function neo4j_update_query($id, $nama, $address, $city) {
+        return "match(n:School{school_id:$id})set n.name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.city='" . addslashes($city) . "' return n";
     }
 
 }

@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of Organization
+ * Description of Organisasi
  *
  * @author Slurp
  */

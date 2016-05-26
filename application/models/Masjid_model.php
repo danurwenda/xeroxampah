@@ -18,24 +18,6 @@ class Masjid_model extends CI_Model {
         parent::__construct();
     }
 
-    public function insert_or_lookup($masjid_id) {
-        $oid = null;
-        if (is_numeric($masjid_id)) {
-            //lookup
-            //check db
-            $masjid = $this->db->get_where('masjid', ['masjid_id' => $masjid_id]);
-            if ($masjid->num_rows() > 0) {
-                //ada
-                $oid = $masjid->row()->masjid_id;
-            }
-        } else {
-            //raw name, insert into masjid
-            $this->db->insert('masjid', ['name' => $masjid_id]);
-            $oid = $this->db->insert_id('masjid_masjid_id_seq');
-        }
-        return $oid;
-    }
-
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -77,18 +59,18 @@ class Masjid_model extends CI_Model {
 
     public function neo4j_insert_query($id) {
         $prop = "name:'" . addslashes($this->get($id)->name) . "',";
-        $prop = "city:'" . addslashes($this->get($id)->city) . "',";
-        $prop = "address:'" . addslashes($this->get($id)->address) . "',";
+        $prop.= "city:'" . addslashes($this->get($id)->city) . "',";
+        $prop.= "address:'" . addslashes($this->get($id)->address) . "',";
         $prop.="masjid_id:" . $id;
         return "MERGE(Masjid_$id:Masjid { $prop } )";
     }
-    
-    public function neo4j_delete_query($id){
+
+    public function neo4j_delete_query($id) {
         return "match(n:Masjid{masjid_id:$id})detach delete n";
     }
-    
-    public function neo4j_update_query($id,$nama,$address,$city){
-        return "match(n:Masjid{masjid_id:$id})set n.name='".addslashes($nama)."',n.address='".addslashes($address)."',n.city='".addslashes($city)."' return n";
+
+    public function neo4j_update_query($id, $nama, $address, $city) {
+        return "match(n:Masjid{masjid_id:$id})set n.name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.city='" . addslashes($city) . "' return n";
     }
 
 }

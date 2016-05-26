@@ -1,83 +1,323 @@
 function load_individu(id) {
     $.getJSON(base_url + 'individu/get_cascade/' + id, function (data) {
 
-        $('select[name="source_id"]').val(data.source_id);
-        $('input[name="name"]').val(data.individu_name);
+        $('input[name="individu_name"]').val(data.individu_name);
         $('input[name="religion"]').val(data.religion);
+        $('select[name="gender"]').val(data.gender);
         $('input[name="alias"]').val(data.alias);
         $('input[name="born_place"]').val(data.born_place);
-        $('input[name="born_date"]').datepicker("setDate", new Date(data.born_date));
+        $('input[name="born_date"]').combodate("setValue", new Date(data.born_date));
         $('input[name="nationality"]').val(data.nationality);
         $('input[name="address"]').val(data.address);
-        $('input[name="recent_job"]').val(data.recent_job);
-        $('input[name="recent_edu"]').val(data.recent_edu);
-        $('input[name="strata"]').val(data.strata);
-        $('input[name="majlis"]').val(data.majlis);
-        $('#relasi-editor').html(data.relation);
-        $('#military-editor').html(data.edu_military);
-        $('#radikal-editor').html(data.radicalized);
-        $('#perbuatan-editor').html(data.perbuatan);
-        $('#teror-editor').html(data.peristiwa);
-        $('#organisasi-editor').html(data.organization_history);
-        $('#job-editor').html(data.job_history);
-        $('#formaledu-editor').html(data.edu_formal);
-        $('#nonformaledu-editor').html(data.edu_non_formal);
-        if (data.network) {
-            $('input[name="jaringan"]').val(data.network.net_name).data('reference_id', data.network.net_id);
+        $('select[name="recent_edu"]').val(data.recent_edu);
+        var prop = $.parseJSON(data.properties);
+        //RIWAYAT NAMA
+        if(prop.namas){
+            $.each(prop.namas,function(i,v){
+                //create clone
+                var row = cloneTemplate('#nama-widget');
+                //set values
+                row.find('input[name="old_name[]"]').val(v.nama);
+                row.find('input[name="lokasi_nama[]"]').val(v.location);
+                row.find('input[name="nama_date[]"]').combodate("setValue",new Date(v.time));
+            });
         }
-        if (data.wife) {
-            $('input[name="wife"]').val(data.wife.wife_name).data('reference_id', data.wife.wife_id);
+        //RIWAYAT PEKERJAAN
+        if(prop.jobs){
+            $.each(prop.jobs,function(i,v){
+                //create clone
+                var row = cloneTemplate('#job-widget');
+                //set values
+                row.find('input[name="job_place[]"]').val(v.job);
+                row.find('input[name="job_end[]"]').combodate("setValue",new Date(v.until));
+                row.find('input[name="job_start[]"]').combodate("setValue",new Date(v.from));
+            });
         }
+        //RIWAYAT PENANGKAPAN
+        if(prop.tangkaps){
+            $.each(prop.tangkaps,function(i,v){
+                //create clone
+                var row = cloneTemplate('#tangkap-widget');
+                //set values
+                row.find('input[name="tangkap_lokasi[]"]').val(v.location);
+                row.find('input[name="tangkap_date[]"]').combodate("setValue",new Date(v.date));
+            });
+        }
+        // KELUARGA
+        //ayah
         if (data.father) {
-            $('input[name="father"]').val(data.father.father_name).data('reference_id', data.father.father_id);
+            $.getJSON(base_url + 'individu/get/' + data.father, function (f) {
+                $('select[name="father"]')
+                        .empty() //empty select
+                        .append($("<option/>") //add option tag in select
+                                .val(f.individu_id) //set value for option to post it
+                                .text(f.individu_name)) //set a text for show in select
+                        .val(f.individu_id) //select option of select2
+                        .trigger("change"); //apply to select2
+            });
         }
         if (data.mother) {
-            $('input[name="mother"]').val(data.mother.mother_name).data('reference_id', data.mother.mother_id);
+            $.getJSON(base_url + 'individu/get/' + data.mother, function (f) {
+                $('select[name="mother"]')
+                        .empty() //empty select
+                        .append($("<option/>") //add option tag in select
+                                .val(f.individu_id) //set value for option to post it
+                                .text(f.individu_name)) //set a text for show in select
+                        .val(f.individu_id) //select option of select2
+                        .trigger("change"); //apply to select2
+            });
         }
-        if (data.children) {
-            $('input[name="children[]"]').val(data.children[0].child_name).data('reference_id', data.children[0].child_id);
-            if (data.children.length > 1) {
-                for (var i = 1; i < data.children.length; i++) {
-                    var input_group = $('input[name="children[]"]').parents('div.input-group').first();
-                    var new_input = expandInputGroup(input_group);
-                    new_input.val(data.children[i].child_name).data('reference_id',data.children[i].child_id)
-                }
-            }
-        }
-        if (data.siblings) {
-            $('input[name="sibling[]"]').val(data.siblings[0].sibling_name).data('reference_id', data.siblings[0].sibling_id);
-            if (data.siblings.length > 1) {
-                for (var i = 1; i < data.siblings.length; i++) {
-                    var input_group = $('input[name="sibling[]"]').parents('div.input-group').first();
-                    var new_input = expandInputGroup(input_group);
-                    new_input.val(data.siblings[i].sibling_name).data('reference_id',data.siblings[i].sibling_id)
-                }
-            }
-        }
-        if (data.schools) {
-            $('input[name="pesantren[]"]').val(data.schools[0].name).data('reference_id', data.schools[0].school_id);
-            if (data.schools.length > 1) {
-                for (var i = 1; i < data.schools.length; i++) {
-                    var input_group = $('input[name="pesantren[]"]').parents('div.input-group').first();
-                    var new_input = expandInputGroup(input_group);
-                    new_input.val(data.schools[i].name).data('reference_id',data.schools[i].school_id)
-                }
-            }
-        }
-        if (data.masjids) {
-            $('input[name="masjid[]"]').val(data.masjids[0].name).data('reference_id', data.masjids[0].masjid_id);
-            if (data.masjids.length > 1) {
-                for (var i = 1; i < data.masjids.length; i++) {
-                    var input_group = $('input[name="masjid[]"]').parents('div.input-group').first();
-                    var new_input = expandInputGroup(input_group);
-                    new_input.val(data.masjids[i].name).data('reference_id',data.masjids[i].masjid_id)
-                }
-            }
-        }
+        if (data.pasangan) {
+            $.each(data.pasangan, function (i, v) {
+                $.getJSON(base_url + 'individu/get/' + v.pasangan, function (f) {
+                    var row = insertIndividuRow(49);
+                    if (v.prop) {
+                        row.find('.combofulldate').combodate("setValue", new Date($.parseJSON(v.prop).from));
+                    }
+                    row.find('select.form-control')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.individu_id) //set value for option to post it
+                                    .text(f.individu_name)) //set a text for show in select
+                            .val(f.individu_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                });
 
-        if (data.is_cooperative == 't') {
-            //centang
-            $('input[name="kooperatif"]').prop('checked', true);
+            });
+        }
+        if (data.anak) {
+            $.each(data.anak, function (i, v) {
+                $.getJSON(base_url + 'individu/get/' + v, function (f) {
+                    insertIndividuRow(50).find('select')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.individu_id) //set value for option to post it
+                                    .text(f.individu_name)) //set a text for show in select
+                            .val(f.individu_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                });
+
+            });
+        }
+        //PENDIDIKAN
+        if (data.pendidikan) {
+            $.each(data.pendidikan, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#edu-widget');
+                //set values
+                if (v.prop) {
+                    var prop = $.parseJSON(v.prop);
+                    if (prop.from) {
+                        row.find('input[name="edu_start[]"]').combodate("setValue", new Date(prop.from));
+                    }
+                    if (prop.until) {
+                        row.find('input[name="edu_end[]"]').combodate("setValue", new Date(prop.until));
+                    }
+                }
+                row.find('.edu-edge').val(v.weight);
+                $.getJSON(base_url + 'school/get/' + v.target, function (f) {
+                    row.find('.school-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.school_id) //set value for option to post it
+                                    .text(f.name)) //set a text for show in select
+                            .val(f.school_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //ORGANISASI
+        if (data.organisasi) {
+            $.each(data.organisasi, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#org-widget');
+                //set values
+                if (v.prop) {
+                    var prop = $.parseJSON(v.prop);
+                    if (prop.from) {
+                        row.find('input[name="org_start[]"]').combodate("setValue", new Date(prop.from));
+                    }
+                    if (prop.until) {
+                        row.find('input[name="org_end[]"]').combodate("setValue", new Date(prop.until));
+                    }
+                }
+                row.find('[name="org_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'organisasi/get/' + v.target, function (f) {
+                    row.find('.organisasi-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.organisasi_id) //set value for option to post it
+                                    .text(f.name+', '+f.daerah)) //set a text for show in select
+                            .val(f.organisasi_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //LAPAS
+        if (data.lapas) {
+            $.each(data.lapas, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#lapas-widget');
+                //set values
+                if (v.prop) {
+                    var prop = $.parseJSON(v.prop);
+                    if (prop.from) {
+                        row.find('input[name="lapas_start[]"]').combodate("setValue", new Date(prop.from));
+                    }
+                    if (prop.until) {
+                        row.find('input[name="lapas_end[]"]').combodate("setValue", new Date(prop.until));
+                    }
+                }
+                $.getJSON(base_url + 'lapas/get/' + v.target, function (f) {
+                    row.find('.lapas-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.lapas_id) //set value for option to post it
+                                    .text(f.name)) //set a text for show in select
+                            .val(f.lapas_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //TEROR
+        if (data.teror) {
+            $.each(data.teror, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#teror-widget');
+                //set values
+                row.find('[name="teror_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'teror/get/' + v.target, function (f) {
+                    row.find('.teror-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.teror_id) //set value for option to post it
+                                    .text(f.serangan+' '+f.sasaran)) //set a text for show in select
+                            .val(f.teror_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //LATSEN
+        if (data.latsen) {
+            $.each(data.latsen, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#latsen-widget');
+                //set values
+                row.find('[name="latsen_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'latsen/get/' + v.target, function (f) {
+                    row.find('.latsen-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.latsen_id) //set value for option to post it
+                                    .text(f.materi+' '+f.tempat)) //set a text for show in select
+                            .val(f.latsen_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //LATIHAN
+        if (data.latihan) {
+            $.each(data.latihan, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#latihan-widget');
+                //set values
+                row.find('[name="latihan_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'latihan/get/' + v.target, function (f) {
+                    row.find('.latihan-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.latihan_id) //set value for option to post it
+                                    .text(f.materi+' '+f.tempat)) //set a text for show in select
+                            .val(f.latihan_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //NONTEROR
+        if (data.nonteror) {
+            $.each(data.nonteror, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#nonteror-widget');
+                //set values
+                row.find('[name="nonteror_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'nonteror/get/' + v.target, function (f) {
+                    row.find('.nonteror-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.nonteror_id) //set value for option to post it
+                                    .text(f.pidana+' '+f.korban)) //set a text for show in select
+                            .val(f.nonteror_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
+        }
+        //PENGAJIAN
+        if (data.pengajian) {
+            $.each(data.pengajian, function (i, v) {
+                //create clone from templates
+                var row = cloneTemplate('#pengajian-widget');
+                //set values
+                row.find('[name="pengajian_edge[]"]').val(v.weight);
+                $.getJSON(base_url + 'pengajian/get/' + v.target, function (f) {
+                    row.find('.pengajian-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.pengajian_id) //set value for option to post it
+                                    .text(f.topik+' di '+f.lokasi)) //set a text for show in select
+                            .val(f.pengajian_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            })
         }
     });
+}
+
+function cloneTemplate(widget) {
+    //find template
+    var template = $(widget+' .template');
+    var clone = template.clone()
+            .removeClass('template hide')
+            .insertBefore($(widget+'>.form-group'));
+    //initiate jquery plugins/UI
+    clone.find('.combofulldate').combodate();
+    clone.find('.monthpicker').combodate({
+        format: "YYYY-MM-DD",
+        template: "MMM YYYY"
+    });
+    clone.find('.organisasi-select2').select2(organisasi_select_config)
+    clone.find('.lapas-select2').select2(lapas_select_config)
+    clone.find('.school-select2').select2(school_select_config)
+    clone.find('.masjid-select2').select2(masjid_select_config)
+    clone.find('.pengajian-select2').select2(pengajian_select_config)
+    clone.find('.nonteror-select2').select2(nonteror_select_config);
+    clone.find('.teror-select2').select2(teror_select_config);
+    clone.find('.latsen-select2').select2(latsen_select_config);
+    clone.find('.latihan-select2').select2(latihan_select_config);
+    return clone;
+}
+
+function insertIndividuRow(selected) {
+    //insert new row di keluarga
+    var template = $('.fam-template');
+    var clone = template.clone();
+    clone.insertBefore(template).removeClass('hide fam-template');
+    //ganti nama field
+    var text = $('#fam-field option[value="' + selected + '"]').text();
+    clone.find('label')
+            .html(text);
+    clone.find('select')
+            .attr('name', 'relation_' + selected + '[]')
+            //make it autocomplete
+            .select2(individu_select_config);
+    if (selected == 49) {
+        //tambah field kapan nikah
+        var date = $('<div class="input-group">' +
+                '<input class="form-control combofulldate" name="married_date[]" type="text" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" /></div>');
+        date.find('input').combodate({
+            minYear: 1950
+        })
+        clone.find('.input-group')
+                .after(date);
+    }
+    return clone;
 }

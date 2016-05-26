@@ -19,7 +19,7 @@ function formatIndividuList(individu) {
 }
 
 function formatIndividuSelection(repo) {
-    return repo.individu_name || repo.alias;
+    return repo.individu_name || repo.alias || repo.text;
 }
 var male_select_config = {
     ajax: {
@@ -118,7 +118,7 @@ function formatNonTerorList(nt) {
 }
 
 function formatNonTerorSelection(nt) {
-    return nt.pidana + ' ' + nt.korban;
+    return nt.text || (nt.pidana + ' ' + nt.korban);
 }
 var nonteror_select_config = {
     ajax: {
@@ -163,7 +163,7 @@ function formatLatsenList(nt) {
 }
 
 function formatLatsenSelection(nt) {
-    return nt.materi + ' di ' + nt.tempat;
+    return nt.text||(nt.materi + ' di ' + nt.tempat);
 }
 var latsen_select_config = {
     ajax: {
@@ -208,7 +208,7 @@ function formatLatihanList(nt) {
 }
 
 function formatLatihanSelection(nt) {
-    return nt.materi + ' di ' + nt.tempat;
+    return nt.text||(nt.materi + ' di ' + nt.tempat);
 }
 var latihan_select_config = {
     ajax: {
@@ -253,7 +253,7 @@ function formatTerorList(nt) {
 }
 
 function formatTerorSelection(nt) {
-    return nt.serangan + ' ' + nt.sasaran;
+    return nt.text || (nt.serangan + ' ' + nt.sasaran);
 }
 var teror_select_config = {
     ajax: {
@@ -286,13 +286,16 @@ function formatLapasList(l) {
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
             "<div class='select2-result-repository__title'>" + l.name + "</div>" +
+            "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.city + "</div>" +
+            "</div>" +
             "</div></div>";
 
     return markup;
 }
 
 function formatLapasSelection(l) {
-    return l.name;
+    return l.name || l.text;
 }
 var lapas_select_config = {
     ajax: {
@@ -324,14 +327,21 @@ function formatOrganisasiList(org) {
         return org.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.org_name + "</div>" +
+            "<div class='select2-result-repository__title'>" + org.name + ", " + org.daerah + "</div>" +
             "</div></div>";
 
     return markup;
 }
 
 function formatOrganisasiSelection(org) {
-    return org.org_name;
+    var r;
+    if (org.name) {
+        r = org.name;
+        if (org.daerah)
+            r += ', ' + org.daerah;
+    } else
+        r = org.text;
+    return r
 }
 var organisasi_select_config = {
     ajax: {
@@ -371,7 +381,7 @@ function formatPengajianList(ngaji) {
 }
 
 function formatPengajianSelection(org) {
-    return org.topik+' di '+org.lokasi;
+    return org.text|| (org.topik + ' di ' + org.lokasi);
 }
 var pengajian_select_config = {
     ajax: {
@@ -398,19 +408,22 @@ var pengajian_select_config = {
     templateResult: formatPengajianList,
     templateSelection: formatPengajianSelection
 };
-function formatSchoolList(org) {
-    if (org.loading)
-        return org.text;
+function formatSchoolList(l) {
+    if (l.loading)
+        return l.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
+            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
+            "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.city + "</div>" +
+            "</div>" +
             "</div></div>";
 
     return markup;
 }
 
 function formatSchoolSelection(org) {
-    return org.name;
+    return org.name || org.text;
 }
 var school_select_config = {
     ajax: {
@@ -438,14 +451,7 @@ var school_select_config = {
     templateSelection: formatSchoolSelection
 };
 function formatMasjidList(org) {
-    if (org.loading)
-        return org.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + org.name + "</div>" +
-            "</div></div>";
-
-    return markup;
+    return formatSchoolList(org)
 }
 
 function formatMasjidSelection(org) {
