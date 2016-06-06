@@ -1,48 +1,51 @@
 function load_individu(id) {
     $.getJSON(base_url + 'individu/get_cascade/' + id, function (data) {
+        $('#individu_form').append($('<input/>', {type: 'hidden', name: 'individu_id', value: data.individu_id}));
 
-        $('input[name="individu_name"]').val(data.individu_name);
-        $('input[name="religion"]').val(data.religion);
-        $('select[name="gender"]').val(data.gender);
-        $('input[name="alias"]').val(data.alias);
-        $('input[name="born_place"]').val(data.born_place);
-        $('input[name="born_date"]').combodate("setValue", new Date(data.born_date));
-        $('input[name="nationality"]').val(data.nationality);
-        $('input[name="address"]').val(data.address);
-        $('select[name="recent_edu"]').val(data.recent_edu);
+        $('#individu_form input[name="individu_name"]').val(data.individu_name);
+        $('#individu_form input[name="religion"]').val(data.religion);
+        $('#individu_form select[name="gender"]').val(data.gender);
+        $('#individu_form input[name="alias"]').val(data.alias);
+        $('#individu_form input[name="born_place"]').val(data.born_place);
+        if(data.born_date)
+        $('#individu_form input[name="born_date"]').combodate("setValue", new Date(data.born_date));
+        $('#individu_form input[name="nationality"]').val(data.nationality);
+        $('#individu_form input[name="address"]').val(data.address);
+        $('#individu_form select[name="recent_edu"]').val(data.recent_edu);
         var prop = $.parseJSON(data.properties);
+        if(prop){
         //RIWAYAT NAMA
-        if(prop.namas){
-            $.each(prop.namas,function(i,v){
+        if (prop.namas) {
+            $.each(prop.namas, function (i, v) {
                 //create clone
                 var row = cloneTemplate('#nama-widget');
                 //set values
                 row.find('input[name="old_name[]"]').val(v.nama);
                 row.find('input[name="lokasi_nama[]"]').val(v.location);
-                row.find('input[name="nama_date[]"]').combodate("setValue",new Date(v.time));
+                row.find('input[name="nama_date[]"]').combodate("setValue", new Date(v.time));
             });
         }
         //RIWAYAT PEKERJAAN
-        if(prop.jobs){
-            $.each(prop.jobs,function(i,v){
+        if (prop.jobs) {
+            $.each(prop.jobs, function (i, v) {
                 //create clone
                 var row = cloneTemplate('#job-widget');
                 //set values
                 row.find('input[name="job_place[]"]').val(v.job);
-                row.find('input[name="job_end[]"]').combodate("setValue",new Date(v.until));
-                row.find('input[name="job_start[]"]').combodate("setValue",new Date(v.from));
+                row.find('input[name="job_end[]"]').combodate("setValue", new Date(v.until));
+                row.find('input[name="job_start[]"]').combodate("setValue", new Date(v.from));
             });
         }
         //RIWAYAT PENANGKAPAN
-        if(prop.tangkaps){
-            $.each(prop.tangkaps,function(i,v){
+        if (prop.tangkaps) {
+            $.each(prop.tangkaps, function (i, v) {
                 //create clone
                 var row = cloneTemplate('#tangkap-widget');
                 //set values
                 row.find('input[name="tangkap_lokasi[]"]').val(v.location);
-                row.find('input[name="tangkap_date[]"]').combodate("setValue",new Date(v.date));
+                row.find('input[name="tangkap_date[]"]').combodate("setValue", new Date(v.date));
             });
-        }
+        }}
         // KELUARGA
         //ayah
         if (data.father) {
@@ -147,7 +150,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.organisasi_id) //set value for option to post it
-                                    .text(f.name+', '+f.daerah)) //set a text for show in select
+                                    .text(f.name + ', ' + f.daerah)) //set a text for show in select
                             .val(f.organisasi_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -191,7 +194,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.teror_id) //set value for option to post it
-                                    .text(f.serangan+' '+f.sasaran)) //set a text for show in select
+                                    .text(f.serangan + ' ' + f.sasaran)) //set a text for show in select
                             .val(f.teror_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -209,7 +212,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.latsen_id) //set value for option to post it
-                                    .text(f.materi+' '+f.tempat)) //set a text for show in select
+                                    .text(f.materi + ' ' + f.tempat)) //set a text for show in select
                             .val(f.latsen_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -227,7 +230,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.latihan_id) //set value for option to post it
-                                    .text(f.materi+' '+f.tempat)) //set a text for show in select
+                                    .text(f.materi + ' ' + f.tempat)) //set a text for show in select
                             .val(f.latihan_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -245,7 +248,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.nonteror_id) //set value for option to post it
-                                    .text(f.pidana+' '+f.korban)) //set a text for show in select
+                                    .text(f.pidana + ' ' + f.korban)) //set a text for show in select
                             .val(f.nonteror_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -263,7 +266,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.pengajian_id) //set value for option to post it
-                                    .text(f.topik+' di '+f.lokasi)) //set a text for show in select
+                                    .text(f.topik + ' di ' + f.lokasi)) //set a text for show in select
                             .val(f.pengajian_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
@@ -274,10 +277,10 @@ function load_individu(id) {
 
 function cloneTemplate(widget) {
     //find template
-    var template = $(widget+' .template');
+    var template = $(widget + ' .template');
     var clone = template.clone()
             .removeClass('template hide')
-            .insertBefore($(widget+'>.form-group'));
+            .insertBefore($(widget + '>.form-group'));
     //initiate jquery plugins/UI
     clone.find('.combofulldate').combodate();
     clone.find('.monthpicker').combodate({

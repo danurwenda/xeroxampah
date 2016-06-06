@@ -68,33 +68,40 @@ function postNeoQueryArr($arrQ) {
 }
 
 function postNeoQuery($q) {
-//    $NEO_URL = 'https://tci.polkam.go.id:7473/db/data/transaction/commit';
-    $NEO_URL = 'http://localhost:7474/db/data/transaction/commit';
-    if (true) {
-        $data = [
-            'statements' => [
-                [
-                    'statement' => $q
+    if (is_array($q)) {
+        foreach ($q as $qq) {
+            postNeoQuery($qq);
+        }
+    } else {
+        echo $q;
+//        $NEO_URL = 'https://tci.polkam.go.id:7473/db/data/transaction/commit';
+        $NEO_URL = 'http://localhost:7474/db/data/transaction/commit';
+        if (true) {
+            $data = [
+                'statements' => [
+                    [
+                        'statement' => $q
+                    ]
                 ]
-            ]
-        ];
-        $data_string = json_encode($data);
-        //print_r($data_string);
+            ];
+            $data_string = json_encode($data);
+            //print_r($data_string);
 //open connection
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $NEO_URL);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $NEO_URL);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
 //curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //execute post
-        $result = curl_exec($ch);
+            $result = curl_exec($ch);
 //echo
-        //echo $result;
+            //echo $result;
 //close connection
-        curl_close($ch);
+            curl_close($ch);
+        }
     }
 }

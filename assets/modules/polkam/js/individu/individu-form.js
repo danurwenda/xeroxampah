@@ -223,7 +223,7 @@ jQuery(function ($) {
         var text = $('#fam-field option[value="' + selected + '"]').text();
         clone.find('label')
                 .html(text);
-        clone.find('select')
+        var select = clone.find('select')
                 .attr('name', 'relation_' + selected + '[]')
                 //make it autocomplete
                 .select2(individu_select_config);
@@ -236,9 +236,23 @@ jQuery(function ($) {
             })
             clone.find('.input-group')
                     .after(date);
+            adjustGender(select);
         }
 
 
+    });
+
+    function adjustGender(select) {
+        var g = $('#individu_form select[name="gender"]').val();
+        select.select2('destroy')
+        select.select2(g === 'Perempuan' ? male_select_config : female_select_config)
+    }
+    $('#individu_form select[name="gender"]').change(function () {
+        var pasangan = $('#individu_form select[name="relation_49[]"]');
+        if (pasangan.length>0) {
+            pasangan.val(null).trigger('change');
+        }
+        adjustGender(pasangan)
     });
     // EXPANDABLE FIELDS
     //handle "hapus" button
@@ -369,15 +383,15 @@ jQuery(function ($) {
     $('#individu_form').submit(function (e) {
 //        e.preventDefault();
         //cek incomplete date
-        $('.monthpicker+.combodate .year').each(function(i){
+        $('.monthpicker+.combodate .year').each(function (i) {
             //cek apakah ada yang cuma diisi tahunnya doank
-            if($(this).val() && !$(this).prev().val()){
+            if ($(this).val() && !$(this).prev().val()) {
                 $(this).prev().val(6).trigger('change');
             }
         });
-        $('.combofulldate+.combodate .year').each(function(i){
+        $('.combofulldate+.combodate .year').each(function (i) {
             //cek apakah ini keisi tahunnya doank
-            if($(this).val() && !$(this).prev().val()){
+            if ($(this).val() && !$(this).prev().val()) {
                 $(this).prev().val(6).trigger('change');
             }
         });

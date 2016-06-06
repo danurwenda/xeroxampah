@@ -50,6 +50,15 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div> 
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topik">Lokasi :</label>
+
+                <div class="col-xs-12 col-sm-9">
+                    <div class="clearfix">
+                        <input type="text" name="lokasi" id="lokasi" class="col-xs-12 col-sm-6" />
+                    </div>
+                </div>
+            </div>
             <div class="clearfix form-actions col-xs-12 col-sm-12">
                 <div class="col-md-offset-3 col-md-9">
                     <button class="btn btn-info" type="submit">

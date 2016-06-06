@@ -74,7 +74,7 @@ class Individu_model extends CI_Model {
             //LEMBAGA PENDIDIKAN
             $pendidikan = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 3])
                     ->result() as $anaks) {
                 $pendidikan[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -83,7 +83,7 @@ class Individu_model extends CI_Model {
             //ORGANISASI
             $organisasi = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 2])
                     ->result() as $anaks) {
                 $organisasi[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -92,7 +92,7 @@ class Individu_model extends CI_Model {
             //LAPAS
             $lapas = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 12])
                     ->result() as $anaks) {
                 $lapas[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -101,7 +101,7 @@ class Individu_model extends CI_Model {
             //LATSEN
             $latsen = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 8])
                     ->result() as $anaks) {
                 $latsen[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -110,7 +110,7 @@ class Individu_model extends CI_Model {
             //LATIHAN
             $latihan = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 11])
                     ->result() as $anaks) {
                 $latihan[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -119,7 +119,7 @@ class Individu_model extends CI_Model {
             //TEROR
             $teror = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 6])
                     ->result() as $anaks) {
                 $teror[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -128,7 +128,7 @@ class Individu_model extends CI_Model {
             //NONTEROR
             $nonteror = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 7])
                     ->result() as $anaks) {
                 $nonteror[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -137,7 +137,7 @@ class Individu_model extends CI_Model {
             //PENGAJIAN
             $pengajian = [];
             foreach ($this->db
-                    ->join('edge_weight', 'edge_weight.edge_id=edge.weight_id')
+                    ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                     ->get_where('edge', ['source_id' => $id, 'type' => 9])
                     ->result() as $anaks) {
                 $pengajian[] = ['prop' => $anaks->properties, 'target' => $anaks->target_id, 'weight' => $anaks->weight_id];
@@ -155,21 +155,9 @@ class Individu_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $nama, $alias, $born_date, $born_place, $nationality, $detention_history, $detention_status, $education, $affiliation, $family_conn, $source_id) {
+    public function update($id, $data) {
         return $this->db->update(
-                        $this->table, array(
-                    'name' => $nama,
-                    'alias' => $alias,
-                    'born_date' => $born_date,
-                    'born_place' => $born_place,
-                    'nationality' => $nationality,
-                    'detention_history' => $detention_history,
-                    'detention_status' => $detention_status,
-                    'education' => $education,
-                    'family_conn' => $family_conn,
-                    'affiliation' => $affiliation,
-                    'source_id' => $source_id,
-                        ), [$this->primary_key => $id]
+                        $this->table, $data, [$this->primary_key => $id]
         );
     }
 
@@ -192,13 +180,8 @@ class Individu_model extends CI_Model {
         return "match(n:Individu{individu_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran) {
-        return "match(n:Individu{individu_id:$id})set n.name='" . addslashes($nama)
-                . "',n.tempat='" . addslashes($tempat)
-                . "',n.sasaran='" . addslashes($sasaran)
-                . "',n.serangan='" . addslashes($serangan)
-                . "',n.tanggal='" . addslashes($tanggal)
-                . "',n.waktu='" . addslashes($waktu)
+    public function neo4j_update_query($id, $nama) {
+        return "match(n:Individu{individu_id:$id})set n.individu_name='" . addslashes($nama)
                 . "' return n";
     }
 

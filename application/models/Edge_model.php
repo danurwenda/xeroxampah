@@ -28,6 +28,21 @@ class Edge_model extends CI_Model {
         return $this->last_id();
     }
 
+    /**
+     * Note that we can't change edge's type (weight_id)
+     * @param type $edge_id
+     * @param type $source
+     * @param type $target
+     * @param type $json
+     */
+    public function update($edge_id, $source, $target, $json) {
+        return $this->db->update($this->table, ['source_id' => $source, 'target_id' => $target, 'properties' => $json], ['edge_id' => $edge_id]);
+    }
+
+    public function neo4j_update_query($old_edge, $id) {
+        return [$this->neo_d_q($old_edge) , $this->neo4j_insert_query($id)];
+    }
+
     private function last_id() {
         return $this->db->insert_id($this->sequence);
     }
@@ -35,7 +50,7 @@ class Edge_model extends CI_Model {
     public function neo4j_insert_query($id) {
         $edge = $this->get($id);
         //pertama2 kita cek apa tipe edge ini
-        $edge_weight = $this->db->get_where('edge_weight', ['edge_id' => $edge->weight_id])->row();
+        $edge_weight = $this->db->get_where('edge_weight', ['weight_id' => $edge->weight_id])->row();
         $label_edge = preg_replace('/\s+/', '', $edge_weight->desc);
         $label_edge = preg_replace('/[.,\/#!$%\^&\*;:{}=\-_`~()]/', '', $label_edge);
         //convert edge->prop yang tipe JSON ke format key:value mapping
@@ -44,7 +59,7 @@ class Edge_model extends CI_Model {
             $label_prop = jsonToNeo4J($json);
         else
             $label_prop = '';
-        $create_clause="create (a)-[:$label_edge { $label_prop }]->(b)";
+        $create_clause = "create (a)-[:$label_edge { $label_prop }]->(b)";
         switch ($edge_weight->type) {
             case 1:
                 //individu-individu
@@ -111,18 +126,53 @@ class Edge_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $org_name, $address, $website, $email, $phone, $description, $source) {
-        return $this->db->update(
-                        $this->table, array(
-                    'org_name' => $org_name,
-                    'address' => $address,
-                    'website' => $website,
-                    'email' => $email,
-                    'phone' => $phone,
-                    'description' => $description,
-                    'source_id' => $source
-                        ), [$this->primary_key => $id]
-        );
+    function neo_d_q($edge) {
+        //pertama2 kita cek apa tipe edge ini
+        $edge_weight = $this->db->get_where('edge_weight', ['weight_id' => $edge->weight_id])->row();
+        $label_edge = preg_replace('/\s+/', '', $edge_weight->desc);
+        $label_edge = preg_replace('/[.,\/#!$%\^&\*;:{}=\-_`~()]/', '', $label_edge);
+
+        switch ($edge_weight->type) {
+            case 1:
+                //individu-individu
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Individu{individu_id:$edge->target_id}) delete r";
+                break;
+            case 2:
+                //individu-organisasi
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Organisasi{organisasi_id:$edge->target_id}) delete r";
+            case 3:
+                //individu-school
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:School{school_id:$edge->target_id}) delete r";
+            case 6:
+                //individu-teror
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Teror{teror_id:$edge->target_id}) delete r";
+            case 7:
+                //individu-nonteror
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Nonteror{nonteror_id:$edge->target_id}) delete r";
+            case 9:
+                //individu-pengajian
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Pengajian{pengajian_id:$edge->target_id}) delete r";
+            case 12:
+                //individu-pengajian
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Lapas{lapas_id:$edge->target_id}) delete r";
+            case 8:
+                //individu-latihan militer senjata
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Latsen{latsen_id:$edge->target_id}) delete r";
+            case 11:
+                //individu-latihan militer non senjata
+                return "match (a:Individu{individu_id:$edge->source_id})-[r:$label_edge]->(b:Latihan{latihan_id:$edge->target_id}) delete r";
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Delete edge ini, match relationship dari node X ke node Y dengan label Z
+     * @param type $id
+     */
+    public function neo4j_delete_query($id) {
+        $edge = $this->get($id);
+        return $this->neo_d_q($edge);
     }
 
     public function create($org_name, $address, $website, $email, $phone, $description, $source) {

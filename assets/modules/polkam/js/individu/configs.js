@@ -43,8 +43,10 @@ var male_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
-    templateResult: formatIndividuList,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
+    allowClear:true,
+            placeholder:'',
+            templateResult: formatIndividuList,
     templateSelection: formatIndividuSelection
 };
 var female_select_config = {
@@ -69,7 +71,7 @@ var female_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatIndividuList,
     templateSelection: formatIndividuSelection
 };
@@ -94,7 +96,7 @@ var individu_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatIndividuList,
     templateSelection: formatIndividuSelection
 };
@@ -118,7 +120,7 @@ function formatNonTerorList(nt) {
 }
 
 function formatNonTerorSelection(nt) {
-    return nt.text || (nt.pidana + ' ' + nt.korban);
+    return nt.pidana ? (nt.pidana + ' ' + nt.korban) : nt.text;
 }
 var nonteror_select_config = {
     ajax: {
@@ -141,7 +143,7 @@ var nonteror_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatNonTerorList,
     templateSelection: formatNonTerorSelection
 };
@@ -163,7 +165,7 @@ function formatLatsenList(nt) {
 }
 
 function formatLatsenSelection(nt) {
-    return nt.text||(nt.materi + ' di ' + nt.tempat);
+    return nt.materi ? (nt.materi + ' di ' + nt.tempat) : nt.text;
 }
 var latsen_select_config = {
     ajax: {
@@ -186,7 +188,7 @@ var latsen_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatLatsenList,
     templateSelection: formatLatsenSelection
 };
@@ -208,7 +210,7 @@ function formatLatihanList(nt) {
 }
 
 function formatLatihanSelection(nt) {
-    return nt.text||(nt.materi + ' di ' + nt.tempat);
+    return nt.materi ? (nt.materi + ' di ' + nt.tempat) : nt.text;
 }
 var latihan_select_config = {
     ajax: {
@@ -231,7 +233,7 @@ var latihan_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatLatihanList,
     templateSelection: formatLatihanSelection
 };
@@ -253,7 +255,7 @@ function formatTerorList(nt) {
 }
 
 function formatTerorSelection(nt) {
-    return nt.text || (nt.serangan + ' ' + nt.sasaran);
+    return nt.serangan ? (nt.serangan + ' ' + nt.sasaran) : nt.text;
 }
 var teror_select_config = {
     ajax: {
@@ -276,7 +278,7 @@ var teror_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatTerorList,
     templateSelection: formatTerorSelection
 };
@@ -318,7 +320,7 @@ var lapas_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatLapasList,
     templateSelection: formatLapasSelection
 };
@@ -364,7 +366,7 @@ var organisasi_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatOrganisasiList,
     templateSelection: formatOrganisasiSelection
 };
@@ -381,7 +383,7 @@ function formatPengajianList(ngaji) {
 }
 
 function formatPengajianSelection(org) {
-    return org.text|| (org.topik + ' di ' + org.lokasi);
+    return (org.topik ? (org.topik + ' di ' + org.lokasi) : org.text);
 }
 var pengajian_select_config = {
     ajax: {
@@ -404,7 +406,7 @@ var pengajian_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatPengajianList,
     templateSelection: formatPengajianSelection
 };
@@ -446,7 +448,7 @@ var school_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatSchoolList,
     templateSelection: formatSchoolSelection
 };
@@ -478,7 +480,7 @@ var masjid_select_config = {
     escapeMarkup: function (markup) {
         return markup;
     },
-    minimumInputLength: 1,
+    minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatMasjidList,
     templateSelection: formatMasjidSelection
 };
