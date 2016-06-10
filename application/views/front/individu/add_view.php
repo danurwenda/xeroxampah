@@ -38,7 +38,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tempat lahir </label>
 
                     <div class="col-sm-9">
-                        <input type="text" id="tangkap_place" placeholder="Tempat lahir" class="form-control" name="born_place" />
+                        <select style="width: 100%" class="form-control kotakab-select2" name="born_kotakab"></select>
                     </div>
                 </div>
 
@@ -114,6 +114,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                     <div class="col-sm-9">
                         <input type="text" id="address" placeholder="Tempat tinggal" class="form-control" name="address" />
+                        <select style="width: 100%" class="form-control kotakab-select2" name="address_kotakab"></select>
                     </div>
                 </div>
 
@@ -446,7 +447,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
 
                                     <div class="col-sm-9">
                                         <div class="input-group">
@@ -508,7 +509,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
 
                                     <div class="col-sm-9">
                                         <div class="input-group">
@@ -966,6 +967,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="tempat" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
                         <!-- Tanggal -->
@@ -1037,6 +1039,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="tempat" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
                         <!-- Tanggal -->
@@ -1107,6 +1110,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="tempat" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
                         <!-- Tanggal -->
@@ -1247,6 +1251,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" name="tempat" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
                         <!-- Tanggal -->
@@ -1348,7 +1353,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="city" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
 
@@ -1429,7 +1434,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Kota" class="form-control" name="masjid_city" />
+                                                <select style="width: 100%" class="form-control kotakab-select2" name="masjid_kotakab"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -1477,7 +1482,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Kota" class="form-control" name="pesantren_city" />
+                                                <select style="width: 100%" class="form-control kotakab-select2" name="pesantren_kotakab"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -1592,6 +1597,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                             <div class="col-sm-9">
                                 <input type="text" placeholder="Alamat" class="form-control" name="address" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="address_kotakab"></select>
                             </div>
                         </div>
                         <div class="widget-box collapsed">

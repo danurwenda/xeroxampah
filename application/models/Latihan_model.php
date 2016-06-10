@@ -32,10 +32,11 @@ class Latihan_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $sejak, $hingga, $materi, $motif) {
+    public function update($id, $tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
+                    'kotakab_id' => $kotakab,
                     'sejak' => $sejak,
                     'hingga' => $hingga,
                     'materi' => $materi,
@@ -44,10 +45,11 @@ class Latihan_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $sejak, $hingga, $materi, $motif) {
+    public function create($tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
         $this->db->insert(
                 $this->table, array(
             'tempat' => $tempat,
+            'kotakab_id' => $kotakab,
             'sejak' => $sejak,
             'hingga' => $hingga,
             'materi' => $materi,

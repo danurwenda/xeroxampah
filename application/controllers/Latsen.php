@@ -31,6 +31,7 @@ class Latsen extends Member_Controller {
             $this->db->or_where('UPPER(materi) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
+                ->join('kotakab', 'kotakab.kotakab_id=latsen.kotakab_id', 'left')
                 ->get('latsen')
                 ->result_array();
         $ret = [];
@@ -44,10 +45,13 @@ class Latsen extends Member_Controller {
 
     function add() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(10);
-
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['title'] = 'Tambah Latsen';
         $this->template->display('latsen/add_view', $data);
@@ -62,9 +66,13 @@ class Latsen extends Member_Controller {
     function edit($id) {
         //load form and populate
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(10);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['title'] = 'Ubah Latsen';
         $data['edit_id'] = $id;
@@ -91,6 +99,7 @@ class Latsen extends Member_Controller {
         $tempat = $this->input->post('tempat');
         $materi = $this->input->post('materi');
         $motif = $this->input->post('motif');
+        $kotakab = $this->input->post('kotakab');
         $sejak = $this->input->post('sejak');
         if (empty($sejak)) {
             $sejak = null;
@@ -101,7 +110,7 @@ class Latsen extends Member_Controller {
         }
         if ($id) {
             //edit
-            if ($this->latsen_model->update($id, $tempat, $sejak, $hingga, $materi, $motif)) {
+            if ($this->latsen_model->update($id, $tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //update to neo4j
                 postNeoQuery($this->latsen_model->neo4j_update_query($id, $tempat, $materi));
                 if ($this->input->is_ajax_request()) {
@@ -116,7 +125,7 @@ class Latsen extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->latsen_model->create($tempat, $sejak, $hingga, $materi, $motif)) {
+            if ($new_id = $this->latsen_model->create($tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->latsen_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

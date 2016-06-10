@@ -6,7 +6,29 @@ function load_individu(id) {
         $('#individu_form input[name="religion"]').val(data.religion);
         $('#individu_form select[name="gender"]').val(data.gender);
         $('#individu_form input[name="alias"]').val(data.alias);
-        $('#individu_form input[name="born_place"]').val(data.born_place);
+        //add selected city if any and select it in dropdown
+        if (data.born_kotakab) {
+            $.getJSON(base_url + 'kotakab/get/' + data.born_kotakab, function (kotakab) {
+                $('#individu_form select[name="born_kotakab"]')
+                        .empty() //empty select
+                        .append($("<option/>") //add option tag in select
+                                .val(kotakab.kotakab_id) //set value for option to post it
+                                .text(kotakab.kotakab)) //set a text for show in select
+                        .val(kotakab.kotakab_id) //select option of select2
+                        .trigger("change"); //apply to select2
+            })
+        }
+        if (data.address_kotakab) {
+            $.getJSON(base_url + 'kotakab/get/' + data.address_kotakab, function (kotakab) {
+                $('#individu_form select[name="address_kotakab"]')
+                        .empty() //empty select
+                        .append($("<option/>") //add option tag in select
+                                .val(kotakab.kotakab_id) //set value for option to post it
+                                .text(kotakab.kotakab)) //set a text for show in select
+                        .val(kotakab.kotakab_id) //select option of select2
+                        .trigger("change"); //apply to select2
+            })
+        }
         if(data.born_date)
         $('#individu_form input[name="born_date"]').combodate("setValue", new Date(data.born_date));
         $('#individu_form input[name="nationality"]').val(data.nationality);

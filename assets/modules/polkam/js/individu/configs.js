@@ -157,7 +157,7 @@ function formatLatsenList(nt) {
 
 
     markup += "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.sejak + "</div>" +
+            "<div class='select2-result-repository__forks'>" + nt.tempat+(nt.kotakab?', '+nt.kotakab:'') + (nt.sejak?(","+nt.sejak):'') + "</div>" +
             "</div>" +
             "</div></div>";
 
@@ -192,22 +192,6 @@ var latsen_select_config = {
     templateResult: formatLatsenList,
     templateSelection: formatLatsenSelection
 };
-function formatLatihanList(nt) {
-    if (nt.loading)
-        return nt.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + nt.materi + "</div>";
-
-
-
-    markup += "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + nt.tempat + ', ' + nt.sejak + "</div>" +
-            "</div>" +
-            "</div></div>";
-
-    return markup;
-}
 
 function formatLatihanSelection(nt) {
     return nt.materi ? (nt.materi + ' di ' + nt.tempat) : nt.text;
@@ -234,7 +218,7 @@ var latihan_select_config = {
         return markup;
     },
     minimumInputLength: 1, allowClear: true, placeholder: '',
-    templateResult: formatLatihanList,
+    templateResult: formatLatsenList,
     templateSelection: formatLatihanSelection
 };
 function formatTerorList(nt) {
@@ -282,19 +266,6 @@ var teror_select_config = {
     templateResult: formatTerorList,
     templateSelection: formatTerorSelection
 };
-function formatLapasList(l) {
-    if (l.loading)
-        return l.text;
-    var markup = "<div class='select2-result-repository clearfix'>" +
-            "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
-            "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.city + "</div>" +
-            "</div>" +
-            "</div></div>";
-
-    return markup;
-}
 
 function formatLapasSelection(l) {
     return l.name || l.text;
@@ -321,7 +292,7 @@ var lapas_select_config = {
         return markup;
     },
     minimumInputLength: 1, allowClear: true, placeholder: '',
-    templateResult: formatLapasList,
+    templateResult: formatSchoolList,
     templateSelection: formatLapasSelection
 };
 function formatOrganisasiList(org) {
@@ -417,7 +388,7 @@ function formatSchoolList(l) {
             "<div class='select2-result-repository__meta'>" +
             "<div class='select2-result-repository__title'>" + l.name + "</div>" +
             "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.city + "</div>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.kotakab + "</div>" +
             "</div>" +
             "</div></div>";
 
@@ -484,23 +455,35 @@ var masjid_select_config = {
     templateResult: formatMasjidList,
     templateSelection: formatMasjidSelection
 };
-var masjid_autocomplete_config = {
-    source: base_url + "masjid/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
+function formatKotakabList(org) {
+    return org.kotakab
+}
+
+function formatKotakabSelection(org) {
+    return org.kotakab || org.text;
+}
+var kotakab_select_config = {
+    ajax: {
+        url: base_url + "kotakab/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
     },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.id);
-    }
-};
-var lapas_autocomplete_config = {
-    source: base_url + "lapas/search",
-    minLength: 4,
-    create: function (e) {
-        $(this).next('.ui-helper-hidden-accessible').remove();
+    escapeMarkup: function (markup) {
+        return markup;
     },
-    select: function (e, ui) {
-        $(this).data('reference_id', ui.item.id);
-    }
+    minimumInputLength: 1, allowClear: true, placeholder: '',
+    templateResult: formatKotakabList,
+    templateSelection: formatKotakabSelection
 };

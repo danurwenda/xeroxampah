@@ -43,27 +43,34 @@ class Latihan extends Member_Controller {
     }
 
     function add() {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(10);
-
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(11);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['title'] = 'Tambah Latihan';
         $this->template->display('latihan/add_view', $data);
     }
 
     function index() {
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(10);
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(11);
         $data['title'] = 'tr.db | Latihan';
         $this->template->display('latihan/table_view', $data);
     }
 
     function edit($id) {
         //load form and populate
-        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(10);
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(11);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
         ];
         $data['title'] = 'Ubah Latihan';
@@ -88,6 +95,7 @@ class Latihan extends Member_Controller {
     //REST-like
     function submit() {
         $id = $this->input->post('latihan_id');
+        $kotakab = $this->input->post('kotakab');
         $tempat = $this->input->post('tempat');
         $materi = $this->input->post('materi');
         $motif = $this->input->post('motif');
@@ -101,7 +109,7 @@ class Latihan extends Member_Controller {
         }
         if ($id) {
             //edit
-            if ($this->latihan_model->update($id, $tempat, $sejak, $hingga, $materi, $motif)) {
+            if ($this->latihan_model->update($id, $tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //update to neo4j
                 postNeoQuery($this->latihan_model->neo4j_update_query($id, $tempat, $materi));
                 if ($this->input->is_ajax_request()) {
@@ -116,7 +124,7 @@ class Latihan extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->latihan_model->create($tempat, $sejak, $hingga, $materi, $motif)) {
+            if ($new_id = $this->latihan_model->create($tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->latihan_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

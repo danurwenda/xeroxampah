@@ -73,7 +73,6 @@ function postNeoQuery($q) {
             postNeoQuery($qq);
         }
     } else {
-        echo $q;
 //        $NEO_URL = 'https://tci.polkam.go.id:7473/db/data/transaction/commit';
         $NEO_URL = 'http://localhost:7474/db/data/transaction/commit';
         if (true) {

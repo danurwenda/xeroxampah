@@ -32,10 +32,11 @@ class Teror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif) {
+    public function update($id, $tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
+                    'kotakab_id' => $kotakab,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
                     'serangan' => $serangan,
@@ -45,11 +46,12 @@ class Teror_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif) {
+    public function create($tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         $this->db->insert(
                 $this->table, array(
             'tempat' => $tempat,
             'tanggal' => $tanggal,
+            'kotakab_id' => $kotakab,
             'waktu' => $waktu,
             'serangan' => $serangan,
             'sasaran' => $sasaran,

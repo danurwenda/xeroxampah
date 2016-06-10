@@ -19,6 +19,7 @@ echo js_asset('jquery-ui.js', 'ace');
                 <div class="col-sm-9">
                     <div class="clearfix">
                         <input type="text" class="form-control" name="tempat" />
+                        <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                     </div>
                 </div>
             </div>

@@ -41,14 +41,14 @@ class Pengajian extends Member_Controller {
         foreach ($r as $i) {
             //craft return
             $i['id'] = $i['pengajian_id'] + 0;
-            $lokasi='';
-            if($i['mname']){
+            $lokasi = '';
+            if ($i['mname']) {
                 $lokasi.=$i['mname'];
             }
-            if($i['sname']){
-                $lokasi.=', '.$i['sname'];
+            if ($i['sname']) {
+                $lokasi.=', ' . $i['sname'];
             }
-            $i['lokasi']=$lokasi;
+            $i['lokasi'] = $lokasi;
             $ret[] = $i;
         }
         echo json_encode($ret);
@@ -107,7 +107,13 @@ class Pengajian extends Member_Controller {
         $id = $this->input->post('pengajian_id');
         $nama = $this->input->post('topik');
         $masjid = $this->input->post('masjid');
+        $masjid_name = $this->input->post('masjid_name');
+        $masjid_address = $this->input->post('masjid_address');
+        $masjid_kotakab = $this->input->post('masjid_kotakab');
         $pesantren = $this->input->post('pesantren');
+        $pesantren_name = $this->input->post('pesantren_name');
+        $pesantren_address = $this->input->post('pesantren_address');
+        $pesantren_kotakab = $this->input->post('pesantren_kotakab');
         if ($id) {
             //edit
             if ($this->pengajian_model->update($id, $nama, $masjid, $pesantren)) {
@@ -125,10 +131,22 @@ class Pengajian extends Member_Controller {
             }
         } else {
             //add
+            //kalo masjid nya kosong, tapi ada masjid_name dan kotakab,
+            //add mesjid
+            if (!isset($masjid) && (isset($masjid_name) && isset($masjid_kotakab) && isset($masjid_address))) {
+                $this->load->model('masjid_model');
+                $masjid = $this->masjid_model->create($masjid_name, $masjid_address, $masjid_kotakab);
+                $q[] = $this->masjid_model->neo4j_insert_query($masjid);
+            }
+            if (!isset($pesantren) && (isset($pesantren_name) && isset($pesantren_kotakab) && isset($pesantren_address))) {
+                $this->load->model('school_model');
+                $pesantren = $this->school_model->create($pesantren_name, $pesantren_address, $pesantren_kotakab);
+                $q[] = $this->school_model->neo4j_insert_query($pesantren);
+            }
             //insert to db
             if ($new_id = $this->pengajian_model->create($nama, $masjid, $pesantren)) {
                 //insert to neo4j
-                $q = $this->pengajian_model->neo4j_insert_query($new_id);
+                $q[] = $this->pengajian_model->neo4j_insert_query($new_id);
                 postNeoQuery($q);
                 if ($this->input->is_ajax_request()) {
                     echo json_encode(['q' => $q, $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);

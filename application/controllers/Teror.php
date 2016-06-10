@@ -49,11 +49,13 @@ class Teror extends Member_Controller {
         $data['title'] = 'Tambah Teror';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
+            , ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('teror/add_view', $data);
@@ -72,11 +74,13 @@ class Teror extends Member_Controller {
         $data['title'] = 'Ubah Teror';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
+            , ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
             , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['edit_id'] = $id;
         $this->template->display('teror/add_view', $data);
@@ -101,13 +105,14 @@ class Teror extends Member_Controller {
         $id = $this->input->post('teror_id');
         $tempat = $this->input->post('tempat');
         $serangan = $this->input->post('serangan');
+        $kotakab = $this->input->post('kotakab');
         $sasaran = $this->input->post('sasaran');
         $tanggal = $this->input->post('tanggal');
         $waktu = $this->input->post('waktu');
         $motif = $this->input->post('motif');
         if ($id) {
             //edit
-            if ($this->teror_model->update($id, $tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+            if ($this->teror_model->update($id, $tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
                 //update to neo4j
                 postNeoQuery($this->teror_model->neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran));
                 if ($this->input->is_ajax_request()) {
@@ -122,7 +127,7 @@ class Teror extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->teror_model->create($tempat, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+            if ($new_id = $this->teror_model->create($tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

@@ -49,11 +49,13 @@ class Nonteror extends Member_Controller {
         $data['title'] = 'Tambah Nonteror';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
+            , ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $data['sources'] = $this->source_model->get_all();
         $this->template->display('nonteror/add_view', $data);
@@ -72,9 +74,11 @@ class Nonteror extends Member_Controller {
         $data['title'] = 'Ubah Nonteror';
         $data['css_assets'] = [
             ['module' => 'ace', 'asset' => 'bootstrap-timepicker.css']
+            , ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
             , ['module' => 'ace', 'asset' => 'date-time/bootstrap-timepicker.js']
         ];
@@ -101,13 +105,14 @@ class Nonteror extends Member_Controller {
         $id = $this->input->post('nonteror_id');
         $tempat = $this->input->post('tempat');
         $pidana = $this->input->post('pidana');
+        $kotakab = $this->input->post('kotakab');
         $korban = $this->input->post('korban');
         $tanggal = $this->input->post('tanggal');
         $waktu = $this->input->post('waktu');
         $motif = $this->input->post('motif');
         if ($id) {
             //edit
-            if ($this->nonteror_model->update($id, $tempat, $tanggal, $waktu, $pidana, $korban, $motif)) {
+            if ($this->nonteror_model->update($id, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
                 //update to neo4j
                 postNeoQuery($this->nonteror_model->neo4j_update_query($id, $tempat, $tanggal, $waktu, $pidana, $korban));
                 if ($this->input->is_ajax_request()) {
@@ -122,7 +127,7 @@ class Nonteror extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->nonteror_model->create($tempat, $tanggal, $waktu, $pidana, $korban, $motif)) {
+            if ($new_id = $this->nonteror_model->create($tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->nonteror_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

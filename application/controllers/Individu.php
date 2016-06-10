@@ -65,10 +65,11 @@ class Individu extends Member_Controller {
         if (empty($born_date)) {
             $born_date = null;
         }
-        $born_place = $this->input->post('born_place');
+        $born_kotakab = $this->input->post('born_kotakab');
         $nationality = $this->input->post('nationality');
         $source_id = $this->input->post('source_id');
         $address = $this->input->post('address');
+        $address_kotakab = $this->input->post('address_kotakab');
         $religion = $this->input->post('religion');
         $gender = $this->input->post('gender');
         $recent_edu = $this->input->post('recent_edu');
@@ -149,7 +150,8 @@ class Individu extends Member_Controller {
             'individu_name',
             'alias',
             'born_date',
-            'born_place',
+            'born_kotakab',
+            'address_kotakab',
             'nationality',
             'source_id',
             'address',
@@ -545,7 +547,7 @@ class Individu extends Member_Controller {
                 ]);
             } else {
                 //back to table
-                //redirect('individu');
+                redirect('individu');
             }
         }
     }
@@ -556,7 +558,8 @@ class Individu extends Member_Controller {
     function dt() {
         if ($this->input->is_ajax_request()) {
             $this->datatables
-                    ->select('individu_name,born_date,born_place,alias,individu_id')
+                    ->select('individu_name,born_date,kotakab,alias,individu_id')
+                    ->join('kotakab','kotakab.kotakab_id=individu.born_kotakab','left')
                     ->add_column('DT_RowId', 'row_$1', 'individu_id')
                     ->from('individu');
             echo $this->datatables->generate();

@@ -36,11 +36,11 @@ echo js_asset('jquery-ui.js', 'ace');
             <!--<div class="space-2"></div>-->
 
             <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="password2">City:</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="kotakab">Kota:</label>
 
                 <div class="col-xs-12 col-sm-9">
                     <div class="clearfix">
-                        <input type="text" name="city" id="city" class="col-xs-12 col-sm-4" />
+                        <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                     </div>
                 </div>
             </div>

@@ -6,22 +6,22 @@ jQuery(function ($) {
                 //serialize the form, except those in hidden template
                 , h = form.find(":input:not(.template :input)").serialize();
         // process the form
-        if (true)
-            $.ajax({
-                type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-                url: base_url + 'individu/submit', // the url where we want to POST
-                data: h, // our data object
-                dataType: 'json', // what type of data do we expect back from the server
-                encode: true
-            })
-                    // using the done promise callback
-                    .done(function (data) {
-                        //reset and close modal
-                        form[0].reset();
-                        //reset expandable
-                        form.find('.btn-delete:not(.template *)').click();
-                        $('#individu-modal-form').modal('hide');
-                    });
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'individu/submit', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    //reset expandable
+                    form.find('.btn-delete:not(.template *)').click();
+                    console.log('kenapa ga close??')
+                    $('#individu-modal-form').modal('hide');
+                });
     });
 
     // PENGAJIAN
@@ -249,7 +249,7 @@ jQuery(function ($) {
     }
     $('#individu_form select[name="gender"]').change(function () {
         var pasangan = $('#individu_form select[name="relation_49[]"]');
-        if (pasangan.length>0) {
+        if (pasangan.length > 0) {
             pasangan.val(null).trigger('change');
         }
         adjustGender(pasangan)
@@ -353,6 +353,7 @@ jQuery(function ($) {
     // AUTO COMPLETES
     // input type di autocomplete ini akan auto-add jika bukan reference
     //individu
+    $('select.kotakab-select2').select2(kotakab_select_config);
     $('select.male-select2').select2(male_select_config);
     $('select.female-select2').select2(female_select_config);
     $('select.individu-select2').select2(individu_select_config);
@@ -360,12 +361,6 @@ jQuery(function ($) {
         format: "YYYY-MM-DD",
         template: "MMM YYYY"
     });
-    //masjid
-
-    $('.masjid-autocomplete').autocomplete(masjid_autocomplete_config);
-    //lapas
-
-    $('.lapas-autocomplete').autocomplete(lapas_autocomplete_config);
     //jaringan
     var network_autocomplete_config = {
         source: base_url + "network/search",

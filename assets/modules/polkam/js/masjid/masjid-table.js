@@ -22,7 +22,7 @@ jQuery(function ($) {
                 data: 'address'
             },
             {
-                data: 'city'
+                data: 'kotakab'
             },
             {
                 //actions

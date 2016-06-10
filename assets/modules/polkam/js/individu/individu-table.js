@@ -25,7 +25,7 @@ jQuery(function ($) {
                 data: 'born_date',
                 searchable: false,
                 render: function (d, t, f, m) {
-                    var formatted = f.born_place || '';
+                    var formatted = f.kotakab || '';
                     if (d) {
                         var date = new Date(d);
                         formatted += ', ' + date.getDate() + '-' + (1 + date.getMonth()) + '-' + date.getFullYear();

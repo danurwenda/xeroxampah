@@ -5,7 +5,7 @@ function formatSchoolList(l) {
             "<div class='select2-result-repository__meta'>" +
             "<div class='select2-result-repository__title'>" + l.name + "</div>" +
             "<div class='select2-result-repository__statistics'>" +
-            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.city + "</div>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.kotakab + "</div>" +
             "</div>" +
             "</div></div>";
 
