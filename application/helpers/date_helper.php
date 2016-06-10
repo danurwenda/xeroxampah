@@ -73,8 +73,7 @@ function postNeoQuery($q) {
             postNeoQuery($qq);
         }
     } else {
-        $NEO_URL = 'https://tci.polkam.go.id:7473/db/data/transaction/commit';
-//        $NEO_URL = 'http://localhost:7474/db/data/transaction/commit';
+        
         if (true) {
             $data = [
                 'statements' => [
@@ -87,7 +86,8 @@ function postNeoQuery($q) {
             //print_r($data_string);
 //open connection
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $NEO_URL);
+            $ci=& get_instance();
+            curl_setopt($ch, CURLOPT_URL, $ci->config->item('NEO_URL'));
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
 //curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
