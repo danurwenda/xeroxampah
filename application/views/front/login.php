@@ -26,7 +26,13 @@
         <!--[if lte IE 9]>
           <link rel="stylesheet" href="../assets/css/ace-ie.css" />
         <![endif]-->
-
+ <!-- page specific plugin styles -->
+        <?php
+        if (!empty($css_assets))
+            foreach ($css_assets as $value) {
+                echo css_asset($value['asset'], $value['module']);
+            }
+        ?>
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if !IE]> -->
         <script type="text/javascript">
@@ -50,8 +56,7 @@
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="login-container">
                             <div class="center">
-                                <?php echo image_asset('login/polkam-logo.png','polkam');?>
-                                <h4 class="blue" id="id-company-text">Terrorist Counterintelligence</h4>
+                                <h4 class="blue" id="id-company-text">bukuputih.id</h4>
                             </div>
 
                             <div class="space-6"></div>
@@ -157,20 +162,7 @@
                                 </div><!-- /.forgot-box -->
                             </div><!-- /.position-relative -->
 
-                            <div class="navbar-fixed-top align-right">
-                                <br />
-                                &nbsp;
-                                <a id="btn-login-dark" href="#">Dark</a>
-                                &nbsp;
-                                <span class="blue">/</span>
-                                &nbsp;
-                                <a id="btn-login-blur" href="#">Blur</a>
-                                &nbsp;
-                                <span class="blue">/</span>
-                                &nbsp;
-                                <a id="btn-login-light" href="#">Light</a>
-                                &nbsp; &nbsp; &nbsp;
-                            </div>
+                            
                         </div>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

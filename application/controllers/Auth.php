@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Auth extends CI_Controller {
 
     function __construct() {
-        parent::__construct();		
+        parent::__construct();
         $this->load->library('access');
     }
 
@@ -21,10 +21,13 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         $this->form_validation->set_rules('token', 'token', 'callback_check_login');
         if ($this->form_validation->run() == false) {
-            $data['title']='Dashboard Deputi III KSP';
+            $data['title'] = 'bukuputih.id';
+            $data['css_assets'] = [
+                ['module' => 'polkam', 'asset' => 'login.css']
+            ];
             $this->load->view('front/login', $data);
         } else {
-              redirect('dashboard');
+            redirect('dashboard');
         }
     }
 
