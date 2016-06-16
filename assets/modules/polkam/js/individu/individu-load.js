@@ -110,6 +110,33 @@ function load_individu(id) {
 
             });
         }
+        if (data.bap) {
+            $.each(data.bap, function (i, v) {
+               var row = cloneTemplate('#bap-widget');
+               //ubah input file menjadi link download
+               row.find('input[type=file]').parent().empty()
+                       .append("<a href='"+base_url+"uploads/"+v+"' >"+v+"</a>");
+               //dan kasih special handling buat tombol hapus
+               row.find('button').click(function(){
+                   //mark for deletion (but don't delete now)
+                   $('#individu_form').append($('<input/>', {type: 'hidden', name: 'deleted_bap[]', value: v}));
+               });
+            });
+        }
+        if (data.saudara) {
+            $.each(data.saudara, function (i, v) {
+                $.getJSON(base_url + 'individu/get/' + v, function (f) {
+                    insertIndividuRow(48).find('select')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(f.individu_id) //set value for option to post it
+                                    .text(f.individu_name)) //set a text for show in select
+                            .val(f.individu_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                });
+
+            });
+        }
         if (data.anak) {
             $.each(data.anak, function (i, v) {
                 $.getJSON(base_url + 'individu/get/' + v, function (f) {

@@ -33,6 +33,12 @@ class Individu_model extends CI_Model {
                 ->get_where($this->table, [$this->primary_key => $id]);
         if ($q->num_rows() > 0) {
             $individu = $q->row();
+            //file BAP
+            $bap = [];
+            foreach ($this->db->get_where('bap',['individu_id'=>$id])->result() as $baps) {
+                $bap[] = $baps->filename;
+            }
+            $individu->bap = $bap;
             //add relation
             //FAMILY
             //ayah & ibu
@@ -53,6 +59,11 @@ class Individu_model extends CI_Model {
                     ->get_where('edge', ['source_id' => $id, 'weight_id' => 48])
                     ->result() as $saudaras) {
                 $saudara[] = $saudaras->target_id;
+            }
+            foreach ($this->db
+                    ->get_where('edge', ['target_id' => $id, 'weight_id' => 48])
+                    ->result() as $saudaras) {
+                $saudara[] = $saudaras->source_id;
             }
             $individu->saudara = $saudara;
             //pasangan

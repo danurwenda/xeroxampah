@@ -9,7 +9,7 @@ echo js_asset('jquery-ui.js', 'ace');
 <div class="row">
     <div class="col-xs-12">
         <h3 class="header smaller lighter blue"><?php echo isset($edit_id) ? 'Ubah' : 'Tambah'; ?> Individu</h3>
-        <?php echo form_open('individu', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'individu_form']); ?>
+        <?php echo form_open_multipart('individu', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'individu_form']); ?>
         <div class="row">
             <div class="col-xs-6 col-sm-6">
                 <!-- NAMA -->
@@ -546,6 +546,49 @@ echo js_asset('jquery-ui.js', 'ace');
             </div>
             <!-- RIGHT COLUMN -->
             <div class="col-sm-6">
+                <div class="widget-box collapsed">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Berkas BAP</h4>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main template-group"  id="bap-widget">
+                            <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Berkas </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="file" name="userfile[]"  />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                    <div class="col-sm-9">
+                                        <button class="btn btn-delete btn-danger" type="button">
+                                            <i class="ace-icon fa fa-remove bigger-110"></i>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Berkas </label>
+
+                                <div class="col-sm-9">
+                                    <span class="input-group-addon plus">
+                                        <i class="fa fa-plus bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="widget-box collapsed">
                     <div class="widget-header">
                         <h4 class="widget-title">Data Keluarga</h4>

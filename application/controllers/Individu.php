@@ -56,6 +56,7 @@ class Individu extends Member_Controller {
     }
 
     function submit() {
+
         //list all column on db
         //simple
         $individu_name = $this->input->post('individu_name');
@@ -193,6 +194,7 @@ class Individu extends Member_Controller {
                         $father_id = null;
                     }
                 }
+                //cari relasi ke ayah an dengan anak si new_id
                 $f = $this->db->get_where('edge', ['weight_id' => 46, 'target_id' => $new_id]);
                 if (!empty($father_id)) {
                     //update or insert
@@ -251,17 +253,80 @@ class Individu extends Member_Controller {
                         $this->edge_model->delete($eid);
                     }
                 }
+                //SAUDARA
+                //hapus eemua edges persaudaraan baik di sql maupun di neo
+                foreach ($this->db
+                        ->from('edge')
+                        ->group_start()
+                        ->or_where('source_id', $new_id)
+                        ->or_where('target_id', $new_id)
+                        ->group_end()
+                        ->where('weight_id', 48)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $saudaras = $this->input->post('relation_48');
+                if (!empty($saudaras)) {
+                    foreach ($saudaras as $saudara) {
+                        if (is_numeric($saudara)) {
+                            //check db
+                            $saudara = $this->db->get_where('individu', ['individu_id' => $saudara]);
+                            if ($saudara->num_rows() > 0) {
+                                //ada
+                                $saudara_id = $saudara->row()->individu_id;
+                            } else {
+                                $saudara_id = null;
+                            }
+                        }
+                        if (!empty($saudara_id)) {
+                            $eid = $this->edge_model->insert($new_id, $saudara_id, 48, null);
+                            $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                        }
+                    }
+                }
+                //ANAK
+                //hapus eemua edges PERANAKAN baik di sql maupun di neo
+                foreach ($this->db
+                        ->from('edge')
+                        ->where_in('weight_id', [46, 47])
+                        ->where('source_id', $new_id)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $anaks = $this->input->post('relation_50');
+                if (!empty($anaks)) {
+                    foreach ($anaks as $anak) {
+                        if (is_numeric($anak)) {
+                            //check db
+                            $anak = $this->db->get_where('individu', ['individu_id' => $anak]);
+                            if ($anak->num_rows() > 0) {
+                                //ada
+                                $anak_id = $anak->row()->individu_id;
+                            } else {
+                                $anak_id = null;
+                            }
+                        }
+                        if (!empty($anak_id)) {
+                            //berarti si new_id ini bapak/ibu nya si anak_id
+                            $eid = $this->edge_model->insert($new_id, $anak_id, $gender === 'Perempuan' ? 47 : 46, null);
+                            $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                        }
+                    }
+                }
                 // LEMBAGA PENDIDIKAN
-                $this->load->model('school_model');
-                //pertama-tama kita bandingkan sama list of sch_edge_id
-                $old_edges = $this->db
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
                         ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
                         ->get_where('edge', ['source_id' => $new_id, 'type' => 3])
-                        ->result();
-                //hapus eemua old_edges baik di sql maupun di neo
-                foreach($old_edges as $oe){
+                        ->result() as $oe) {
                     //hapus
-                    $n4jq[]=  $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
                     $this->edge_model->delete($oe->edge_id);
                 }
                 $sch_edges = $this->input->post('edu_edge');
@@ -288,6 +353,180 @@ class Individu extends Member_Controller {
                         $eid = $this->edge_model->insert($new_id, $sch_id, $sch_edge, json_encode($attr));
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
+                }
+                // LAPAS
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->from('edge')
+                        ->where('weight_id', 56)
+                        ->where('source_id', $new_id)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $lapas_edge = 56;
+                $lapas_ids = $this->input->post('lapas_id');
+                $lapas_starts = $this->input->post('lapas_start');
+                $lapas_ends = $this->input->post('lapas_end');
+                for ($i = 0; $i < count($lapas_ids); $i++) {
+                    $lapas_id = $lapas_ids[$i];
+                    if (!empty($lapas_id)) {
+
+                        //insert ke table relasi (edge)
+                        $attr = [];
+                        $end = $lapas_ends[$i];
+                        if (!empty($end)) {
+                            //convert to SQL-compliant format
+                            $attr['until'] = $end;
+                        }
+                        $start = $lapas_starts[$i];
+                        if (!empty($start)) {
+                            //convert to SQL-compliant format
+                            $attr['from'] = $start;
+                        }
+                        $eid = $this->edge_model->insert($new_id, $lapas_id, $lapas_edge, json_encode($attr));
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                // ORGANISASI
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 2])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $org_edges = $this->input->post('org_edge');
+                $organisasi_ids = $this->input->post('organisasi_id');
+                $org_starts = $this->input->post('org_start');
+                $org_ends = $this->input->post('org_end');
+                $this->load->model('organisasi_model');
+                for ($i = 0; $i < count($org_edges); $i++) {
+                    $org_edge = $org_edges[$i];
+                    $organisasi_id = $organisasi_ids[$i];
+                    if (!empty($organisasi_id)) {
+
+                        //insert ke table relasi (edge)
+                        $attr = [];
+                        $end = $org_ends[$i];
+                        if (!empty($end)) {
+                            //convert to SQL-compliant format
+                            $attr['until'] = $end;
+                        }
+                        $start = $org_starts[$i];
+                        if (!empty($start)) {
+                            //convert to SQL-compliant format
+                            $attr['from'] = $start;
+                        }
+                        $eid = $this->edge_model->insert($new_id, $organisasi_id, $org_edge, json_encode($attr));
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                //PENGAJIAN 
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 9])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $pengajian_edges = $this->input->post('pengajian_edge');
+                $pengajians = $this->input->post('pengajian_id'); //may be null
+                for ($i = 0; $i < count($pengajian_edges); $i++) {
+                    if (!empty($pengajians[$i])) {
+                        //insert ke table relasi
+                        $eid = $this->edge_model->insert($new_id, $pengajians[$i], $pengajian_edges[$i], null);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                //NON TEROR
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 7])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $nteror_edges = $this->input->post('nonteror_edge');
+                $nterors = $this->input->post('nonteror'); //may be null
+                for ($i = 0; $i < count($nteror_edges); $i++) {
+                    if (!empty($nterors[$i])) {
+                        //insert ke table relasi
+                        $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                // TEROR
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 6])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $teror_edges = $this->input->post('teror_edge');
+                $terors = $this->input->post('teror'); //may be null
+                for ($i = 0; $i < count($teror_edges); $i++) {
+                    if (!empty($terors[$i])) {
+                        //insert ke table relasi
+                        $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                // LATSEN
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 8])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $latsen_edges = $this->input->post('latsen_edge');
+                $latsens = $this->input->post('latsen'); //may be null
+                for ($i = 0; $i < count($latsen_edges); $i++) {
+                    if (!empty($latsens[$i])) {
+                        //insert ke table relasi
+                        $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], null);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+                // LATIHAN
+                //hapus eemua old_edges baik di sql maupun di neo
+                foreach ($this->db
+                        ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                        ->get_where('edge', ['source_id' => $new_id, 'type' => 11])
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $latihan_edges = $this->input->post('latihan_edge');
+                $latihans = $this->input->post('latihan'); //may be null
+                for ($i = 0; $i < count($latihan_edges); $i++) {
+                    if (!empty($latihans[$i])) {
+                        //insert ke table relasi
+                        $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], null);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
+
+                //saat edit, bisa jadi delete document bap
+                $deleted_baps = $this->input->post('deleted_bap'); //may be null
+                $this->load->model('document_model');
+                for ($i = 0; $i < count($deleted_baps); $i++) {
+                    $this->document_model->delete_by_name($deleted_baps[$i]);
                 }
                 $this->db->trans_complete();
                 $exe_neo = true;
@@ -391,7 +630,8 @@ class Individu extends Member_Controller {
                         }
                     }
                     if (!empty($anak_id)) {
-                        $eid = $this->edge_model->insert($new_id, $anak_id, 50, null);
+                        //berarti si new_id ini bapak/ibu nya si anak_id
+                        $eid = $this->edge_model->insert($new_id, $anak_id, $gender === 'Perempuan' ? 47 : 46, null);
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
                 }
@@ -529,6 +769,27 @@ class Individu extends Member_Controller {
             $this->db->trans_complete();
             $exe_neo = true;
         }
+
+        //mapping BAP
+        //BAP
+        $this->load->library('upload');
+        $this->load->model('document_model');
+        $files = $_FILES;
+        if (isset($_FILES['userfile'])) {
+            $cpt = count($_FILES['userfile']['name']);
+            for ($i = 0; $i < $cpt; $i++) {
+                $_FILES['userfile']['name'] = $files['userfile']['name'][$i];
+                $_FILES['userfile']['type'] = $files['userfile']['type'][$i];
+                $_FILES['userfile']['tmp_name'] = $files['userfile']['tmp_name'][$i];
+                $_FILES['userfile']['error'] = $files['userfile']['error'][$i];
+                $_FILES['userfile']['size'] = $files['userfile']['size'][$i];
+
+                $this->upload->initialize($this->set_upload_options());
+                if ($this->upload->do_upload()) {
+                    $this->document_model->insert($this->upload->data('file_name'), $new_id);
+                }
+            }
+        }
         if ($exe_neo) {
             // SQL DATABASE DONE
             //================POST TO NEO4J=============================
@@ -552,6 +813,14 @@ class Individu extends Member_Controller {
         }
     }
 
+    private function set_upload_options() {
+        //upload an image options
+        return[
+            'upload_path' => './uploads/',
+            'allowed_types' => 'docx|pdf|doc'
+        ];
+    }
+
     /**
      * Server-side processing for datatables
      */
@@ -559,7 +828,7 @@ class Individu extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             $this->datatables
                     ->select('individu_name,born_date,kotakab,alias,individu_id')
-                    ->join('kotakab','kotakab.kotakab_id=individu.born_kotakab','left')
+                    ->join('kotakab', 'kotakab.kotakab_id=individu.born_kotakab', 'left')
                     ->add_column('DT_RowId', 'row_$1', 'individu_id')
                     ->from('individu');
             echo $this->datatables->generate();
