@@ -1,3 +1,35 @@
+function formatKotakabList(org) {
+    return org.kotakab
+}
+
+function formatKotakabSelection(org) {
+    return org.kotakab || org.text;
+}
+var kotakab_select_config = {
+    ajax: {
+        url: base_url + "kotakab/search",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page
+            };
+        },
+        processResults: function (data, params) {
+            return {
+                results: data
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    },
+    minimumInputLength: 1, allowClear: true, placeholder: '',
+    templateResult: formatKotakabList,
+    templateSelection: formatKotakabSelection
+};
 function formatSchoolList(l) {
     if (l.loading)
         return l.text;
@@ -13,7 +45,7 @@ function formatSchoolList(l) {
 }
 
 function formatSchoolSelection(org) {
-    return org.name||org.text;
+    return org.name || org.text;
 }
 var school_select_config = {
     ajax: {
@@ -39,8 +71,8 @@ var school_select_config = {
     minimumInputLength: 1,
     templateResult: formatSchoolList,
     templateSelection: formatSchoolSelection,
-    allowClear:true,
-    placeholder:'Pilih Sekolah'
+    allowClear: true,
+    placeholder: 'Pilih Sekolah'
 };
 function formatMasjidList(org) {
     return formatSchoolList(org)
@@ -73,6 +105,6 @@ var masjid_select_config = {
     minimumInputLength: 1,
     templateResult: formatMasjidList,
     templateSelection: formatMasjidSelection,
-    allowClear:true,
-    placeholder:'Pilih Masjid'
+    allowClear: true,
+    placeholder: 'Pilih Masjid'
 };

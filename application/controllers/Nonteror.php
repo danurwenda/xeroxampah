@@ -108,6 +108,9 @@ class Nonteror extends Member_Controller {
         $kotakab = $this->input->post('kotakab');
         $korban = $this->input->post('korban');
         $tanggal = $this->input->post('tanggal');
+        if (empty($tanggal)) {
+            $tanggal = null;
+        }
         $waktu = $this->input->post('waktu');
         $motif = $this->input->post('motif');
         if ($id) {

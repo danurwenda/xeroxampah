@@ -2,6 +2,7 @@ jQuery(function ($) {
     //select2
     $('.masjid-select2').select2(masjid_select_config);
     $('.school-select2').select2(school_select_config);
+    $('select.kotakab-select2').select2(kotakab_select_config);
     console.log('ikeh init')
     // MASJID
     $('#masjid-modal-form .btn-primary').click(function (e) {

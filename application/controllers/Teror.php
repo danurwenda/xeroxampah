@@ -108,6 +108,9 @@ class Teror extends Member_Controller {
         $kotakab = $this->input->post('kotakab');
         $sasaran = $this->input->post('sasaran');
         $tanggal = $this->input->post('tanggal');
+        if (empty($tanggal)) {
+            $tanggal = null;
+        }
         $waktu = $this->input->post('waktu');
         $motif = $this->input->post('motif');
         if ($id) {

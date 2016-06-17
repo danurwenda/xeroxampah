@@ -548,7 +548,7 @@ echo js_asset('jquery-ui.js', 'ace');
             <div class="col-sm-6">
                 <div class="widget-box collapsed">
                     <div class="widget-header">
-                        <h4 class="widget-title">Berkas BAP</h4>
+                        <h4 class="widget-title">Dokumen Pendukung</h4>
 
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
