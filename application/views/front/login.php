@@ -26,7 +26,7 @@
         <!--[if lte IE 9]>
           <link rel="stylesheet" href="../assets/css/ace-ie.css" />
         <![endif]-->
- <!-- page specific plugin styles -->
+        <!-- page specific plugin styles -->
         <?php
         if (!empty($css_assets))
             foreach ($css_assets as $value) {
@@ -56,7 +56,10 @@
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="login-container">
                             <div class="center">
-                                <h4 class="blue" id="id-company-text">bukuputih.id</h4>
+                                <a href="#" class="btn btn-primary btn-large">
+                                    <i class="ace-icon fa fa-book bigger-300"></i>
+                                <h4 class="white" id="id-company-text">bukuputih.id</h4>
+                                </a>
                             </div>
 
                             <div class="space-6"></div>
@@ -106,7 +109,7 @@
                                             </fieldset>
                                             </form>
 
-                                            
+
                                         </div><!-- /.widget-main -->
 
                                         <div class="toolbar clearfix">
@@ -162,7 +165,7 @@
                                 </div><!-- /.forgot-box -->
                             </div><!-- /.position-relative -->
 
-                            
+
                         </div>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
