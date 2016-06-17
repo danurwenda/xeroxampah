@@ -1584,7 +1584,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="city" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
                             </div>
                         </div>
 
