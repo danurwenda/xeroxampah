@@ -93,9 +93,10 @@ class Pengajian extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('topik,school.name sname,masjid.name mname,pengajian_id')
+                    ->select('topik,lokasi,school.name sname,masjid.name mname,individu.individu_name iname,pengajian_id')
                     ->add_column('DT_RowId', 'row_$1', 'pengajian_id')
                     ->from('pengajian')
+                    ->join('individu', 'individu.individu_id=pengajian.rumah', 'left')
                     ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
                     ->join('school', 'school.school_id=pengajian.pesantren', 'left');
             echo $this->datatables->generate();

@@ -17,8 +17,10 @@
                 <thead>
                     <tr>
                         <th>Topik</th>
+                        <th>Rumah</th>
                         <th>Masjid</th>
                         <th>Pesantren</th>
+                        <th>Lokasi lain</th>
                         <th></th>
                     </tr>
                 </thead>

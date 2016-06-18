@@ -19,10 +19,16 @@ jQuery(function ($) {
         columns: [
             {data: 'topik'}, //nama pengajian
             {
+                data: 'iname'
+            },
+            {
                 data: 'mname'
             },
             {
                 data: 'sname'
+            },
+            {
+                data: 'lokasi'
             },
             {
                 //actions
