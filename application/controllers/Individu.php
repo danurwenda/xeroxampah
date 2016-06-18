@@ -455,12 +455,13 @@ class Individu extends Member_Controller {
                     $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
                     $this->edge_model->delete($oe->edge_id);
                 }
+                $nteror_dukungan = $this->input->post('nonteror_dukungan');
                 $nteror_edges = $this->input->post('nonteror_edge');
                 $nterors = $this->input->post('nonteror'); //may be null
                 for ($i = 0; $i < count($nteror_edges); $i++) {
                     if (!empty($nterors[$i])) {
                         //insert ke table relasi
-                        $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+                        $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], isset($nteror_dukungan[$i]) ? json_encode(['dukungan' => $nteror_dukungan[$i]]) : null);
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
                 }
@@ -474,12 +475,13 @@ class Individu extends Member_Controller {
                     $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
                     $this->edge_model->delete($oe->edge_id);
                 }
+                $teror_dukungan = $this->input->post('teror_dukungan');
                 $teror_edges = $this->input->post('teror_edge');
                 $terors = $this->input->post('teror'); //may be null
                 for ($i = 0; $i < count($teror_edges); $i++) {
                     if (!empty($terors[$i])) {
                         //insert ke table relasi
-                        $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                        $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], isset($teror_dukungan[$i]) ? json_encode(['dukungan' => $teror_dukungan[$i]]) : null);
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
                 }
@@ -493,12 +495,13 @@ class Individu extends Member_Controller {
                     $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
                     $this->edge_model->delete($oe->edge_id);
                 }
+                $latsen_dukungan = $this->input->post('latsen_dukungan');
                 $latsen_edges = $this->input->post('latsen_edge');
                 $latsens = $this->input->post('latsen'); //may be null
                 for ($i = 0; $i < count($latsen_edges); $i++) {
                     if (!empty($latsens[$i])) {
                         //insert ke table relasi
-                        $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], null);
+                        $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], isset($latsen_dukungan[$i]) ? json_encode(['dukungan' => $latsen_dukungan[$i]]) : null);
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
                 }
@@ -512,12 +515,13 @@ class Individu extends Member_Controller {
                     $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
                     $this->edge_model->delete($oe->edge_id);
                 }
+                $latihan_dukungan = $this->input->post('latihan_dukungan');
                 $latihan_edges = $this->input->post('latihan_edge');
                 $latihans = $this->input->post('latihan'); //may be null
                 for ($i = 0; $i < count($latihan_edges); $i++) {
                     if (!empty($latihans[$i])) {
                         //insert ke table relasi
-                        $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], null);
+                        $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], isset($latihan_dukungan[$i]) ? json_encode(['dukungan' => $latihan_dukungan[$i]]) : null);
                         $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                     }
                 }
@@ -727,41 +731,45 @@ class Individu extends Member_Controller {
             }
             //NON TEROR
             $nteror_edges = $this->input->post('nonteror_edge');
+            $nteror_dukungan = $this->input->post('nonteror_dukungan');
             $nterors = $this->input->post('nonteror'); //may be null
             for ($i = 0; $i < count($nteror_edges); $i++) {
                 if (!empty($nterors[$i])) {
                     //insert ke table relasi
-                    $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], null);
+                    $eid = $this->edge_model->insert($new_id, $nterors[$i], $nteror_edges[$i], isset($nteror_dukungan[$i]) ? json_encode(['dukungan' => $nteror_dukungan[$i]]) : null);
                     $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }
             // TEROR
             $teror_edges = $this->input->post('teror_edge');
+            $teror_dukungan = $this->input->post('teror_dukungan');
             $terors = $this->input->post('teror'); //may be null
             for ($i = 0; $i < count($teror_edges); $i++) {
                 if (!empty($terors[$i])) {
                     //insert ke table relasi
-                    $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], null);
+                    $eid = $this->edge_model->insert($new_id, $terors[$i], $teror_edges[$i], isset($teror_dukungan[$i]) ? json_encode(['dukungan' => $teror_dukungan[$i]]) : null);
                     $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }
             // LATSEN
             $latsen_edges = $this->input->post('latsen_edge');
+            $latsen_dukungan = $this->input->post('latsen_dukungan');
             $latsens = $this->input->post('latsen'); //may be null
             for ($i = 0; $i < count($latsen_edges); $i++) {
                 if (!empty($latsens[$i])) {
                     //insert ke table relasi
-                    $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], null);
+                    $eid = $this->edge_model->insert($new_id, $latsens[$i], $latsen_edges[$i], isset($latsen_dukungan[$i]) ? json_encode(['dukungan' => $latsen_dukungan[$i]]) : null);
                     $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }
             // LATIHAN
             $latihan_edges = $this->input->post('latihan_edge');
+            $latihan_dukungan = $this->input->post('latihan_dukungan');
             $latihans = $this->input->post('latihan'); //may be null
             for ($i = 0; $i < count($latihan_edges); $i++) {
                 if (!empty($latihans[$i])) {
                     //insert ke table relasi
-                    $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], null);
+                    $eid = $this->edge_model->insert($new_id, $latihans[$i], $latihan_edges[$i], isset($latihan_dukungan[$i]) ? json_encode(['dukungan' => $latihan_dukungan[$i]]) : null);
                     $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
             }

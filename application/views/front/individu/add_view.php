@@ -437,13 +437,20 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select data-placeholder="Pilih Relasi..." name="latsen_edge[]">
+                                        <select class="latsen-edge" data-placeholder="Pilih Relasi..." name="latsen_edge[]">
                                             <option value="33">Pelatih</option>
                                             <option value="34">Pemberi Perintah</option>
                                             <option value="35">Perencana</option>
                                             <option value="36">Pelaksana</option>                                    
                                             <option value="37">Pemberi Dukungan</option>                                    
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group hide dukungan attr">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Dukungan" class="form-control" name="latsen_dukungan[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -499,13 +506,20 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select data-placeholder="Pilih Relasi..." name="latihan_edge[]">
+                                        <select class="latihan-edge" data-placeholder="Pilih Relasi..." name="latihan_edge[]">
                                             <option value="38">Pelatih</option>
                                             <option value="39">Pemberi Perintah</option>
                                             <option value="40">Perencana</option>
                                             <option value="41">Pelaksana</option>                                    
                                             <option value="42">Pemberi Dukungan</option>                                     
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group hide dukungan attr">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Dukungan" class="form-control" name="latihan_dukungan[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -831,12 +845,19 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select data-placeholder="Pilih Relasi..." name="teror_edge[]">
+                                        <select class="teror-edge" data-placeholder="Pilih Relasi..." name="teror_edge[]">
                                             <option value="25">Pemberi Perintah</option>
                                             <option value="26">Perencana</option>
                                             <option value="27">Pelaksana</option>                                    
                                             <option value="28">Pemberi Dukungan</option>                                    
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group hide dukungan attr">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Dukungan" class="form-control" name="teror_dukungan[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -892,13 +913,20 @@ echo js_asset('jquery-ui.js', 'ace');
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
 
                                     <div class="col-sm-9">
-                                        <select data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
+                                        <select class="nonteror-edge" data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
 
                                             <option value="29">Pemberi Perintah</option>
                                             <option value="30">Perencana</option>
                                             <option value="31">Pelaksana</option>                                    
                                             <option value="32">Pemberi Dukungan</option>                                    
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group hide dukungan attr">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Dukungan" class="form-control" name="nonteror_dukungan[]" />
                                     </div>
                                 </div>
                                 <div class="form-group">

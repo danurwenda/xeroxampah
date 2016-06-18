@@ -118,6 +118,25 @@ jQuery(function ($) {
         $('#lapas-modal-form').modal('hide');
     });
     // NONTEROR
+    $('#nonteror-widget').on('change', '.nonteror-edge', function () {
+        var select = $(this);
+        //up sampai form-template
+        var form_template = select.parents('.form-template');
+        //convert to number
+        var val = +select.val();
+        switch (val) {
+            case 32:
+                //pemberi dukungan
+                //show dukugnan
+                form_template.find('.attr.dukungan').removeClass('hide');
+                break;
+            
+            default:
+                //hide dukungan
+                form_template.find('.attr').addClass('hide');
+
+        }
+    });
     $('#nonteror-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
@@ -141,6 +160,25 @@ jQuery(function ($) {
         $('#nonteror-modal-form').modal('hide');
     });
     // TEROR
+    $('#teror-widget').on('change', '.teror-edge', function () {
+        var select = $(this);
+        //up sampai form-template
+        var form_template = select.parents('.form-template');
+        //convert to number
+        var val = +select.val();
+        switch (val) {
+            case 28:
+                //pemberi dukungan
+                //show dukugnan
+                form_template.find('.attr.dukungan').removeClass('hide');
+                break;
+            
+            default:
+                //hide dukungan
+                form_template.find('.attr').addClass('hide');
+
+        }
+    });
     $('#teror-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
@@ -166,6 +204,25 @@ jQuery(function ($) {
         $('#teror-modal-form').modal('hide');
     });
     // LATIHAN
+    $('#latihan-widget').on('change', '.latihan-edge', function () {
+        var select = $(this);
+        //up sampai form-template
+        var form_template = select.parents('.form-template');
+        //convert to number
+        var val = +select.val();
+        switch (val) {
+            case 42:
+                //pemberi dukungan
+                //show dukugnan
+                form_template.find('.attr.dukungan').removeClass('hide');
+                break;
+            
+            default:
+                //hide dukungan
+                form_template.find('.attr').addClass('hide');
+
+        }
+    });
     $('#latihan-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
@@ -189,6 +246,25 @@ jQuery(function ($) {
         $('#latihan-modal-form').modal('hide');
     });
     // LATSEN
+    $('#latsen-widget').on('change', '.latsen-edge', function () {
+        var select = $(this);
+        //up sampai form-template
+        var form_template = select.parents('.form-template');
+        //convert to number
+        var val = +select.val();
+        switch (val) {
+            case 37:
+                //pemberi dukungan
+                //show dukugnan
+                form_template.find('.attr.dukungan').removeClass('hide');
+                break;
+            
+            default:
+                //hide dukungan
+                form_template.find('.attr').addClass('hide');
+
+        }
+    });
     $('#latsen-modal-form .btn-primary').click(function (e) {
         //serialize the form
         // process the form
@@ -302,8 +378,8 @@ jQuery(function ($) {
                 //pengajar
                 //tambah info : subjek yang diajar
                 row.find('label').text('Subjek');
-                row.find('.col-sm-9').append('<input type="text" class="addition input-sm form-control" name="edu_end[]" />');
-                row.insertBefore(select.parents('.form-group').first())
+                row.find('.col-sm-9').append('<input type="text" class="addition input-sm form-control" name="edu_subject[]" />');
+                row.insertAfter(select.parents('.form-group').first())
                 break;
             case 51:
                 //santri/murid

@@ -31,7 +31,7 @@ class Masjid extends Member_Controller {
             $this->db->or_where('UPPER(address) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->join('kotakab','kotakab.kotakab_id=masjid.kotakab_id','left')
+                ->join('kotakab', 'kotakab.kotakab_id=masjid.kotakab_id', 'left')
                 ->get('masjid')
                 ->result_array();
         $ret = [];
@@ -66,7 +66,7 @@ class Masjid extends Member_Controller {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
         $data['title'] = 'Ubah Masjid';
         $data['edit_id'] = $id;
-         $data['css_assets'] = [
+        $data['css_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
@@ -83,7 +83,7 @@ class Masjid extends Member_Controller {
             //ajax only
             $this->datatables
                     ->select('name,address,kotakab,masjid_id')
-                    ->join('kotakab','kotakab.kotakab_id=masjid.kotakab_id')
+                    ->join('kotakab', 'kotakab.kotakab_id=masjid.kotakab_id', 'left')
                     ->add_column('DT_RowId', 'row_$1', 'masjid_id')
                     ->from('masjid');
             echo $this->datatables->generate();
