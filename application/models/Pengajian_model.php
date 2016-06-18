@@ -38,19 +38,23 @@ class Pengajian_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $topik, $masjid, $pesantren) {
+    public function update($id, $topik, $rumah, $masjid, $pesantren, $lokasi) {
         return $this->db->update(
                         $this->table, array(
                     'topik' => $topik,
+                    'rumah' => $rumah,
+                    'lokasi' => $lokasi,
                     'masjid' => $masjid,
                     'pesantren' => $pesantren
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($topik, $masjid, $pesantren) {
+    public function create($topik, $rumah, $masjid, $pesantren,$lokasi) {
         $this->db->insert(
                 $this->table, array(
+            'rumah' => $rumah,
+            'lokasi' => $lokasi,
             'topik' => $topik,
             'masjid' => $masjid,
             'pesantren' => $pesantren
@@ -80,6 +84,11 @@ class Pengajian_model extends CI_Model {
             $match.="match(p:School{school_id:$pesantren})";
             $edge.=$merge . "-[l2:Lokasi]->(p)";
         }
+        if ($pengajian->rumah) {
+            $rumah = $pengajian->rumah;
+            $match.="match(i:Individu{individu_id:$rumah})";
+            $edge.=$merge . "-[l3:Lokasi]->(i)";
+        }
         if (empty($edge)) {
             return $merge;
         } else {
@@ -101,6 +110,10 @@ class Pengajian_model extends CI_Model {
         if ($pesantren) {
             $match.= ",(s2:School{school_id:$pesantren})";
             $newRel.="merge(p)-[r2:Lokasi]->(s2)";
+        }
+        if ($rumah) {
+            $match.= ",(i2:Individu{individu_id:$rumah})";
+            $newRel.="merge(p)-[r3:Lokasi]->(i2)";
         }
         //delete existing relationship, if any
         $delRel = "delete d ";

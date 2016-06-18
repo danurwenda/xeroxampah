@@ -1,9 +1,31 @@
 jQuery(function ($) {
     //select2
+    $('.individu-select2').select2(individu_select_config);
     $('.masjid-select2').select2(masjid_select_config);
     $('.school-select2').select2(school_select_config);
     $('select.kotakab-select2').select2(kotakab_select_config);
-    console.log('ikeh init')
+    // INDIVIDU
+    $('#individu-modal-form .btn-primary').click(function (e) {
+        var form = $('#individu-modal-form form')
+                //serialize the form, except those in hidden template
+                , h = form.find(":input:not(.template :input)").serialize();
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'individu/submit', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    //reset expandable
+                    form.find('.btn-delete:not(.template *)').click();
+                    $('#individu-modal-form').modal('hide');
+                });
+    });
     // MASJID
     $('#masjid-modal-form .btn-primary').click(function (e) {
         //serialize the form

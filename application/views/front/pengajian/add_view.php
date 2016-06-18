@@ -24,6 +24,18 @@ echo js_asset('jquery-ui.js', 'ace');
             <!--<div class="space-2"></div>-->
 
             <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="masjid">Rumah :</label>
+
+                <div class="col-xs-12 col-sm-9">
+                    <div class="input-group">
+                        <select style="width: 100%" class="form-control individu-select2" name="rumah"></select>
+                        <span class="input-group-addon" data-toggle="modal" data-target="#individu-modal-form">
+                            <i class="fa fa-plus bigger-110"></i>
+                        </span>
+                    </div> 
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="masjid">Masjid :</label>
 
                 <div class="col-xs-12 col-sm-9">
@@ -51,7 +63,7 @@ echo js_asset('jquery-ui.js', 'ace');
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topik">Lokasi :</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="topik">Lokasi Lain :</label>
 
                 <div class="col-xs-12 col-sm-9">
                     <div class="clearfix">
@@ -59,6 +71,7 @@ echo js_asset('jquery-ui.js', 'ace');
                     </div>
                 </div>
             </div>
+
             <div class="clearfix form-actions col-xs-12 col-sm-12">
                 <div class="col-md-offset-3 col-md-9">
                     <button class="btn btn-info" type="submit">
@@ -183,6 +196,60 @@ echo js_asset('jquery-ui.js', 'ace');
     </div>
 </div>
 
+<div id="individu-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Individu</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="Nama Individu" class="form-control" name="individu_name" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Jenis Kelamin </label>
+
+                            <div class="col-sm-9">
+                                <select class="form-control" name="gender">
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" placeholder="Alamat" class="form-control" name="address" />
+                                <select style="width: 100%" class="form-control kotakab-select2" name="address_kotakab"></select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 echo js_asset('jquery.validate.js', 'ace');

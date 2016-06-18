@@ -83,7 +83,7 @@ class Lapas extends Member_Controller {
             //ajax only
             $this->datatables
                     ->select('name,address,kotakab,lapas_id')
-                    ->join('kotakab', 'kotakab.kotakab_id=lapas.kotakab_id')
+                    ->join('kotakab', 'kotakab.kotakab_id=lapas.kotakab_id','left')
                     ->add_column('DT_RowId', 'row_$1', 'lapas_id')
                     ->from('lapas');
             echo $this->datatables->generate();

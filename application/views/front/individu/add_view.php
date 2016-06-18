@@ -1439,6 +1439,13 @@ echo js_asset('jquery-ui.js', 'ace');
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Rumah </label>
+
+                            <div class="col-sm-9">
+                                <select style="width: 100%" class="form-control individu-select2 " name="rumah" ></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Masjid </label>
 
                             <div class="col-sm-9">
@@ -1532,7 +1539,15 @@ echo js_asset('jquery-ui.js', 'ace');
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Lokasi lain -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi Lain </label>
 
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="lokasi" />
+                            </div>
+                        </div>
 
                     </div>
                 </form>
