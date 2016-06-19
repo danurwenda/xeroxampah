@@ -73,10 +73,7 @@ jQuery(function ($) {
                 required: true,
                 minlength: 5
             },
-            korban: {
-                required: true
-            },
-            tanggal: {
+            pidana: {
                 required: true
             },
             nilai: {

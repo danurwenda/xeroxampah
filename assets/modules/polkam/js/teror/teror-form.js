@@ -76,9 +76,6 @@ jQuery(function ($) {
             sasaran: {
                 required: true,
                 minlength: 4
-            },
-            tanggal: {
-                required: true
             }
         },
     });
