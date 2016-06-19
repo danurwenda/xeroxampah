@@ -14,9 +14,13 @@ jQuery(function ($) {
                 return d.data;
             }
         },
-        order: [[0, 'desc']],
+        order: [[1, 'desc']],
         //mapping nth-column to data source
-        columns: [
+        columns: [{
+                "searchable": false,
+                "orderable": false,
+                data:null
+            },
             {data: 'tempat'}, //nama teror
             {
                 data: 'tanggal',
@@ -35,7 +39,13 @@ jQuery(function ($) {
                 }
             }
         ]
-    });
+    });//biar kolom angka ga ikut ke sort
+    table.on('order.dt search.dt', function () {
+        var start = table.page.info().start;
+        table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = start+i+1;
+        } );
+    }).draw();
     //action for 'delete' button
     $(document).on(ace.click_event, '.action-buttons a.delete', function (e) {
         // popup warning

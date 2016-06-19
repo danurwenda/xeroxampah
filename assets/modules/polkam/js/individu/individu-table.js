@@ -1,6 +1,6 @@
 jQuery(function ($) {
     //init datatable
-    var table = $('#individu-table').DataTable({
+    var oTable1 = $('#individu-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
@@ -14,9 +14,14 @@ jQuery(function ($) {
                 return d.data;
             }
         },
-        order: [[0, 'desc']],
+        order: [[1, 'desc']],
         //mapping nth-column to data source
         columns: [
+            {
+                "searchable": false,
+                "orderable": false,
+                data:null
+            },
             {data: 'individu_name'}, //nama individu
             {
                 data: 'alias'
@@ -44,6 +49,13 @@ jQuery(function ($) {
             }
         ]
     });
+    //biar kolom angka ga ikut ke sort
+    oTable1.on('order.dt search.dt', function () {
+        var start = oTable1.page.info().start;
+        oTable1.column(0, {order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = start+i+1;
+        } );
+    }).draw();
     //action for 'delete' button
     $(document).on(ace.click_event, '.action-buttons a.delete', function (e) {
         // popup warning
@@ -55,7 +67,7 @@ jQuery(function ($) {
                     type: 'DELETE',
                     success: function (r) {
                         //reload table
-                        table.ajax.reload(null, false);
+                        oTable1.ajax.reload(null, false);
                     }
                 });
             }

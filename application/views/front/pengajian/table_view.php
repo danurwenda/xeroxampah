@@ -16,6 +16,7 @@
             <table id="pengajian-table" class="table table-striped table-bordered table-hover" width="100%">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Topik</th>
                         <th>Rumah</th>
                         <th>Masjid</th>

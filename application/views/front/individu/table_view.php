@@ -16,6 +16,7 @@
             <table id="individu-table" class="table table-striped table-bordered table-hover" width="100%">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Alias</th>
                         <th>Tempat, tanggal lahir</th>

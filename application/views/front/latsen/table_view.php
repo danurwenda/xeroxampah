@@ -16,6 +16,7 @@
             <table id="latsen-table" class="table table-striped table-bordered table-hover" width="100%">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Tempat</th>
                         <th>Materi</th>
                         <th>Sejak</th>
