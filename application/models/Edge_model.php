@@ -18,6 +18,10 @@ class Edge_model extends CI_Model {
         parent::__construct();
     }
 
+    public function get_all() {
+        return $this->db->get($this->table)->result();
+    }
+
     public function insert($source, $target, $edge, $json) {
         $this->db->insert($this->table, [
             'source_id' => $source,
@@ -40,7 +44,7 @@ class Edge_model extends CI_Model {
     }
 
     public function neo4j_update_query($old_edge, $id) {
-        return [$this->neo_d_q($old_edge) , $this->neo4j_insert_query($id)];
+        return [$this->neo_d_q($old_edge), $this->neo4j_insert_query($id)];
     }
 
     private function last_id() {

@@ -18,6 +18,10 @@ class Pengajian_model extends CI_Model {
         parent::__construct();
     }
 
+    public function get_all() {
+        return $this->db->get($this->table)->result();
+    }
+
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -25,8 +29,8 @@ class Pengajian_model extends CI_Model {
             $r = $q->row();
             if ($r->masjid) {
                 $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->name;
-            }  if ($r->pesantren) {
-                $r->lokasi .=', '. $this->db->get_where('school', ['school_id' => $r->pesantren])->row()->name;
+            } if ($r->pesantren) {
+                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->pesantren])->row()->name;
             }
             return $r;
         } else {
@@ -50,7 +54,7 @@ class Pengajian_model extends CI_Model {
         );
     }
 
-    public function create($topik, $rumah, $masjid, $pesantren,$lokasi) {
+    public function create($topik, $rumah, $masjid, $pesantren, $lokasi) {
         $this->db->insert(
                 $this->table, array(
             'rumah' => $rumah,

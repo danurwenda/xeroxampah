@@ -18,6 +18,10 @@ class Individu_model extends CI_Model {
         parent::__construct();
     }
 
+    public function get_all() {
+        return $this->db->get($this->table)->result();
+    }
+
     public function get($id) {
         $q = $this->db
                 ->get_where($this->table, [$this->primary_key => $id]);
@@ -35,7 +39,7 @@ class Individu_model extends CI_Model {
             $individu = $q->row();
             //file BAP
             $bap = [];
-            foreach ($this->db->get_where('bap',['individu_id'=>$id])->result() as $baps) {
+            foreach ($this->db->get_where('bap', ['individu_id' => $id])->result() as $baps) {
                 $bap[] = $baps->filename;
             }
             $individu->bap = $bap;

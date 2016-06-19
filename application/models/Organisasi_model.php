@@ -14,6 +14,10 @@ class Organisasi_model extends CI_Model {
     public $primary_key = 'organisasi_id';
     private $sequence = 'organisasi_organisasi_id_seq';
 
+    public function get_all() {
+        return $this->db->get($this->table)->result();
+    }
+
     public function __construct() {
         parent::__construct();
     }
