@@ -29,45 +29,46 @@ function load_individu(id) {
                         .trigger("change"); //apply to select2
             })
         }
-        if(data.born_date)
-        $('#individu_form input[name="born_date"]').combodate("setValue", new Date(data.born_date));
+        if (data.born_date)
+            $('#individu_form input[name="born_date"]').combodate("setValue", new Date(data.born_date));
         $('#individu_form input[name="nationality"]').val(data.nationality);
         $('#individu_form input[name="address"]').val(data.address);
         $('#individu_form select[name="recent_edu"]').val(data.recent_edu);
         var prop = $.parseJSON(data.properties);
-        if(prop){
-        //RIWAYAT NAMA
-        if (prop.namas) {
-            $.each(prop.namas, function (i, v) {
-                //create clone
-                var row = cloneTemplate('#nama-widget');
-                //set values
-                row.find('input[name="old_name[]"]').val(v.nama);
-                row.find('input[name="lokasi_nama[]"]').val(v.location);
-                row.find('input[name="nama_date[]"]').combodate("setValue", new Date(v.time));
-            });
+        if (prop) {
+            //RIWAYAT NAMA
+            if (prop.namas) {
+                $.each(prop.namas, function (i, v) {
+                    //create clone
+                    var row = cloneTemplate('#nama-widget');
+                    //set values
+                    row.find('input[name="old_name[]"]').val(v.nama);
+                    row.find('input[name="lokasi_nama[]"]').val(v.location);
+                    row.find('input[name="nama_date[]"]').combodate("setValue", new Date(v.time));
+                });
+            }
+            //RIWAYAT PEKERJAAN
+            if (prop.jobs) {
+                $.each(prop.jobs, function (i, v) {
+                    //create clone
+                    var row = cloneTemplate('#job-widget');
+                    //set values
+                    row.find('input[name="job_place[]"]').val(v.job);
+                    row.find('input[name="job_end[]"]').combodate("setValue", new Date(v.until));
+                    row.find('input[name="job_start[]"]').combodate("setValue", new Date(v.from));
+                });
+            }
+            //RIWAYAT PENANGKAPAN
+            if (prop.tangkaps) {
+                $.each(prop.tangkaps, function (i, v) {
+                    //create clone
+                    var row = cloneTemplate('#tangkap-widget');
+                    //set values
+                    row.find('input[name="tangkap_lokasi[]"]').val(v.location);
+                    row.find('input[name="tangkap_date[]"]').combodate("setValue", new Date(v.date));
+                });
+            }
         }
-        //RIWAYAT PEKERJAAN
-        if (prop.jobs) {
-            $.each(prop.jobs, function (i, v) {
-                //create clone
-                var row = cloneTemplate('#job-widget');
-                //set values
-                row.find('input[name="job_place[]"]').val(v.job);
-                row.find('input[name="job_end[]"]').combodate("setValue", new Date(v.until));
-                row.find('input[name="job_start[]"]').combodate("setValue", new Date(v.from));
-            });
-        }
-        //RIWAYAT PENANGKAPAN
-        if (prop.tangkaps) {
-            $.each(prop.tangkaps, function (i, v) {
-                //create clone
-                var row = cloneTemplate('#tangkap-widget');
-                //set values
-                row.find('input[name="tangkap_lokasi[]"]').val(v.location);
-                row.find('input[name="tangkap_date[]"]').combodate("setValue", new Date(v.date));
-            });
-        }}
         // KELUARGA
         //ayah
         if (data.father) {
@@ -112,15 +113,15 @@ function load_individu(id) {
         }
         if (data.bap) {
             $.each(data.bap, function (i, v) {
-               var row = cloneTemplate('#bap-widget');
-               //ubah input file menjadi link download
-               row.find('input[type=file]').parent().empty()
-                       .append("<a href='"+base_url+"uploads/"+v+"' >"+v+"</a>");
-               //dan kasih special handling buat tombol hapus
-               row.find('button').click(function(){
-                   //mark for deletion (but don't delete now)
-                   $('#individu_form').append($('<input/>', {type: 'hidden', name: 'deleted_bap[]', value: v}));
-               });
+                var row = cloneTemplate('#bap-widget');
+                //ubah input file menjadi link download
+                row.find('input[type=file]').parent().empty()
+                        .append("<a href='" + base_url + "uploads/" + v + "' >" + v + "</a>");
+                //dan kasih special handling buat tombol hapus
+                row.find('button').click(function () {
+                    //mark for deletion (but don't delete now)
+                    $('#individu_form').append($('<input/>', {type: 'hidden', name: 'deleted_bap[]', value: v}));
+                });
             });
         }
         if (data.saudara) {
@@ -159,6 +160,11 @@ function load_individu(id) {
                 //set values
                 if (v.prop) {
                     var prop = $.parseJSON(v.prop);
+                    if (v.weight == 24 && prop.subjek) {
+                        //subjek
+                        row.find('.subjek').removeClass('hide')
+                                .find('input').val(prop.subjek);
+                    }
                     if (prop.from) {
                         row.find('input[name="edu_start[]"]').combodate("setValue", new Date(prop.from));
                     }
@@ -256,6 +262,12 @@ function load_individu(id) {
                 var row = cloneTemplate('#latsen-widget');
                 //set values
                 row.find('[name="latsen_edge[]"]').val(v.weight);
+                var prop = $.parseJSON(v.prop);
+                if (v.weight == 37 && prop.dukungan) {
+                    //dukungan
+                    row.find('.dukungan').removeClass('hide')
+                            .find('input').val(prop.dukungan);
+                }
                 $.getJSON(base_url + 'latsen/get/' + v.target, function (f) {
                     row.find('.latsen-select2')
                             .empty() //empty select
@@ -274,6 +286,12 @@ function load_individu(id) {
                 var row = cloneTemplate('#latihan-widget');
                 //set values
                 row.find('[name="latihan_edge[]"]').val(v.weight);
+                var prop = $.parseJSON(v.prop);
+                if (v.weight == 37 && prop.dukungan) {
+                    //dukungan
+                    row.find('.dukungan').removeClass('hide')
+                            .find('input').val(prop.dukungan);
+                }
                 $.getJSON(base_url + 'latihan/get/' + v.target, function (f) {
                     row.find('.latihan-select2')
                             .empty() //empty select
@@ -292,6 +310,12 @@ function load_individu(id) {
                 var row = cloneTemplate('#nonteror-widget');
                 //set values
                 row.find('[name="nonteror_edge[]"]').val(v.weight);
+                var prop = $.parseJSON(v.prop);
+                if (v.weight == 37 && prop.dukungan) {
+                    //dukungan
+                    row.find('.dukungan').removeClass('hide')
+                            .find('input').val(prop.dukungan);
+                }
                 $.getJSON(base_url + 'nonteror/get/' + v.target, function (f) {
                     row.find('.nonteror-select2')
                             .empty() //empty select
@@ -310,6 +334,12 @@ function load_individu(id) {
                 var row = cloneTemplate('#pengajian-widget');
                 //set values
                 row.find('[name="pengajian_edge[]"]').val(v.weight);
+                var prop = $.parseJSON(v.prop);
+                if (v.weight == 37 && prop.dukungan) {
+                    //dukungan
+                    row.find('.dukungan').removeClass('hide')
+                            .find('input').val(prop.dukungan);
+                }
                 $.getJSON(base_url + 'pengajian/get/' + v.target, function (f) {
                     row.find('.pengajian-select2')
                             .empty() //empty select

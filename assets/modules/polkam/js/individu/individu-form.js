@@ -132,7 +132,7 @@ jQuery(function ($) {
                 break;
             
             default:
-                //hide dukungan
+                //hide atribut
                 form_template.find('.attr').addClass('hide');
 
         }
@@ -360,36 +360,21 @@ jQuery(function ($) {
     // RIWAYAT PENDIDIKAN
     $('#edu-widget').on('change', '.edu-edge', function () {
         var select = $(this);
-        var row = $('<div class="form-group">' +
-                '<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>' +
-                '<div class="col-sm-9"></div>' +
-                '</div>');
+        //up sampai form-template
+        var form_template = select.parents('.form-template');
         //convert to number
         var val = +select.val();
         switch (val) {
-            case 22:
-                //mudir
-                break;
-            case 23:
-                //pendiri
-                //tambah info : sumber dana
-                break;
+            
             case 24:
                 //pengajar
                 //tambah info : subjek yang diajar
-                row.find('label').text('Subjek');
-                row.find('.col-sm-9').append('<input type="text" class="addition input-sm form-control" name="edu_subject[]" />');
-                row.insertAfter(select.parents('.form-group').first())
+                form_template.find('.attr.subjek').removeClass('hide');
                 break;
-            case 51:
-                //santri/murid
-                break;
-            case 52:
-                //staf
-                //tambah info : posisi
-                break;
+            
             default:
-                alert('def')
+                //hide atribut
+                form_template.find('.attr').addClass('hide');
 
         }
     });

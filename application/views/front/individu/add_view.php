@@ -696,6 +696,13 @@ echo js_asset('jquery-ui.js', 'ace');
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group hide subjek attr">
+                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Subjek </label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" placeholder="Dukungan" class="form-control" name="edu_subjek[]" />
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
 
