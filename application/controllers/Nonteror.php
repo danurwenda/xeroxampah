@@ -112,6 +112,9 @@ class Nonteror extends Member_Controller {
             $tanggal = null;
         }
         $waktu = $this->input->post('waktu');
+        if (empty($waktu)) {
+            $waktu = null;
+        }
         $motif = $this->input->post('motif');
         if ($id) {
             //edit

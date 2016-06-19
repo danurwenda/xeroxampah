@@ -36,7 +36,7 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $kotakab, $tanggal, $waktu, $korban, $pidana, $motif) {
+    public function update($id, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
@@ -50,7 +50,7 @@ class Nonteror_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $kotakab, $tanggal, $waktu, $korban, $pidana, $motif) {
+    public function create($tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
         $this->db->insert(
                 $this->table, array(
             'kotakab_id' => $kotakab,
