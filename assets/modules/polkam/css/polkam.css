@@ -154,3 +154,14 @@ li.infobox{
 li.infobox a{
     padding:1px 4px 8px;
 }
+
+/* fix select2 yang jebol kalo kepanjangan */
+.form-group .select2-container {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+  display: table;
+  table-layout: fixed;
+}
