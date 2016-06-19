@@ -22,10 +22,12 @@ jQuery(function ($) {
                 data: 'materi'
             },
             {
-                data: 'sejak'
+                data: 'sejak',
+                searchable:false
             },
             {
-                data: 'hingga'
+                data: 'hingga',
+                searchable:false
             },
             {
                 //actions

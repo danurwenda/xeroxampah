@@ -19,7 +19,8 @@ jQuery(function ($) {
         columns: [
             {data: 'tempat'}, //nama teror
             {
-                data: 'tanggal'
+                data: 'tanggal',
+                searchable:false
             },
             {
                 data: 'sasaran'
