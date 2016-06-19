@@ -22,6 +22,7 @@ jQuery(function ($) {
                 data:null
             },
             {data: 'tempat'}, //nama teror
+            {data: 'serangan'}, //nama teror
             {
                 data: 'tanggal',
                 searchable:false

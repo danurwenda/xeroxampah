@@ -18,6 +18,7 @@
                     <tr>
                         <th>No</th>
                         <th>Tempat</th>
+                        <th>Aksi</th>
                         <th>Tanggal</th>
                         <th>Sasaran</th>
                         <th></th>

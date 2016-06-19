@@ -93,7 +93,7 @@ class Teror extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('tempat,tanggal,sasaran,teror_id')
+                    ->select('tempat,tanggal,sasaran,serangan,teror_id')
                     ->add_column('DT_RowId', 'row_$1', 'teror_id')
                     ->from('teror');
             echo $this->datatables->generate();
