@@ -41,7 +41,7 @@ jQuery(function ($) {
             }
         ]
     });//biar kolom angka ga ikut ke sort
-    table.on('order.dt search.dt', function () {
+    table.on('order.dt search.dt draw.dt', function () {
         var start = table.page.info().start;
         table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = start+i+1;

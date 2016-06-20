@@ -23,13 +23,13 @@ jQuery(function ($) {
             },
             {data: 'topik'}, //nama pengajian
             {
-                data: 'iname'
+                data: 'individu_name'
             },
             {
-                data: 'mname'
+                data: 'masjid_name'
             },
             {
-                data: 'sname'
+                data: 'school_name'
             },
             {
                 data: 'lokasi'
@@ -45,7 +45,7 @@ jQuery(function ($) {
             }
         ]
     });//biar kolom angka ga ikut ke sort
-    table.on('order.dt search.dt', function () {
+    table.on('order.dt search.dt draw.dt', function () {
         var start = table.page.info().start;
         table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = start+i+1;

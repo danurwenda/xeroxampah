@@ -130,7 +130,7 @@ jQuery(function ($) {
                 //show dukugnan
                 form_template.find('.attr.dukungan').removeClass('hide');
                 break;
-            
+
             default:
                 //hide atribut
                 form_template.find('.attr').addClass('hide');
@@ -172,7 +172,7 @@ jQuery(function ($) {
                 //show dukugnan
                 form_template.find('.attr.dukungan').removeClass('hide');
                 break;
-            
+
             default:
                 //hide dukungan
                 form_template.find('.attr').addClass('hide');
@@ -216,7 +216,7 @@ jQuery(function ($) {
                 //show dukugnan
                 form_template.find('.attr.dukungan').removeClass('hide');
                 break;
-            
+
             default:
                 //hide dukungan
                 form_template.find('.attr').addClass('hide');
@@ -258,7 +258,7 @@ jQuery(function ($) {
                 //show dukugnan
                 form_template.find('.attr.dukungan').removeClass('hide');
                 break;
-            
+
             default:
                 //hide dukungan
                 form_template.find('.attr').addClass('hide');
@@ -365,13 +365,13 @@ jQuery(function ($) {
         //convert to number
         var val = +select.val();
         switch (val) {
-            
+
             case 24:
                 //pengajar
                 //tambah info : subjek yang diajar
                 form_template.find('.attr.subjek').removeClass('hide');
                 break;
-            
+
             default:
                 //hide atribut
                 form_template.find('.attr').addClass('hide');

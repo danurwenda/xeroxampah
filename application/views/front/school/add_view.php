@@ -16,7 +16,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                 <div class="col-xs-12 col-sm-9">
                     <div class="clearfix">
-                        <input type="text" name="name" id="name" class="col-xs-12 col-sm-6" />
+                        <input type="text" name="school_name" id="name" class="col-xs-12 col-sm-6" />
                     </div>
                 </div>
             </div>

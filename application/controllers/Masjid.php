@@ -27,7 +27,7 @@ class Masjid extends Member_Controller {
         //explode term by space
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
-            $this->db->or_where('UPPER(name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(masjid_name) LIKE', '%' . strtoupper($term) . '%');
             $this->db->or_where('UPPER(address) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
@@ -82,7 +82,7 @@ class Masjid extends Member_Controller {
         if ($this->input->is_ajax_request()) {
             //ajax only
             $this->datatables
-                    ->select('name,address,kotakab,masjid_id')
+                    ->select('masjid_name,address,kotakab,masjid_id')
                     ->join('kotakab', 'kotakab.kotakab_id=masjid.kotakab_id', 'left')
                     ->add_column('DT_RowId', 'row_$1', 'masjid_id')
                     ->from('masjid');
@@ -93,7 +93,7 @@ class Masjid extends Member_Controller {
     //REST-like
     function submit() {
         $id = $this->input->post('masjid_id');
-        $nama = $this->input->post('name');
+        $nama = $this->input->post('masjid_name');
         $address = $this->input->post('address');
         $kotakab = $this->input->post('kotakab');
         if ($id) {

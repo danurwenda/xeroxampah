@@ -39,7 +39,7 @@ class School_model extends CI_Model {
     public function update($id, $nama, $address, $kotakab) {
         return $this->db->update(
                         $this->table, array(
-                    'name' => $nama,
+                    'school_name' => $nama,
                     'kotakab_id' => $kotakab,
                     'address' => $address
                         ), [$this->primary_key => $id]
@@ -49,7 +49,7 @@ class School_model extends CI_Model {
     public function create($nama, $address, $kotakab) {
         $this->db->insert(
                 $this->table, array(
-            'name' => $nama,
+            'school_name' => $nama,
             'address' => $address,
             'kotakab_id' => $kotakab
                 )
@@ -62,7 +62,7 @@ class School_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . addslashes($this->get($id)->name) . "',";
+        $prop = "school_name:'" . addslashes($this->get($id)->school_name) . "',";
         $prop .= "kotakab_id:'" . addslashes($this->get($id)->kotakab_id) . "',";
         $prop .= "address:'" . addslashes($this->get($id)->address) . "',";
         $prop.="school_id:" . $id;
@@ -74,7 +74,7 @@ class School_model extends CI_Model {
     }
 
     public function neo4j_update_query($id, $nama, $address, $kotakab) {
-        return "match(n:School{school_id:$id})set n.name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab_id='" . addslashes($kotakab) . "' return n";
+        return "match(n:School{school_id:$id})set n.school_name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab_id='" . addslashes($kotakab) . "' return n";
     }
 
 }

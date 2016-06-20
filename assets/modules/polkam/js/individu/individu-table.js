@@ -50,7 +50,7 @@ jQuery(function ($) {
         ]
     });
     //biar kolom angka ga ikut ke sort
-    oTable1.on('order.dt search.dt', function () {
+    oTable1.on('order.dt search.dt draw.dt', function () {
         var start = oTable1.page.info().start;
         oTable1.column(0, {order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = start+i+1;

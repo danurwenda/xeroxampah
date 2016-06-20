@@ -4,7 +4,7 @@ jQuery(function ($) {
     }
 
     function formatKotakabSelection(org) {
-        return org.kotakab||org.text;
+        return org.kotakab || org.text;
     }
     var kotakab_select_config = {
         ajax: {

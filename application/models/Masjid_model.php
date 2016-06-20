@@ -39,7 +39,7 @@ class Masjid_model extends CI_Model {
     public function update($id, $nama, $address, $kotakab) {
         return $this->db->update(
                         $this->table, array(
-                    'name' => $nama,
+                    'masjid_name' => $nama,
                     'address' => $address,
                     'kotakab_id' => $kotakab
                         ), [$this->primary_key => $id]
@@ -49,7 +49,7 @@ class Masjid_model extends CI_Model {
     public function create($nama, $address, $kotakab) {
         $this->db->insert(
                 $this->table, array(
-            'name' => $nama,
+            'masjid_name' => $nama,
             'address' => $address,
             'kotakab_id' => $kotakab
                 )
@@ -62,7 +62,7 @@ class Masjid_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . addslashes($this->get($id)->name) . "',";
+        $prop = "masjid_name:'" . addslashes($this->get($id)->masjid_name) . "',";
         $prop.= "kotakab:'" . addslashes($this->get($id)->kotakab_id) . "',";
         $prop.= "address:'" . addslashes($this->get($id)->address) . "',";
         $prop.="masjid_id:" . $id;
@@ -74,7 +74,7 @@ class Masjid_model extends CI_Model {
     }
 
     public function neo4j_update_query($id, $nama, $address, $kotakab) {
-        return "match(n:Masjid{masjid_id:$id})set n.name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab='" . addslashes($kotakab) . "' return n";
+        return "match(n:Masjid{masjid_id:$id})set n.masjid_name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab='" . addslashes($kotakab) . "' return n";
     }
 
 }

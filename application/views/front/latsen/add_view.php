@@ -55,7 +55,7 @@ echo js_asset('jquery-ui.js', 'ace');
 
                 <div class="col-sm-9">
                     <div class="clearfix">
-                        <input type="text" class="form-control" name="materi" />
+                        <textarea name="materi" class='autoExpand form-control' rows='1' data-min-rows='1'></textarea>
                     </div>
                 </div>
             </div>

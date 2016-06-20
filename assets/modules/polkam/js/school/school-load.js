@@ -2,7 +2,7 @@ function load_school(id) {
     $.getJSON(base_url + 'school/get/' + id, function (data) {
 
         $('form').append($('<input/>',{type:'hidden',name:'school_id',value:data.school_id}));
-        $('input[name="name"]').val(data.name);
+        $('input[name="school_name"]').val(data.school_name);
         $('input[name="address"]').val(data.address);
         //add selected city if any and select it in dropdown
         if (data.kotakab_id) {

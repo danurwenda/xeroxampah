@@ -61,7 +61,7 @@ jQuery(function ($) {
         invalidHandler: function (form) {
         },
         rules: {
-            name: {
+            masjid_name: {
                 required: true,
                 minlength: 5
             },

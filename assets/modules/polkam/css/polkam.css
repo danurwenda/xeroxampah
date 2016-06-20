@@ -165,3 +165,16 @@ li.infobox a{
   display: table;
   table-layout: fixed;
 }
+
+textarea{  
+  display:block;
+  box-sizing: padding-box;
+  overflow:hidden;
+
+  /*padding:10px;*/
+  /*width:250px;*/
+  font-size:14px;
+  /*margin:50px auto;*/
+  /*border-radius:8px;*/
+  /*border:6px solid #556677;*/
+}

@@ -1069,7 +1069,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Materi Latihan </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="materi" />
+                                <textarea name="materi" class='autoExpand form-control' rows='1' data-min-rows='1'></textarea>
                             </div>
                         </div>
                         <!-- motif -->
@@ -1141,7 +1141,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Materi Latihan </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="materi" />
+                                <textarea name="materi" class='autoExpand form-control' rows='1' data-min-rows='1'></textarea>
                             </div>
                         </div>
                         <!-- motif -->
@@ -1220,7 +1220,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Jenis Pidana </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="pidana" />
+                                <textarea name="pidana" class='autoExpand form-control' rows='1' data-min-rows='1'></textarea>
                             </div>
                         </div>
                         <!-- Korban -->
@@ -1361,7 +1361,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Model Serangan </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="serangan" />
+                                <textarea name="serangan" class='autoExpand form-control' rows='1' data-min-rows='1'></textarea>
                             </div>
                         </div>
                         <!-- Sasaran -->
