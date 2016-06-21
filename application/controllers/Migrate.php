@@ -11,5 +11,4 @@ class Migrate extends CI_Controller {
             echo 'Migration success '.$this->migration->latest();
         }
     }
-
 }
