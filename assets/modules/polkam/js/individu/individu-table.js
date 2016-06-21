@@ -14,7 +14,7 @@ jQuery(function ($) {
                 return d.data;
             }
         },
-        order: [[1, 'desc']],
+        order: [[1, 'asc']],
         //mapping nth-column to data source
         columns: [
             {
