@@ -16,7 +16,6 @@ class Individu extends Member_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('individu_model');
-        $this->load->model('source_model');
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
@@ -37,7 +36,6 @@ class Individu extends Member_Controller {
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('individu/add_view', $data);
     }
 
@@ -50,7 +48,6 @@ class Individu extends Member_Controller {
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
-        $data['sources'] = $this->source_model->get_all();
         $data['edit_id'] = $id;
         $this->template->display('individu/add_view', $data);
     }
@@ -68,7 +65,6 @@ class Individu extends Member_Controller {
         }
         $born_kotakab = $this->input->post('born_kotakab');
         $nationality = $this->input->post('nationality');
-        $source_id = $this->input->post('source_id');
         $address = $this->input->post('address');
         $address_kotakab = $this->input->post('address_kotakab');
         $religion = $this->input->post('religion');
@@ -154,7 +150,6 @@ class Individu extends Member_Controller {
             'born_kotakab',
             'address_kotakab',
             'nationality',
-            'source_id',
             'address',
             'religion',
             'recent_edu',
