@@ -22,6 +22,7 @@ class Migration_Change_name extends CI_Migration {
         $this->dbforge->drop_table('detaining');
         $this->dbforge->drop_table('net');
         $this->dbforge->drop_table('parents');
+        $this->dbforge->drop_column('individu', 'individu_source');
         $this->dbforge->drop_table('source');
         $this->dbforge->drop_table('tuntutan');
         $this->dbforge->drop_table('vonis');
