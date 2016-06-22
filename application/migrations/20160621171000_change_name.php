@@ -13,22 +13,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author danur
  */
 class Migration_Change_name extends CI_Migration {
+
     public function up() {
-    /* ganti nama kolom pakai db query bukan pakai dbforge soalnya dbforge->modify_column 
-     * selalu menghasilkan column not null 
-     */
-        $this->dbforge->drop_table('arrest');
-        $this->dbforge->drop_table('dakwaan');
-        $this->dbforge->drop_table('detaining');
-        $this->dbforge->drop_table('net');
-        $this->dbforge->drop_table('parents');
-        $this->dbforge->drop_column('individu', 'individu_source');
-        $this->dbforge->drop_table('source');
-        $this->dbforge->drop_table('tuntutan');
-        $this->dbforge->drop_table('vonis');
+        /* ganti nama kolom pakai db query bukan pakai dbforge soalnya dbforge->modify_column 
+         * selalu menghasilkan column not null 
+         */
+        $this->db->query('DROP TABLE IF EXISTS arrest CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS dakwaan CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS detaining CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS net CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS parents CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS source CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS tuntutan CASCADE');
+        $this->db->query('DROP TABLE IF EXISTS vonis CASCADE');
     }
 
     public function down() {
+        
     }
 
 }
