@@ -73,9 +73,14 @@ class Individu_model extends CI_Model {
             //pasangan
             $pasangan = [];
             foreach ($this->db
-                    ->get_where('edge', ['source_id' => $id, 'weight_id' => 49])
+                    ->group_start()
+                    ->or_where('source_id',$id)
+                    ->or_where('target_id',$id)
+                    ->group_end()
+                    ->where('weight_id',49)
+                    ->get('edge')
                     ->result() as $pasangans) {
-                $pasangan[] = ['pasangan' => $pasangans->target_id, 'prop' => $pasangans->properties];
+                $pasangan[] = ['pasangan' => $pasangans->target_id==$id?$pasangans->source_id:$pasangans->target_id, 'prop' => $pasangans->properties];
             }
             $individu->pasangan = $pasangan;
             //anak

@@ -10,7 +10,7 @@ function load_pengajian(id) {
                         .empty() //empty select
                         .append($("<option/>") //add option tag in select
                                 .val(masjid.masjid_id) //set value for option to post it
-                                .text(masjid.name)) //set a text for show in select
+                                .text(masjid.masjid_name)) //set a text for show in select
                         .val(masjid.masjid_id) //select option of select2
                         .trigger("change"); //apply to select2
             })
@@ -22,7 +22,7 @@ function load_pengajian(id) {
                         .empty() //empty select
                         .append($("<option/>") //add option tag in select
                                 .val(skul.school_id) //set value for option to post it
-                                .text(skul.name)) //set a text for show in select
+                                .text(skul.school_name)) //set a text for show in select
                         .val(skul.school_id) //select option of select2
                         .trigger("change"); //apply to select2
             })

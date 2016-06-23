@@ -178,7 +178,7 @@ function load_individu(id) {
                             .empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.school_id) //set value for option to post it
-                                    .text(f.name)) //set a text for show in select
+                                    .text(f.school_name)) //set a text for show in select
                             .val(f.school_id) //select option of select2
                             .trigger("change"); //apply to select2
                 })
