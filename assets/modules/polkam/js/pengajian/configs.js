@@ -83,7 +83,7 @@ function formatSchoolList(l) {
         return l.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
+            "<div class='select2-result-repository__title'>" + l.school_name + "</div>" +
             "<div class='select2-result-repository__statistics'>" +
             "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.kotakab + "</div>" +
             "</div>" +
@@ -93,7 +93,7 @@ function formatSchoolList(l) {
 }
 
 function formatSchoolSelection(org) {
-    return org.name || org.text;
+    return org.school_name || org.text;
 }
 var school_select_config = {
     ajax: {
@@ -123,11 +123,21 @@ var school_select_config = {
     placeholder: 'Pilih Sekolah'
 };
 function formatMasjidList(org) {
-    return formatSchoolList(org)
+     if (l.loading)
+        return l.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + l.masjid_name + "</div>" +
+            "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.kotakab + "</div>" +
+            "</div>" +
+            "</div></div>";
+
+    return markup;
 }
 
 function formatMasjidSelection(org) {
-    return formatSchoolSelection(org)
+    return org.masjid_name || org.text;
 }
 var masjid_select_config = {
     ajax: {
