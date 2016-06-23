@@ -342,9 +342,9 @@ jQuery(function ($) {
                 .removeClass('template hide')
                 .insertBefore($(this).parents('.form-group').first());
         //initiate jquery plugins/UI
-        clone.find('.combofulldate').combodate();
+        clone.find('.combofulldate').combodate({maxYear:2030});
         clone.find('.monthpicker').combodate({
-            format: "YYYY-MM-DD",
+            format: "YYYY-MM-DD",maxYear:2030,
             template: "MMM YYYY"
         });
         clone.find('.organisasi-select2').select2(organisasi_select_config)
