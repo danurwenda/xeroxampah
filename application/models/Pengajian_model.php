@@ -28,9 +28,9 @@ class Pengajian_model extends CI_Model {
         if ($q->num_rows() > 0) {
             $r = $q->row();
             if ($r->masjid) {
-                $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->name;
+                $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->masjid_name;
             } if ($r->pesantren) {
-                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->pesantren])->row()->name;
+                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->pesantren])->row()->school_name;
             }
             return $r;
         } else {

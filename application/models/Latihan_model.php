@@ -69,8 +69,8 @@ class Latihan_model extends CI_Model {
 
     public function neo4j_insert_query($id) {
         $latihan = $this->get($id);
-        $prop = "tempat:'" . $latihan->tempat . "',";
-        $prop .= "materi:'" . $latihan->materi . "',";
+        $prop = "tempat:'" . addslashes($latihan->tempat) . "',";
+        $prop .= "materi:'" . addslashes($latihan->materi) . "',";
         $prop.="latihan_id:" . $id;
         return "MERGE(Latihan_$id:Latihan { $prop } )";
     }

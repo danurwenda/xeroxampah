@@ -56,7 +56,7 @@ class Edge_model extends CI_Model {
         //pertama2 kita cek apa tipe edge ini
         $edge_weight = $this->db->get_where('edge_weight', ['weight_id' => $edge->weight_id])->row();
         $label_edge = preg_replace('/\s+/', '', $edge_weight->desc);
-        $label_edge = preg_replace('/[.,\/#!$%\^&\*;:{}=\-_`~()]/', '', $label_edge);
+        $label_edge = preg_replace('/[\'\/.,\/#!$%\^&\*;:{}=\-_`~()]/', '', $label_edge);
         //convert edge->prop yang tipe JSON ke format key:value mapping
         $json = $edge->properties;
         if (!empty($json))

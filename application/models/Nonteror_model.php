@@ -71,10 +71,10 @@ class Nonteror_model extends CI_Model {
 
     public function neo4j_insert_query($id) {
         $nonteror = $this->get($id);
-        $prop = "tempat:'" . $nonteror->tempat . "',";
-        $prop .= "korban:'" . $nonteror->korban . "',";
-        $prop .= "pidana:'" . $nonteror->pidana . "',";
-        $prop .= "nilai:'" . $nonteror->nilai . "',";
+        $prop = "tempat:'" . addslashes($nonteror->tempat) . "',";
+        $prop .= "korban:'" . addslashes($nonteror->korban) . "',";
+        $prop .= "pidana:'" . addslashes($nonteror->pidana) . "',";
+        $prop .= "nilai:'" . addslashes($nonteror->nilai) . "',";
         $prop .= "tanggal:'" . $nonteror->tanggal . "',";
         $prop .= "waktu:'" . $nonteror->waktu . "',";
         $prop.="nonteror_id:" . $id;

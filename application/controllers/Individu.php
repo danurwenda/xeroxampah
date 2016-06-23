@@ -178,6 +178,16 @@ class Individu extends Member_Controller {
                 //KEKELUARGAAN
                 //cari edge yang sejenis, misal edge ayah ya cari edge ayah yang target nya adalah $new_id
                 //AYAH
+                foreach ($this->db
+                        ->from('edge')
+                        ->where('weight_id', 46)
+                        ->where('target_id', $new_id)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
                 $father = $this->input->post('father');
                 if (is_numeric($father)) {
                     //check db
@@ -189,31 +199,22 @@ class Individu extends Member_Controller {
                         $father_id = null;
                     }
                 }
-                //cari relasi ke ayah an dengan anak si new_id
-                $f = $this->db->get_where('edge', ['weight_id' => 46, 'target_id' => $new_id]);
+
                 if (!empty($father_id)) {
-                    //update or insert
-                    if ($f->num_rows() > 0) {
-                        //update
-                        $old = $f->row();
-                        $eid = $old->edge_id;
-                        $this->edge_model->update($eid, $father_id, $new_id, $properties);
-                        $n4jq[] = $this->edge_model->neo4j_update_query($old, $eid);
-                    } else {
-                        //insert
-                        $eid = $this->edge_model->insert($father_id, $new_id, 46, null);
-                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
-                    }
-                } else {
-                    //cari, kalo ada hapus
-                    if ($f->num_rows() > 0) {
-                        $eid = $f->row()->edge_id;
-                        //hapus
-                        $n4jq[] = $this->edge_model->neo4j_delete_query($eid);
-                        $this->edge_model->delete($eid);
-                    }
+                    $eid = $this->edge_model->insert($father_id, $new_id, 46, null);
+                    $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
                 //IBU
+                foreach ($this->db
+                        ->from('edge')
+                        ->where('weight_id', 47)
+                        ->where('target_id', $new_id)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
                 $mother = $this->input->post('mother');
                 if (is_numeric($mother)) {
                     //check db
@@ -225,28 +226,10 @@ class Individu extends Member_Controller {
                         $mother_id = null;
                     }
                 }
-                $f = $this->db->get_where('edge', ['weight_id' => 47, 'target_id' => $new_id]);
+
                 if (!empty($mother_id)) {
-                    //update or insert
-                    if ($f->num_rows() > 0) {
-                        //update
-                        $old = $f->row();
-                        $eid = $old->edge_id;
-                        $this->edge_model->update($eid, $mother_id, $new_id, $properties);
-                        $n4jq[] = $this->edge_model->neo4j_update_query($old, $eid);
-                    } else {
-                        //insert
-                        $eid = $this->edge_model->insert($mother_id, $new_id, 47, null);
-                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
-                    }
-                } else {
-                    //cari, kalo ada hapus
-                    if ($f->num_rows() > 0) {
-                        $eid = $f->row()->edge_id;
-                        //hapus
-                        $n4jq[] = $this->edge_model->neo4j_delete_query($eid);
-                        $this->edge_model->delete($eid);
-                    }
+                    $eid = $this->edge_model->insert($mother_id, $new_id, 47, null);
+                    $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
                 }
                 //SAUDARA
                 //hapus eemua edges persaudaraan baik di sql maupun di neo
@@ -576,6 +559,7 @@ class Individu extends Member_Controller {
                 echo 0;
             }
         } else {
+            //BELUM ADA, BIKIN BARU
             $new_id = $this->individu_model->insert($data);
 
             $n4jq[] = $this->individu_model->neo4j_insert_query($new_id);
@@ -914,6 +898,17 @@ class Individu extends Member_Controller {
 
     function get_cascade($id) {
         echo json_encode($this->individu_model->get_cascade($id));
+    }
+
+    /**
+     * Return list of nodes and links in the network centered at individu with given id
+     * @param type $id
+     */
+    function get_graph_json($id) {
+        $nodes = [];
+        $links = [];
+        $ret = ['nodes' => $nodes, 'links' => $links];
+        echo json_encode();
     }
 
     function delete($id) {

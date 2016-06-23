@@ -62,9 +62,10 @@ class Masjid_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "masjid_name:'" . addslashes($this->get($id)->masjid_name) . "',";
-        $prop.= "kotakab:'" . addslashes($this->get($id)->kotakab_id) . "',";
-        $prop.= "address:'" . addslashes($this->get($id)->address) . "',";
+        $m = $this->get($id);
+        $prop = "masjid_name:'" . addslashes($m->masjid_name) . "',";
+        $prop.= "kotakab:'" . addslashes($m->kotakab_id) . "',";
+        $prop.= "address:'" . addslashes($m->address) . "',";
         $prop.="masjid_id:" . $id;
         return "MERGE(Masjid_$id:Masjid { $prop } )";
     }

@@ -71,9 +71,9 @@ class Teror_model extends CI_Model {
 
     public function neo4j_insert_query($id) {
         $teror = $this->get($id);
-        $prop = "tempat:'" . $teror->tempat . "',";
-        $prop .= "serangan:'" . $teror->serangan . "',";
-        $prop .= "sasaran:'" . $teror->sasaran . "',";
+        $prop = "tempat:'" . addslashes($teror->tempat) . "',";
+        $prop .= "serangan:'" . addslashes($teror->serangan) . "',";
+        $prop .= "sasaran:'" . addslashes($teror->sasaran) . "',";
         $prop .= "tanggal:'" . $teror->tanggal . "',";
         $prop .= "waktu:'" . $teror->waktu . "',";
         $prop.="teror_id:" . $id;

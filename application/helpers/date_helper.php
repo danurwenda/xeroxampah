@@ -49,8 +49,9 @@ function postNeoQueryArr($arrQ) {
         $data_string = json_encode($data);
         //print_r($data_string);
 //open connection
+        $ci=& get_instance();
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://tci.polkam.go.id:7473/db/data/transaction/commit');
+        curl_setopt($ch, CURLOPT_URL, $ci->config->item('NEO_URL'));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json; charset=UTF-8', 'Content-Type: application/json', 'Content-Length: ' . strlen($data_string), 'X-Stream: true'));
 //curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
