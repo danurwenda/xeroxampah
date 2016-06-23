@@ -108,8 +108,118 @@ class Importer extends CI_Controller {
             $statements[] = $this->edge_model->neo4j_insert_query($individu->edge_id);
         }
         echo 'Edge';
-            set_time_limit(500);
+        set_time_limit(500);
         $this->statements($statements);
+    }
+
+    public function check_edge() {
+        $this->load->model('individu_model');
+        $this->load->model('edge_model');
+        $this->load->model('pengajian_model');
+        $this->load->model('latihan_model');
+        $this->load->model('nonteror_model');
+        $this->load->model('teror_model');
+        $this->load->model('school_model');
+        $this->load->model('organisasi_model');
+        $this->load->model('lapas_model');
+        $this->load->model('latsen_model');
+        $this->load->model('masjid_model');
+        foreach ($this->db->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')->get('edge')->result() as $edge) {
+            switch ($edge->type) {
+                case 1:
+                    //individu-individu
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->individu_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target individu_id ' . $edge->source_id;
+                    }
+                    break;
+                case 2:
+                    //individu-organisasi
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->organisasi_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target organisasi ' . $edge->source_id;
+                    }
+                    break;
+                case 3:
+                    //individu-school
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->school_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target school ' . $edge->source_id;
+                    }
+                    break;
+                case 6:
+                    //individu-teror
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->teror_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target teror ' . $edge->source_id;
+                    }
+                    break;
+                case 7:
+                    //individu-nonteror
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->nonteror_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target nonteror ' . $edge->source_id;
+                    }
+                    break;
+                case 9:
+                    //individu-pengajian
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->pengajian_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target pengajian ' . $edge->source_id;
+                    }
+                    break;
+                case 12:
+                    //individu-lapas
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->lapas_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target lapas ' . $edge->source_id;
+                    }
+                    break;
+                case 8:
+                    //individu-latihan militer senjata
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->latsen_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target latsen ' . $edge->source_id;
+                    }
+                    break;
+                case 11:
+                    //individu-latihan militer non senjata
+                    $source = $this->individu_model->get($edge->source_id);
+                    $target = $this->latihan_model->get($edge->target_id);
+                    if (!isset($source)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada source individu_id ' . $edge->source_id;
+                    } else if (!isset($target)) {
+                        echo '<br/>Error : edge_id ' . $edge->edge_id . ' pada target latihan ' . $edge->source_id;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public function index() {
