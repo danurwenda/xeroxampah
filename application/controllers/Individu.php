@@ -282,6 +282,46 @@ class Individu extends Member_Controller {
                         }
                     }
                 }
+                //PASANGAN
+                foreach ($this->db
+                        ->from('edge')
+                        ->group_start()
+                        ->or_where('source_id', $new_id)
+                        ->or_where('target_id', $new_id)
+                        ->group_end()
+                        ->where('weight_id', 49)
+                        ->get()
+                        ->result() as $oe) {
+                    //hapus
+                    $n4jq[] = $this->edge_model->neo4j_delete_query($oe->edge_id);
+                    $this->edge_model->delete($oe->edge_id);
+                }
+                $pasangans = $this->input->post('relation_49');
+                $kawins = $this->input->post('married_date');
+                for ($i = 0; $i < count($pasangans); $i++) {
+                    $pasangan = $pasangans[$i];
+                    if (is_numeric($pasangan)) {
+                        //check db
+                        $pasangan = $this->db->get_where('individu', ['individu_id' => $pasangan]);
+                        if ($pasangan->num_rows() > 0) {
+                            //ada
+                            $pasangan_id = $pasangan->row()->individu_id;
+                        } else {
+                            $pasangan_id = null;
+                        }
+                    }
+                    if (!empty($pasangan_id)) {
+                        $mar = null;
+                        //barangkali ada tanggal 
+                        $marriage_date = $kawins[$i];
+                        if (!empty($marriage_date)) {
+                            $mar['from'] = $marriage_date;
+                            $mar = json_encode($mar);
+                        }
+                        $eid = $this->edge_model->insert($new_id, $pasangan_id, 49, $mar);
+                        $n4jq[] = $this->edge_model->neo4j_insert_query($eid);
+                    }
+                }
                 //ANAK
                 //hapus eemua edges PERANAKAN baik di sql maupun di neo
                 foreach ($this->db
@@ -652,9 +692,9 @@ class Individu extends Member_Controller {
                     //insert ke table relasi (edge)
                     $attr = [];
                     $subjek = $sch_subjek[$i];
-                        if (!empty($subjek)) {
-                            $attr['subjek'] = $subjek;
-                        }
+                    if (!empty($subjek)) {
+                        $attr['subjek'] = $subjek;
+                    }
                     $end = $sch_ends[$i];
                     if (!empty($end)) {
                         //convert to SQL-compliant format
