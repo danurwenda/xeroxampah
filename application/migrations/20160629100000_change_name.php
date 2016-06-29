@@ -14,26 +14,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Migration_Change_name extends CI_Migration {
     public function up() {
-    /* ganti nama kolom pakai db query bukan pakai dbforge soalnya dbforge->modify_column 
-     * selalu menghasilkan column not null 
-     */
-        $this->db->query('ALTER TABLE public.masjid RENAME name TO masjid_name');
-        $this->db->query('ALTER TABLE public.school RENAME name TO school_name');
-        //ganti length bbrp kolom
-        $this->db->query('ALTER TABLE public.latihan ALTER COLUMN materi TYPE character varying(755)');
-        $this->db->query('ALTER TABLE public.latsen ALTER COLUMN materi TYPE character varying(755)');
-        $this->db->query('ALTER TABLE public.nonteror ALTER COLUMN pidana TYPE character varying(755)');
-        $this->db->query('ALTER TABLE public.teror ALTER COLUMN serangan TYPE character varying(755)');
+    /* tambah kolom "label" di table entities
+     */          
+        $this->db->query('ALTER TABLE public.organisasi ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.individu ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.masjid ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.lapas ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.school ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.pengajian ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.latsen ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.latihan ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.nonteror ADD COLUMN label character varying(255)');
+        $this->db->query('ALTER TABLE public.teror ADD COLUMN label character varying(255)');
     }
 
     public function down() {
-        $this->db->query('ALTER TABLE public.masjid RENAME masjid_name TO name');
-        $this->db->query('ALTER TABLE public.school RENAME school_name TO name');
-        //ganti length bbrp kolom
-        $this->db->query('ALTER TABLE public.latihan ALTER COLUMN materi TYPE character varying(255)');
-        $this->db->query('ALTER TABLE public.latsen ALTER COLUMN materi TYPE character varying(255)');
-        $this->db->query('ALTER TABLE public.nonteror ALTER COLUMN pidana TYPE character varying(255)');
-        $this->db->query('ALTER TABLE public.teror ALTER COLUMN serangan TYPE character varying(255)');
+        $this->db->query('ALTER TABLE public.organisasi drop column label cascade');
+        $this->db->query('ALTER TABLE public.individu drop column label cascade');
+        $this->db->query('ALTER TABLE public.masjid drop column label cascade');
+        $this->db->query('ALTER TABLE public.lapas drop column label cascade');
+        $this->db->query('ALTER TABLE public.school drop column label cascade');
+        $this->db->query('ALTER TABLE public.pengajian drop column label cascade');
+        $this->db->query('ALTER TABLE public.latsen drop column label cascade');
+        $this->db->query('ALTER TABLE public.latihan drop column label cascade');
+        $this->db->query('ALTER TABLE public.nonteror drop column label cascade');
+        $this->db->query('ALTER TABLE public.teror drop column label cascade');
     }
 
 }
