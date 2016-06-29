@@ -85,7 +85,7 @@ jQuery(function ($) {
     $(document).on(ace.click_event, '.action-buttons a.view', function (e) {
         // popup warning
         var rowID = $(this).closest('tr').attr('id').substr(4);
-        var win = window.open(base_url + 'graph/individu/' + rowID, '_blank');
+        var win = window.open(base_url + 'individu/graph/' + rowID, '_blank');
         win.focus();
     });
 

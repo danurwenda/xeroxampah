@@ -4,6 +4,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Importer extends CI_Controller {
 
+    function get_string() {
+        $json = $this->statements(["MATCH (:Individu{individu_id:335})-[k*1..2]-()WITH LAST(k) AS lk RETURN labels(startnode(lk)) as t1, startnode(lk) as a, type(lk) as b, lk, labels(endnode(lk)) as t2, endnode(lk) as c"]);
+        $json = $this->setup_json($json);
+    }
+
+    /**
+     * Mengubah struktur json dari bentuk standar kembalian dari Neo4J menjadi bentuk yang siap diolah visualisasi (i.e d3.js)
+     * @param type $json
+     */
+    function setup_json($json) {
+        $obj = json_decode($json);
+        if ($obj->errors) {
+            print_r($obj->errors);
+        } else {
+            $nodes = [];
+            $relations = [];
+            $res = $obj->results;
+            $res = $res[0];
+            foreach ($res->data as $rel) {
+                $row = $rel->row;
+                //node 1
+                $node1 = new stdClass();
+                $node1->type = $row[0][0];
+                $id_attr = strtolower( $node1->type).'_id';
+                $node1_id= $row[1];
+                $node1->id = $node1_id->$id_attr;
+                $node1->
+                //node 2
+                $node2 = new stdClass();
+                $node2->type = $row[4][0];
+                $id_attr = strtolower( $node2->type).'_id';
+                $node2_id= $row[5];
+                $node2->id = $node2_id->$id_attr;
+                
+                
+            }
+        }
+    }
+
     function statements($arr) {
         $ss = [];
         foreach ($arr as $string) {
@@ -23,10 +62,10 @@ class Importer extends CI_Controller {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //execute post
         $result = curl_exec($ch);
-//echo
-        echo $result;
 //close connection
         curl_close($ch);
+//echo
+        return $result;
     }
 
     public function bulk() {

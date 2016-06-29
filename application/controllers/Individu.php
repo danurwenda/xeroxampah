@@ -19,6 +19,14 @@ class Individu extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
+    
+    function graph($id){
+        $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
+        $data['title'] = 'tr.db | Individu';
+        $data['iid']=$id;
+
+        $this->template->display('individu/graph_view', $data);
+    }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);

@@ -30,6 +30,43 @@ echo js_asset('Tooltip.js','polkam');
 echo js_asset('fdgraph.js','polkam');
 ?>
 <script>
+    $(function () {
+    var myNetwork;
+    myNetwork = Network();
+    d3.selectAll("#layouts a").on("click", function (d) {
+        var newLayout;
+        newLayout = d3.select(this).attr("id");
+        activate("layouts", newLayout);
+        return myNetwork.toggleLayout(newLayout);
+    });
+    d3.selectAll("#filters a").on("click", function (d) {
+        var newFilter;
+        newFilter = d3.select(this).attr("id");
+        activate("filters", newFilter);
+        return myNetwork.toggleFilter(newFilter);
+    });
+    d3.selectAll("#sorts a").on("click", function (d) {
+        var newSort;
+        newSort = d3.select(this).attr("id");
+        activate("sorts", newSort);
+        return myNetwork.toggleSort(newSort);
+    });
+    $("#song_select").on("change", function (e) {
+        var songFile;
+        songFile = $(this).val();
+        return d3.json("data/" + songFile, function (json) {
+            return myNetwork.updateData(json);
+        });
+    });
+    $("#search").keyup(function () {
+        var searchTerm;
+        searchTerm = $(this).val();
+        return myNetwork.updateSearch(searchTerm);
+    });
+    return d3.json(base_url+"data/call_me_al.json", function (json) {
+        return myNetwork("#vis", json);
+    });
+});
 
 //    var width = self.frameElement ? 960 : innerWidth,
 //            height = self.frameElement ? 500 : innerHeight-120;

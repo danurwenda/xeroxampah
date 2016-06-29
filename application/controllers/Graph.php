@@ -27,6 +27,7 @@ class Graph extends Member_Controller {
     function individu($id){
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
         $data['title'] = 'tr.db | Individu';
+        $data['iid']=$id;
 
         $this->template->display('individu/graph_view', $data);
     }
