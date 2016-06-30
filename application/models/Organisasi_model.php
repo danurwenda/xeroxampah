@@ -36,18 +36,20 @@ class Organisasi_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $nama, $daerah) {
+    public function update($id, $label, $nama, $daerah) {
         return $this->db->update(
                         $this->table, array(
+                    'label' => $label,
                     'name' => $nama,
                     'daerah' => $daerah
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($nama, $daerah) {
+    public function create($label, $nama, $daerah) {
         $this->db->insert(
                 $this->table, array(
+            'label' => $label,
             'name' => $nama,
             'daerah' => $daerah
                 )
@@ -60,8 +62,10 @@ class Organisasi_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "name:'" . addslashes($this->get($id)->name) . "',";
-        $prop.= "daerah:'" . addslashes($this->get($id)->daerah) . "',";
+        $x = $this->get($id);
+        $prop = "name:'" . addslashes($x->name) . "',";
+        $prop.= "label:'" . addslashes($x->label) . "',";
+        $prop.= "daerah:'" . addslashes($x->daerah) . "',";
         $prop.="organisasi_id:" . $id;
         return "MERGE(Organisasi_$id:Organisasi { $prop } )";
     }
@@ -70,8 +74,8 @@ class Organisasi_model extends CI_Model {
         return "match(n:Organisasi{organisasi_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $nama, $daerah) {
-        return "match(n:Organisasi{organisasi_id:$id})set n.name='" . addslashes($nama) . "',n.daerah='" . addslashes($daerah) . "' return n";
+    public function neo4j_update_query($id, $label, $nama, $daerah) {
+        return "match(n:Organisasi{organisasi_id:$id})set n.name='" . addslashes($nama) . "',n.label='" . addslashes($label) . "',n.daerah='" . addslashes($daerah) . "' return n";
     }
 
 }

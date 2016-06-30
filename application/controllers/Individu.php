@@ -19,11 +19,11 @@ class Individu extends Member_Controller {
         $this->load->model('menu_model');
         $this->load->library('Datatables');
     }
-    
-    function graph($id){
+
+    function graph($id) {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
         $data['title'] = 'tr.db | Individu';
-        $data['iid']=$id;
+        $data['iid'] = $id;
 
         $this->template->display('individu/graph_view', $data);
     }
@@ -61,9 +61,9 @@ class Individu extends Member_Controller {
     }
 
     function submit() {
-
         //list all column on db
         //simple
+        $label = $this->input->post('label');
         $individu_name = $this->input->post('individu_name');
         $alias = $this->input->post('alias');
         $born_date = $this->input->post('born_date');
@@ -153,6 +153,7 @@ class Individu extends Member_Controller {
         //TODO : move to model
         $fields = [
             'individu_name',
+            'label',
             'alias',
             'born_date',
             'born_kotakab',
@@ -180,7 +181,7 @@ class Individu extends Member_Controller {
             //update basic
             if ($this->individu_model->update($new_id, $data)) {
                 //update to neo, yg diupdate dari info basic ini cuma nama
-                $q = $this->individu_model->neo4j_update_query($new_id, $individu_name);
+                $q = $this->individu_model->neo4j_update_query($new_id, $label, $individu_name);
                 postNeoQuery($q);
                 //next, update edges
                 //KEKELUARGAAN

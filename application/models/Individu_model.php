@@ -74,13 +74,13 @@ class Individu_model extends CI_Model {
             $pasangan = [];
             foreach ($this->db
                     ->group_start()
-                    ->or_where('source_id',$id)
-                    ->or_where('target_id',$id)
+                    ->or_where('source_id', $id)
+                    ->or_where('target_id', $id)
                     ->group_end()
-                    ->where('weight_id',49)
+                    ->where('weight_id', 49)
                     ->get('edge')
                     ->result() as $pasangans) {
-                $pasangan[] = ['pasangan' => $pasangans->target_id==$id?$pasangans->source_id:$pasangans->target_id, 'prop' => $pasangans->properties];
+                $pasangan[] = ['pasangan' => $pasangans->target_id == $id ? $pasangans->source_id : $pasangans->target_id, 'prop' => $pasangans->properties];
             }
             $individu->pasangan = $pasangan;
             //anak
@@ -191,7 +191,9 @@ class Individu_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "individu_name:'" . addslashes($this->get($id)->individu_name) . "',";
+        $x = $this->get($id);
+        $prop = "individu_name:'" . addslashes($x->individu_name) . "',";
+        $prop.="label:'" . addslashes($x->label) . "',";
         $prop.="individu_id:" . $id;
         return "MERGE(Individu$id:Individu { $prop } )";
     }
@@ -200,9 +202,8 @@ class Individu_model extends CI_Model {
         return "match(n:Individu{individu_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $nama) {
-        return "match(n:Individu{individu_id:$id})set n.individu_name='" . addslashes($nama)
-                . "' return n";
+    public function neo4j_update_query($id, $label, $nama) {
+        return "match(n:Individu{individu_id:$id})set n.label='" . addslashes($label) . "',n.individu_name='" . addslashes($nama) . "' return n";
     }
 
 }

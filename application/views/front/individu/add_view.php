@@ -71,6 +71,14 @@ echo js_asset('jquery-ui.js', 'ace');
             </div>
 
             <div class="col-xs-6 col-sm-6">
+                <!-- ALIAS -->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Label </label>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="alias" placeholder="Label" class="col-xs-11" name="label" />
+                    </div>
+                </div>
                 <!-- RELIGION -->
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agama </label>

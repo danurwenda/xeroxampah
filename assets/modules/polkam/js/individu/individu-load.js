@@ -4,6 +4,7 @@ function load_individu(id) {
 
         $('#individu_form input[name="individu_name"]').val(data.individu_name);
         $('#individu_form input[name="religion"]').val(data.religion);
+        $('#individu_form input[name="label"]').val(data.label);
         $('#individu_form select[name="gender"]').val(data.gender);
         $('#individu_form input[name="alias"]').val(data.alias);
         //add selected city if any and select it in dropdown

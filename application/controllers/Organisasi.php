@@ -80,13 +80,14 @@ class Organisasi extends Member_Controller {
     function submit() {
         $id = $this->input->post('organisasi_id');
         $nama = $this->input->post('name');
+        $label = $this->input->post('label');
         $daerah = $this->input->post('daerah');
         $city = $this->input->post('city');
         if ($id) {
             //edit
-            if ($this->organisasi_model->update($id, $nama, $daerah)) {
+            if ($this->organisasi_model->update($id, $label, $nama, $daerah)) {
                 //update to neo4j
-                postNeoQuery($this->organisasi_model->neo4j_update_query($id, $nama, $daerah));
+                postNeoQuery($this->organisasi_model->neo4j_update_query($id, $label, $nama, $daerah));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -99,7 +100,7 @@ class Organisasi extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->organisasi_model->create($nama, $daerah)) {
+            if ($new_id = $this->organisasi_model->create($label, $nama, $daerah)) {
                 //insert to neo4j
                 postNeoQuery($this->organisasi_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {
