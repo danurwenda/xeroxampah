@@ -28,11 +28,11 @@ class Pengajian extends Member_Controller {
         $terms = explode(' ', $this->input->get('term', true));
         foreach ($terms as $term) {
             $this->db->or_where('UPPER(topik) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(masjid.name) LIKE', '%' . strtoupper($term) . '%');
-            $this->db->or_where('UPPER(school.name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(masjid.masjid_name) LIKE', '%' . strtoupper($term) . '%');
+            $this->db->or_where('UPPER(school.school_name) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->select("topik,masjid.name mname, school.name sname,pengajian_id")
+                ->select("topik,masjid.masjid_name, school.school_name ,pengajian_id")
                 ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
                 ->join('school', 'school.school_id=pengajian.pesantren', 'left')
                 ->get('pengajian')
@@ -42,11 +42,11 @@ class Pengajian extends Member_Controller {
             //craft return
             $i['id'] = $i['pengajian_id'] + 0;
             $lokasi = '';
-            if ($i['mname']) {
-                $lokasi.=$i['mname'];
+            if ($i['masjid_name']) {
+                $lokasi.=$i['masjid_name'];
             }
-            if ($i['sname']) {
-                $lokasi.=', ' . $i['sname'];
+            if ($i['school_name']) {
+                $lokasi.=', ' . $i['school_name'];
             }
             $i['lokasi'] = $lokasi;
             $ret[] = $i;
