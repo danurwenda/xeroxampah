@@ -57,14 +57,12 @@ class Nonteror extends Member_Controller {
             , ['module' => 'polkam', 'asset' => 'moment.js']
             , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('nonteror/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(9);
         $data['title'] = 'tr.db | Nonteror';
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('nonteror/table_view', $data);
     }
 
@@ -105,6 +103,7 @@ class Nonteror extends Member_Controller {
         $id = $this->input->post('nonteror_id');
         $tempat = $this->input->post('tempat');
         $pidana = $this->input->post('pidana');
+        $label = $this->input->post('label');
         $kotakab = $this->input->post('kotakab');
         $korban = $this->input->post('korban');
         $tanggal = $this->input->post('tanggal');
@@ -118,9 +117,9 @@ class Nonteror extends Member_Controller {
         $motif = $this->input->post('motif');
         if ($id) {
             //edit
-            if ($this->nonteror_model->update($id, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
+            if ($this->nonteror_model->update($id, $label, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
                 //update to neo4j
-                postNeoQuery($this->nonteror_model->neo4j_update_query($id, $tempat, $tanggal, $waktu, $pidana, $korban));
+                postNeoQuery($this->nonteror_model->neo4j_update_query($id, $label, $tempat, $tanggal, $waktu, $pidana, $korban));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -133,7 +132,7 @@ class Nonteror extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->nonteror_model->create($tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
+            if ($new_id = $this->nonteror_model->create($label, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->nonteror_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

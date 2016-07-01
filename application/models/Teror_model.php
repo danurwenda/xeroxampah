@@ -36,10 +36,11 @@ class Teror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
+    public function update($id, $label,$tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
+                    'label' => $label,
                     'kotakab_id' => $kotakab,
                     'tanggal' => $tanggal,
                     'waktu' => $waktu,
@@ -50,10 +51,11 @@ class Teror_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
+    public function create($label,$tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif) {
         $this->db->insert(
                 $this->table, array(
             'tempat' => $tempat,
+            'label' => $label,
             'tanggal' => $tanggal,
             'kotakab_id' => $kotakab,
             'waktu' => $waktu,
@@ -73,6 +75,7 @@ class Teror_model extends CI_Model {
         $teror = $this->get($id);
         $prop = "tempat:'" . addslashes($teror->tempat) . "',";
         $prop .= "serangan:'" . addslashes($teror->serangan) . "',";
+        $prop .= "label:'" . addslashes($teror->label) . "',";
         $prop .= "sasaran:'" . addslashes($teror->sasaran) . "',";
         $prop .= "tanggal:'" . $teror->tanggal . "',";
         $prop .= "waktu:'" . $teror->waktu . "',";
@@ -84,9 +87,10 @@ class Teror_model extends CI_Model {
         return "match(n:Teror{teror_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran) {
+    public function neo4j_update_query($id,$label, $tempat, $tanggal, $waktu, $serangan, $sasaran) {
         return "match(n:Teror{teror_id:$id})set n.name='" . addslashes($nama)
                 . "',n.tempat='" . addslashes($tempat)
+                . "',n.label='" . addslashes($label)
                 . "',n.sasaran='" . addslashes($sasaran)
                 . "',n.serangan='" . addslashes($serangan)
                 . "',n.tanggal='" . addslashes($tanggal)

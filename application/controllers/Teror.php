@@ -57,14 +57,12 @@ class Teror extends Member_Controller {
             , ['module' => 'polkam', 'asset' => 'moment.js']
             , ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('teror/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(8);
         $data['title'] = 'tr.db | Teror';
-        $data['sources'] = $this->source_model->get_all();
         $this->template->display('teror/table_view', $data);
     }
 
@@ -107,6 +105,7 @@ class Teror extends Member_Controller {
         $serangan = $this->input->post('serangan');
         $kotakab = $this->input->post('kotakab');
         $sasaran = $this->input->post('sasaran');
+        $label = $this->input->post('label');
         $tanggal = $this->input->post('tanggal');
         if (empty($tanggal)) {
             $tanggal = null;
@@ -115,9 +114,9 @@ class Teror extends Member_Controller {
         $motif = $this->input->post('motif');
         if ($id) {
             //edit
-            if ($this->teror_model->update($id, $tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+            if ($this->teror_model->update($id, $label,$tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
                 //update to neo4j
-                postNeoQuery($this->teror_model->neo4j_update_query($id, $tempat, $tanggal, $waktu, $serangan, $sasaran));
+                postNeoQuery($this->teror_model->neo4j_update_query($id,$label, $tempat, $tanggal, $waktu, $serangan, $sasaran));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -130,7 +129,7 @@ class Teror extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->teror_model->create($tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
+            if ($new_id = $this->teror_model->create($label,$tempat, $kotakab, $tanggal, $waktu, $serangan, $sasaran, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->teror_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

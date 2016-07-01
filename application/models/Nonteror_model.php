@@ -36,10 +36,11 @@ class Nonteror_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
+    public function update($id, $label, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
+                    'label' => $label,
                     'tanggal' => $tanggal,
                     'kotakab_id' => $kotakab,
                     'waktu' => $waktu,
@@ -50,11 +51,12 @@ class Nonteror_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
+    public function create($label, $tempat, $kotakab, $tanggal, $waktu, $pidana, $korban, $motif) {
         $this->db->insert(
                 $this->table, array(
             'kotakab_id' => $kotakab,
             'tempat' => $tempat,
+            'label' => $label,
             'tanggal' => $tanggal,
             'waktu' => $waktu,
             'korban' => $korban,
@@ -73,6 +75,7 @@ class Nonteror_model extends CI_Model {
         $nonteror = $this->get($id);
         $prop = "tempat:'" . addslashes($nonteror->tempat) . "',";
         $prop .= "korban:'" . addslashes($nonteror->korban) . "',";
+        $prop .= "label:'" . addslashes($nonteror->label) . "',";
         $prop .= "pidana:'" . addslashes($nonteror->pidana) . "',";
         $prop .= "nilai:'" . addslashes($nonteror->nilai) . "',";
         $prop .= "tanggal:'" . $nonteror->tanggal . "',";
@@ -85,9 +88,10 @@ class Nonteror_model extends CI_Model {
         return "match(n:Nonteror{nonteror_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $tempat, $tanggal, $waktu, $korban, $pidana, $nilai) {
+    public function neo4j_update_query($id, $label, $tempat, $tanggal, $waktu, $korban, $pidana, $nilai) {
         return "match(n:Nonteror{nonteror_id:$id})set n.name='" . addslashes($nama)
                 . "',n.tempat='" . addslashes($tempat)
+                . "',n.label='" . addslashes($label)
                 . "',n.pidana='" . addslashes($pidana)
                 . "',n.korban='" . addslashes($korban)
                 . "',n.nilai='" . addslashes($nilai)

@@ -97,6 +97,7 @@ class Latsen extends Member_Controller {
     function submit() {
         $id = $this->input->post('latsen_id');
         $tempat = $this->input->post('tempat');
+        $label = $this->input->post('label');
         $materi = $this->input->post('materi');
         $motif = $this->input->post('motif');
         $kotakab = $this->input->post('kotakab');
@@ -110,9 +111,9 @@ class Latsen extends Member_Controller {
         }
         if ($id) {
             //edit
-            if ($this->latsen_model->update($id, $tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
+            if ($this->latsen_model->update($id,$label, $tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //update to neo4j
-                postNeoQuery($this->latsen_model->neo4j_update_query($id, $tempat, $materi));
+                postNeoQuery($this->latsen_model->neo4j_update_query($id, $label,$tempat, $materi));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -125,7 +126,7 @@ class Latsen extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->latsen_model->create($tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
+            if ($new_id = $this->latsen_model->create($label,$tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //insert to neo4j
                 postNeoQuery($this->latsen_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

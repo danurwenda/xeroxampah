@@ -36,11 +36,12 @@ class Latsen_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
+    public function update($id,$label, $tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
         return $this->db->update(
                         $this->table, array(
                     'tempat' => $tempat,
                     'sejak' => $sejak,
+                    'label' => $label,
                     'hingga' => $hingga,
                     'kotakab_id' => $kotakab,
                     'materi' => $materi,
@@ -49,10 +50,11 @@ class Latsen_model extends CI_Model {
         );
     }
 
-    public function create($tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
+    public function create($label,$tempat, $kotakab, $sejak, $hingga, $materi, $motif) {
         $this->db->insert(
                 $this->table, array(
             'tempat' => $tempat,
+            'label' => $label,
             'sejak' => $sejak,
             'hingga' => $hingga,
             'kotakab_id' => $kotakab,
@@ -70,6 +72,7 @@ class Latsen_model extends CI_Model {
     public function neo4j_insert_query($id) {
         $latsen = $this->get($id);
         $prop = "tempat:'" . addslashes($latsen->tempat) . "',";
+        $prop .= "label:'" . addslashes($latsen->label) . "',";
         $prop .= "materi:'" . addslashes($latsen->materi) . "',";
         $prop.="latsen_id:" . $id;
         return "MERGE(Latsen_$id:Latsen { $prop } )";
@@ -79,9 +82,10 @@ class Latsen_model extends CI_Model {
         return "match(n:Latsen{latsen_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $tempat, $materi) {
+    public function neo4j_update_query($id, $label,$tempat, $materi) {
         return "match(n:Latsen{latsen_id:$id})set "
                 . "n.tempat='" . addslashes($tempat)
+                . "',n.label='" . addslashes($label)
                 . "',n.materi='" . addslashes($materi)
                 . "' return n";
     }

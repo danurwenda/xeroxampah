@@ -11,7 +11,15 @@ echo js_asset('jquery-ui.js', 'ace');
         <h3 class="header smaller lighter blue"><?php echo isset($edit_id) ? 'Ubah' : 'Tambah'; ?> Nonteror</h3>
         <div class="row">
             <?php echo form_open('nonteror', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'nonteror_form']); ?>
-            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Label :</label>
+
+                <div class="col-xs-12 col-sm-9">
+                    <div class="clearfix">
+                        <input type="text" name="label" id="label" class="col-xs-12 col-sm-6" />
+                    </div>
+                </div>
+            </div>
             <!-- Tempat -->
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lokasi event </label>

@@ -5,7 +5,8 @@ function load_nonteror(id) {
         $('input[name="tempat"]').val(data.tempat);
         $('input[name="tanggal"]').combodate('setValue',data.tanggal);
         $('input[name="waktu"]').timepicker('setTime',data.waktu);
-        $('input[name="pidana"]').val(data.pidana);
+        $('textarea[name="pidana"]').val(data.pidana);
+        $('input[name="label"]').val(data.label);
         $('input[name="nilai"]').val(data.nilai);
         $('input[name="motif"]').val(data.motif);
         $('input[name="korban"]').val(data.korban);
