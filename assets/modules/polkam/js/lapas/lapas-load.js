@@ -3,6 +3,7 @@ function load_lapas(id) {
 
         $('form').append($('<input/>',{type:'hidden',name:'lapas_id',value:data.lapas_id}));
         $('input[name="name"]').val(data.name);
+        $('input[name="label"]').val(data.label);
         $('input[name="address"]').val(data.address);
         //add selected city if any and select it in dropdown
         if (data.kotakab_id) {

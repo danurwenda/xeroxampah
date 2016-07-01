@@ -4,6 +4,7 @@ function load_masjid(id) {
         $('form').append($('<input/>',{type:'hidden',name:'masjid_id',value:data.masjid_id}));
         $('input[name="masjid_name"]').val(data.masjid_name);
         $('input[name="address"]').val(data.address);
+        $('input[name="label"]').val(data.label);
         //add selected city if any and select it in dropdown
         if (data.kotakab_id) {
             $.getJSON(base_url + 'kotakab/get/' + data.kotakab_id, function (kotakab) {

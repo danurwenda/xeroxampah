@@ -94,13 +94,14 @@ class Lapas extends Member_Controller {
     function submit() {
         $id = $this->input->post('lapas_id');
         $nama = $this->input->post('name');
+        $label = $this->input->post('label');
         $address = $this->input->post('address');
         $kotakab = $this->input->post('kotakab');
         if ($id) {
             //edit
-            if ($this->lapas_model->update($id, $nama, $address, $kotakab)) {
+            if ($this->lapas_model->update($id,$label, $nama, $address, $kotakab)) {
                 //update to neo4j
-                postNeoQuery($this->lapas_model->neo4j_update_query($id, $nama, $address, $kotakab));
+                postNeoQuery($this->lapas_model->neo4j_update_query($id, $label,$nama, $address, $kotakab));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -113,7 +114,7 @@ class Lapas extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->lapas_model->create($nama, $address, $kotakab)) {
+            if ($new_id = $this->lapas_model->create($label,$nama, $address, $kotakab)) {
                 //insert to neo4j
                 postNeoQuery($this->lapas_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

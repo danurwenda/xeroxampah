@@ -36,20 +36,22 @@ class Masjid_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $nama, $address, $kotakab) {
+    public function update($id, $label, $nama, $address, $kotakab) {
         return $this->db->update(
                         $this->table, array(
                     'masjid_name' => $nama,
+                    'label' => $label,
                     'address' => $address,
                     'kotakab_id' => $kotakab
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($nama, $address, $kotakab) {
+    public function create($label, $nama, $address, $kotakab) {
         $this->db->insert(
                 $this->table, array(
             'masjid_name' => $nama,
+            'label' => $label,
             'address' => $address,
             'kotakab_id' => $kotakab
                 )
@@ -64,6 +66,7 @@ class Masjid_model extends CI_Model {
     public function neo4j_insert_query($id) {
         $m = $this->get($id);
         $prop = "masjid_name:'" . addslashes($m->masjid_name) . "',";
+        $prop.= "label:'" . addslashes($m->label) . "',";
         $prop.= "kotakab:'" . addslashes($m->kotakab_id) . "',";
         $prop.= "address:'" . addslashes($m->address) . "',";
         $prop.="masjid_id:" . $id;
@@ -74,8 +77,8 @@ class Masjid_model extends CI_Model {
         return "match(n:Masjid{masjid_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $nama, $address, $kotakab) {
-        return "match(n:Masjid{masjid_id:$id})set n.masjid_name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab='" . addslashes($kotakab) . "' return n";
+    public function neo4j_update_query($id, $label, $nama, $address, $kotakab) {
+        return "match(n:Masjid{masjid_id:$id})set n.label='" . addslashes($label) . "',n.masjid_name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab='" . addslashes($kotakab) . "' return n";
     }
 
 }

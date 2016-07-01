@@ -12,6 +12,15 @@ echo js_asset('jquery-ui.js', 'ace');
         <div class="row">
             <?php echo form_open('masjid', ['class' => 'form-horizontal', 'role' => 'form', 'id' => 'masjid_form']); ?>
             <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Label :</label>
+
+                <div class="col-xs-12 col-sm-9">
+                    <div class="clearfix">
+                        <input type="text" name="label" id="label" class="col-xs-12 col-sm-6" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Nama :</label>
 
                 <div class="col-xs-12 col-sm-9">

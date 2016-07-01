@@ -95,12 +95,13 @@ class Masjid extends Member_Controller {
         $id = $this->input->post('masjid_id');
         $nama = $this->input->post('masjid_name');
         $address = $this->input->post('address');
+        $label = $this->input->post('label');
         $kotakab = $this->input->post('kotakab');
         if ($id) {
             //edit
-            if ($this->masjid_model->update($id, $nama, $address, $kotakab)) {
+            if ($this->masjid_model->update($id, $label, $nama, $address, $kotakab)) {
                 //update to neo4j
-                postNeoQuery($this->masjid_model->neo4j_update_query($id, $nama, $address, $kotakab));
+                postNeoQuery($this->masjid_model->neo4j_update_query($id, $label, $nama, $address, $kotakab));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -113,7 +114,7 @@ class Masjid extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->masjid_model->create($nama, $address, $kotakab)) {
+            if ($new_id = $this->masjid_model->create($label, $nama, $address, $kotakab)) {
                 //insert to neo4j
                 postNeoQuery($this->masjid_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {
