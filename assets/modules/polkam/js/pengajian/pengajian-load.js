@@ -3,6 +3,7 @@ function load_pengajian(id) {
 
         $('form').append($('<input/>', {type: 'hidden', name: 'pengajian_id', value: data.pengajian_id}));
         $('input[name="topik"]').val(data.topik);
+        $('input[name="label"]').val(data.label);
         //add selected masjid if any and select it in dropdown
         if (data.masjid) {
             $.getJSON(base_url + 'masjid/get/' + data.masjid, function (masjid) {

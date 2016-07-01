@@ -42,10 +42,11 @@ class Pengajian_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $topik, $rumah, $masjid, $pesantren, $lokasi) {
+    public function update($id, $label, $topik, $rumah, $masjid, $pesantren, $lokasi) {
         return $this->db->update(
                         $this->table, array(
                     'topik' => $topik,
+                    'label' => $label,
                     'rumah' => $rumah,
                     'lokasi' => $lokasi,
                     'masjid' => $masjid,
@@ -54,10 +55,11 @@ class Pengajian_model extends CI_Model {
         );
     }
 
-    public function create($topik, $rumah, $masjid, $pesantren, $lokasi) {
+    public function create($label, $topik, $rumah, $masjid, $pesantren, $lokasi) {
         $this->db->insert(
                 $this->table, array(
             'rumah' => $rumah,
+            'label' => $label,
             'lokasi' => $lokasi,
             'topik' => $topik,
             'masjid' => $masjid,
@@ -74,6 +76,7 @@ class Pengajian_model extends CI_Model {
     public function neo4j_insert_query($id) {
         $pengajian = $this->get($id);
         $prop = "topik:'" . addslashes($pengajian->topik) . "',";
+        $prop .= "label:'" . addslashes($pengajian->label) . "',";
         $prop.="pengajian_id:" . $id;
         $merge = "merge(Pengajian_$id:Pengajian{ $prop })";
         $match = "";
@@ -104,7 +107,7 @@ class Pengajian_model extends CI_Model {
         return "match(n:Pengajian{pengajian_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $topik, $masjid, $pesantren) {
+    public function neo4j_update_query($id, $label,$topik, $masjid, $pesantren) {
         $match = "match(p:Pengajian{pengajian_id:$id}),(p)-[d:Lokasi]->(x)";
         $newRel = "";
         if ($masjid) {
@@ -122,7 +125,7 @@ class Pengajian_model extends CI_Model {
         //delete existing relationship, if any
         $delRel = "delete d ";
         //update this.properties
-        $prop = "set p.topik='" . addslashes($topik) . "' ";
+        $prop = "set p.topik='" . addslashes($topik) . "',p.label='" . addslashes($label) . "' ";
         //compile query
         $ret = $match . $delRel . $newRel . $prop;
         return $ret;

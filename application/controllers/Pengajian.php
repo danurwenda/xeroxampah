@@ -107,6 +107,7 @@ class Pengajian extends Member_Controller {
     function submit() {
         $id = $this->input->post('pengajian_id');
         $nama = $this->input->post('topik');
+        $label = $this->input->post('label');
         $rumah = $this->input->post('rumah');
         $lokasi = $this->input->post('lokasi');
         $masjid = $this->input->post('masjid');
@@ -119,9 +120,9 @@ class Pengajian extends Member_Controller {
         $pesantren_kotakab = $this->input->post('pesantren_kotakab');
         if ($id) {
             //edit
-            if ($this->pengajian_model->update($id, $nama, $rumah, $masjid, $pesantren, $lokasi)) {
+            if ($this->pengajian_model->update($id, $label, $nama, $rumah, $masjid, $pesantren, $lokasi)) {
                 //update to neo4j
-                $q = $this->pengajian_model->neo4j_update_query($id, $nama, $rumah, $masjid, $pesantren, $lokasi);
+                $q = $this->pengajian_model->neo4j_update_query($id, $label, $nama, $rumah, $masjid, $pesantren, $lokasi);
                 postNeoQuery($q);
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([ $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
@@ -147,7 +148,7 @@ class Pengajian extends Member_Controller {
                 $q[] = $this->school_model->neo4j_insert_query($pesantren);
             }
             //insert to db
-            if ($new_id = $this->pengajian_model->create($nama,$rumah, $masjid, $pesantren,$lokasi)) {
+            if ($new_id = $this->pengajian_model->create($label, $nama, $rumah, $masjid, $pesantren, $lokasi)) {
                 //insert to neo4j
                 $q[] = $this->pengajian_model->neo4j_insert_query($new_id);
                 postNeoQuery($q);

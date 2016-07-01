@@ -31,7 +31,7 @@ class School extends Member_Controller {
             $this->db->or_where('UPPER(address) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->join('kotakab','kotakab.kotakab_id=school.kotakab_id','left')
+                ->join('kotakab', 'kotakab.kotakab_id=school.kotakab_id', 'left')
                 ->get('school')
                 ->result_array();
         $ret = [];
@@ -50,7 +50,7 @@ class School extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
-             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $this->template->display('school/add_view', $data);
     }
@@ -70,7 +70,7 @@ class School extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
-             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
         ];
         $this->template->display('school/add_view', $data);
     }
@@ -83,7 +83,7 @@ class School extends Member_Controller {
             //ajax only
             $this->datatables
                     ->select('school_name,address,kotakab,school_id')
-                    ->join('kotakab','kotakab.kotakab_id=school.kotakab_id')
+                    ->join('kotakab', 'kotakab.kotakab_id=school.kotakab_id')
                     ->add_column('DT_RowId', 'row_$1', 'school_id')
                     ->from('school');
             echo $this->datatables->generate();
@@ -94,13 +94,14 @@ class School extends Member_Controller {
     function submit() {
         $id = $this->input->post('school_id');
         $nama = $this->input->post('school_name');
+        $label = $this->input->post('label');
         $address = $this->input->post('address');
         $kotakab = $this->input->post('kotakab');
         if ($id) {
             //edit
-            if ($this->school_model->update($id, $nama, $address, $kotakab)) {
+            if ($this->school_model->update($id, $label, $nama, $address, $kotakab)) {
                 //update to neo4j
-                postNeoQuery($this->school_model->neo4j_update_query($id, $nama, $address, $kotakab));
+                postNeoQuery($this->school_model->neo4j_update_query($id, $label, $nama, $address, $kotakab));
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
                 } else {
@@ -113,7 +114,7 @@ class School extends Member_Controller {
         } else {
             //add
             //insert to db
-            if ($new_id = $this->school_model->create($nama, $address, $kotakab)) {
+            if ($new_id = $this->school_model->create($label,$nama, $address, $kotakab)) {
                 //insert to neo4j
                 postNeoQuery($this->school_model->neo4j_insert_query($new_id));
                 if ($this->input->is_ajax_request()) {

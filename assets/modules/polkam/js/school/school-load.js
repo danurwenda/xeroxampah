@@ -3,6 +3,7 @@ function load_school(id) {
 
         $('form').append($('<input/>',{type:'hidden',name:'school_id',value:data.school_id}));
         $('input[name="school_name"]').val(data.school_name);
+        $('input[name="label"]').val(data.label);
         $('input[name="address"]').val(data.address);
         //add selected city if any and select it in dropdown
         if (data.kotakab_id) {

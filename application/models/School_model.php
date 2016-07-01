@@ -36,20 +36,22 @@ class School_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $nama, $address, $kotakab) {
+    public function update($id, $label, $nama, $address, $kotakab) {
         return $this->db->update(
                         $this->table, array(
                     'school_name' => $nama,
+                    'label' => $label,
                     'kotakab_id' => $kotakab,
                     'address' => $address
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($nama, $address, $kotakab) {
+    public function create($label, $nama, $address, $kotakab) {
         $this->db->insert(
                 $this->table, array(
             'school_name' => $nama,
+            'label' => $label,
             'address' => $address,
             'kotakab_id' => $kotakab
                 )
@@ -62,9 +64,11 @@ class School_model extends CI_Model {
     }
 
     public function neo4j_insert_query($id) {
-        $prop = "school_name:'" . addslashes($this->get($id)->school_name) . "',";
-        $prop .= "kotakab_id:'" . addslashes($this->get($id)->kotakab_id) . "',";
-        $prop .= "address:'" . addslashes($this->get($id)->address) . "',";
+        $x = $this->get($id);
+        $prop = "school_name:'" . addslashes($x->school_name) . "',";
+        $prop .= "kotakab_id:'" . addslashes($x->kotakab_id) . "',";
+        $prop .= "label:'" . addslashes($x->label) . "',";
+        $prop .= "address:'" . addslashes($x->address) . "',";
         $prop.="school_id:" . $id;
         return "MERGE(School_$id:School { $prop } )";
     }
@@ -73,8 +77,8 @@ class School_model extends CI_Model {
         return "match(n:School{school_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $nama, $address, $kotakab) {
-        return "match(n:School{school_id:$id})set n.school_name='" . addslashes($nama) . "',n.address='" . addslashes($address) . "',n.kotakab_id='" . addslashes($kotakab) . "' return n";
+    public function neo4j_update_query($id, $label, $nama, $address, $kotakab) {
+        return "match(n:School{school_id:$id})set n.school_name='" . addslashes($nama) . "',n.label='" . addslashes($label) . "',n.address='" . addslashes($address) . "',n.kotakab_id='" . addslashes($kotakab) . "' return n";
     }
 
 }

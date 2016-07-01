@@ -122,7 +122,7 @@ var school_select_config = {
     allowClear: true,
     placeholder: 'Pilih Sekolah'
 };
-function formatMasjidList(org) {
+function formatMasjidList(l) {
      if (l.loading)
         return l.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
