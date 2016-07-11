@@ -1,5 +1,91 @@
 jQuery(function ($) {
     //init datatable
+    function renderCheckbox(id) {
+        return '<label class="position-relative">' +
+                '<input type="checkbox" class="ace merge-cb" value=' + id + ' />'
+                + '<span class="lbl"></span>'
+                + '</label>';
+    }
+    //listen to merge-cb event
+    $('#organisasi-table').on('change', '.merge-cb', function (e) {
+        $(this).closest('tr').toggleClass('selected');
+        //compute the number of checked
+        var selectedRow = $(this).closest('table').find('tr > td:nth-child(2) input:checkbox:checked');
+        if (selectedRow.length == 2) {
+            //enable merge button
+            $('.btn-merge').removeClass('disabled')
+        } else {
+            //disable merge button
+            $('.btn-merge').addClass('disabled')
+        }
+
+    });
+
+    $('#organisasi-modal-form').on('show.bs.modal', function (e) {
+        var selected = [];
+        $('#organisasi-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
+            selected.push($(this).val())
+        })
+        //put selected ids in the form
+        var form = $(this).find('form');
+        form.find('input:hidden[name=keep]').val(selected[0]);
+        form.find('input:hidden[name=discard]').val(selected[1]);
+        //populate modal form with selected ids
+        var modal = $(this)
+                //tarik data dari db
+                , fields = ['name', 'daerah', 'label'];//bisa gini soalnya semuanya tag input
+        $.getJSON(base_url + 'organisasi/get/' + selected[0], function (data) {
+            fields.forEach(function (v, i) {
+                modal.find('.merge-1 input[nm="' + v + '"]').val(data[v]);
+            })
+        });
+        $.getJSON(base_url + 'organisasi/get/' + selected[1], function (data) {
+            fields.forEach(function (v, i) {
+                modal.find('.merge-2 input[nm="' + v + '"]').val(data[v]);
+            })
+        });
+    })
+    $('#organisasi-modal-form .btn-primary').click(function (e) {
+        var form = $('#organisasi-modal-form form')
+                //serialize the form
+                , h = form.serialize();
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'organisasi/merge', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    console.log(h)
+                    $('#organisasi-modal-form').modal('hide');
+                });
+    })
+    //swap all
+    $('#swapall').click(function (evt) {
+        //swap content
+        var modal = $('#organisasi-modal-form');
+        modal.find('form .row').each(function (i, v) {
+            var val1 = $(this).find('.merge-1 input').first()
+            var val2 = $(this).find('.merge-2 input').first()
+            var vv1 = val1.val()
+            val1.val(val2.val())
+            val2.val(vv1)
+        })
+    })
+    //swap per row
+    $('.swaprow').click(function (e) {
+        var row = $(this).closest('.row');
+        var val1 = row.find('.merge-1 input')
+        var val2 = row.find('.merge-2 input')
+        var vv1 = val1.val()
+        val1.val(val2.val())
+        val2.val(vv1)
+    })
     var table = $('#organisasi-table').DataTable({
         processing: true,
         serverSide: true,
@@ -16,10 +102,19 @@ jQuery(function ($) {
         },
         order: [[1, 'asc']],
         //mapping nth-column to data source
-        columns: [{
+        columns: [
+            {
                 "searchable": false,
                 "orderable": false,
-                data:null
+                data: null
+            },
+            //checkbox
+            {
+                "className": 'center',
+                "searchable": false,
+                "orderable": false,
+                data: 'organisasi_id',
+                render: renderCheckbox
             },
             {data: 'name'}, //nama organisasi
             {
@@ -35,13 +130,19 @@ jQuery(function ($) {
                 }
             }
         ]
-    });//biar kolom angka ga ikut ke sort
+    });
+    //biar kolom angka ga ikut ke sort
     table.on('order.dt search.dt draw.dt', function () {
         var start = table.page.info().start;
-        table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = start+i+1;
-        } );
+        table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
+            cell.innerHTML = start + i + 1;
+        });
     }).draw();
+    //disable merge function anytime the table is drawn
+    table.on('draw.dt', function () {
+        $('.btn-merge').addClass('disabled')
+    })
+
     //action for 'delete' button
     $(document).on(ace.click_event, '.action-buttons a.delete', function (e) {
         // popup warning

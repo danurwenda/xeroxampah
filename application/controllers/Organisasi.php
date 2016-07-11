@@ -62,6 +62,52 @@ class Organisasi extends Member_Controller {
         $this->template->display('organisasi/add_view', $data);
     }
 
+    function merge() {
+        $success = true;
+        //array of merged id
+        $keep = $this->input->post('keep');
+        $discard = $this->input->post('discard');
+        //fields
+        $nama = $this->input->post('name');
+        $label = $this->input->post('label');
+        $daerah = $this->input->post('daerah');
+        //TODO : kita edit fields ke $keep
+        if ($keep) {
+            //edit
+            if ($this->organisasi_model->update($keep, $label, $nama, $daerah)) {
+                //update to neo4j
+                postNeoQuery($this->organisasi_model->neo4j_update_query($keep, $label, $nama, $daerah));
+            } else {
+                $success = false;
+            }
+        }
+        //TODO : semua reference ke $discard, pindahkan ke $keep
+        //sejauh ini baru ada referensi incoming edge dari Individu
+        $this->load->model('edge_model');
+        $refs = $this->db
+                ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                ->get_where('edge', ['target_id' => $discard])
+                ->result();
+        foreach ($refs as $ref) {
+            //ubah target_id ke $keep
+            if ($this->edge_model->update($ref->edge_id, $ref->source_id, $keep, $ref->properties)) {
+                //delete old relationship di neo4j
+                postNeoQuery($this->edge_model->neo4j_delete_query($ref->edge_id));
+                //create new relationship
+                postNeoQuery($this->edge_model->neo4j_insert_query($ref->edge_id));
+            } else {
+                $success = false;
+            }
+        }
+        //TODO : hapus $discard
+        if ($this->organisasi_model->delete($discard)) {
+            postNeoQuery($this->organisasi_model->neo4j_delete_query($discard));
+        } else {
+            $success = false;
+        }
+        echo json_encode(['success' => $success]);
+    }
+
     /**
      * Server-side processing for datatables
      */
