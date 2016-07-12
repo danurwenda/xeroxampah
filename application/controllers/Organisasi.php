@@ -71,17 +71,16 @@ class Organisasi extends Member_Controller {
         $nama = $this->input->post('name');
         $label = $this->input->post('label');
         $daerah = $this->input->post('daerah');
-        //TODO : kita edit fields ke $keep
+        $q = [];
         if ($keep) {
             //edit
             if ($this->organisasi_model->update($keep, $label, $nama, $daerah)) {
                 //update to neo4j
-                postNeoQuery($this->organisasi_model->neo4j_update_query($keep, $label, $nama, $daerah));
+                $q[] = $this->organisasi_model->neo4j_update_query($keep, $label, $nama, $daerah);
             } else {
                 $success = false;
             }
         }
-        //TODO : semua reference ke $discard, pindahkan ke $keep
         //sejauh ini baru ada referensi incoming edge dari Individu
         $this->load->model('edge_model');
         $refs = $this->db
@@ -91,19 +90,19 @@ class Organisasi extends Member_Controller {
         foreach ($refs as $ref) {
             //ubah target_id ke $keep
             if ($this->edge_model->update($ref->edge_id, $ref->source_id, $keep, $ref->properties)) {
-                //delete old relationship di neo4j
-                postNeoQuery($this->edge_model->neo4j_delete_query($ref->edge_id));
-                //create new relationship
-                postNeoQuery($this->edge_model->neo4j_insert_query($ref->edge_id));
+                //update neo to reflect these changes
+                $q[] = $this->edge_model->neo4j_update_query($ref->edge_id);
             } else {
                 $success = false;
             }
         }
-        //TODO : hapus $discard
         if ($this->organisasi_model->delete($discard)) {
-            postNeoQuery($this->organisasi_model->neo4j_delete_query($discard));
+            $q[] = $this->organisasi_model->neo4j_delete_query($discard);
         } else {
             $success = false;
+        }
+        if ($success) {
+            postNeoQuery($q);
         }
         echo json_encode(['success' => $success]);
     }

@@ -74,7 +74,6 @@ function postNeoQuery($q) {
             postNeoQuery($qq);
         }
     } else {
-        
         if (true) {
             $data = [
                 'statements' => [
