@@ -85,7 +85,7 @@ class Organisasi extends Member_Controller {
         $this->load->model('edge_model');
         $refs = $this->db
                 ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
-                ->get_where('edge', ['target_id' => $discard])
+                ->get_where('edge', ['target_id' => $discard,'type'=>2])
                 ->result();
         foreach ($refs as $ref) {
             //ubah target_id ke $keep
