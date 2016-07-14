@@ -107,7 +107,7 @@ class Pengajian_model extends CI_Model {
         return "match(n:Pengajian{pengajian_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $label,$topik, $masjid, $pesantren) {
+    public function neo4j_update_query($id, $label, $topik, $rumah, $masjid, $pesantren) {
         $match = "match(p:Pengajian{pengajian_id:$id}),(p)-[d:Lokasi]->(x)";
         $newRel = "";
         if ($masjid) {

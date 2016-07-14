@@ -75,6 +75,53 @@ class Masjid extends Member_Controller {
         $this->template->display('masjid/add_view', $data);
     }
 
+    function merge() {
+        $success = true;
+        //array of merged id
+        $keep = $this->input->post('keep');
+        $discard = $this->input->post('discard');
+        //fields
+        $nama = $this->input->post('masjid_name');
+        $label = $this->input->post('label');
+        $alamat = $this->input->post('address');
+        $kotakab = $this->input->post('kotakab');
+        $q = [];
+        //step 1 : update sql
+        if ($keep) {
+            //edit
+            if ($this->masjid_model->update($keep, $label, $nama, $alamat, $kotakab)) {
+                //update to neo4j
+                $q[] = $this->masjid_model->neo4j_update_query($keep, $label, $nama, $alamat, $kotakab);
+            } else {
+                $success = false;
+            }
+        }
+        //step 2 : move pointers
+        $this->load->model('pengajian_model');
+        $refs = $this->db
+                ->get_where('pengajian', ['masjid' => $discard])
+                ->result();
+        foreach ($refs as $ref) {
+            //ubah masjid dari discard ke keep
+            if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->pesantren, $ref->lokasi)) {
+                //update neo to reflect these changes
+                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->pesantren);
+            } else {
+                $success = false;
+            }
+        }
+        //step 3 : delete discard
+        if ($this->masjid_model->delete($discard)) {
+            $q[] = $this->masjid_model->neo4j_delete_query($discard);
+        } else {
+            $success = false;
+        }
+        if ($success) {
+            postNeoQuery($q);
+        }
+        echo json_encode(['success' => $success]);
+    }
+
     /**
      * Server-side processing for datatables
      */

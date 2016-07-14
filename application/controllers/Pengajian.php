@@ -86,6 +86,51 @@ class Pengajian extends Member_Controller {
         $this->template->display('pengajian/add_view', $data);
     }
 
+    function merge() {
+        $success = true;
+        //array of merged id
+        $keep = $this->input->post('keep');
+        $discard = $this->input->post('discard');
+        //fields
+        $nama = $this->input->post('name');
+        $label = $this->input->post('label');
+        $daerah = $this->input->post('daerah');
+        $q = [];
+        if ($keep) {
+            //edit
+            if ($this->organisasi_model->update($keep, $label, $nama, $daerah)) {
+                //update to neo4j
+                $q[] = $this->organisasi_model->neo4j_update_query($keep, $label, $nama, $daerah);
+            } else {
+                $success = false;
+            }
+        }
+        //sejauh ini baru ada referensi incoming edge dari Individu
+        $this->load->model('edge_model');
+        $refs = $this->db
+                ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
+                ->get_where('edge', ['target_id' => $discard, 'type' => 2])
+                ->result();
+        foreach ($refs as $ref) {
+            //ubah target_id ke $keep
+            if ($this->edge_model->update($ref->edge_id, $ref->source_id, $keep, $ref->properties)) {
+                //update neo to reflect these changes
+                $q[] = $this->edge_model->neo4j_update_query($ref->edge_id);
+            } else {
+                $success = false;
+            }
+        }
+        if ($this->organisasi_model->delete($discard)) {
+            $q[] = $this->organisasi_model->neo4j_delete_query($discard);
+        } else {
+            $success = false;
+        }
+        if ($success) {
+            postNeoQuery($q);
+        }
+        echo json_encode(['success' => $success]);
+    }
+
     /**
      * Server-side processing for datatables
      */

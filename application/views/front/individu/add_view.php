@@ -1481,6 +1481,14 @@ echo js_asset('jquery-ui.js', 'ace');
             <div class="modal-body">
                 <form class="row form-horizontal">
                     <div class="col-xs-12">
+                        <!-- Label -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Label </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="label" />
+                            </div>
+                        </div>
                         <!-- Topik -->
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Topik </label>
