@@ -1426,6 +1426,14 @@ echo js_asset('jquery-ui.js', 'ace');
             <div class="modal-body">
                 <form class="row form-horizontal">
                     <div class="col-xs-12">
+                        <!-- Label -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Label </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="label" />
+                            </div>
+                        </div>
                         <!-- Name -->
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
@@ -1553,15 +1561,15 @@ echo js_asset('jquery-ui.js', 'ace');
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Pesantren </label>
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> School </label>
 
                             <div class="col-sm-9">
-                                <select style="width: 100%" class="form-control school-select2 " name="pesantren" ></select>
+                                <select style="width: 100%" class="form-control school-select2 " name="school" ></select>
                             </div>
                         </div>
                         <div class="widget-box collapsed">
                             <div class="widget-header">
-                                <h4 class="widget-title">Tambah Pesantren</h4>
+                                <h4 class="widget-title">Tambah School</h4>
 
                                 <div class="widget-toolbar">
                                     <a href="#" data-action="collapse">
@@ -1574,24 +1582,24 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <div class="widget-main template-group">
                                     <div class="form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama Pesantren </label>
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama School </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Nama" class="form-control" name="pesantren_name" />
+                                                <input type="text" placeholder="Nama" class="form-control" name="school_name" />
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat Pesantren </label>
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat School </label>
 
                                             <div class="col-sm-9">
-                                                <input type="text" placeholder="Alamat" class="form-control" name="pesantren_address" />
+                                                <input type="text" placeholder="Alamat" class="form-control" name="school_address" />
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota </label>
 
                                             <div class="col-sm-9">
-                                                <select style="width: 100%" class="form-control kotakab-select2" name="pesantren_kotakab"></select>
+                                                <select style="width: 100%" class="form-control kotakab-select2" name="school_kotakab"></select>
                                             </div>
                                         </div>
                                     </div>

@@ -34,7 +34,7 @@ class Pengajian extends Member_Controller {
         $r = $this->db
                 ->select("topik,masjid.masjid_name, school.school_name ,pengajian_id")
                 ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
-                ->join('school', 'school.school_id=pengajian.pesantren', 'left')
+                ->join('school', 'school.school_id=pengajian.school', 'left')
                 ->get('pengajian')
                 ->result_array();
         $ret = [];
@@ -143,7 +143,7 @@ class Pengajian extends Member_Controller {
                     ->from('pengajian')
                     ->join('individu', 'individu.individu_id=pengajian.rumah', 'left')
                     ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
-                    ->join('school', 'school.school_id=pengajian.pesantren', 'left');
+                    ->join('school', 'school.school_id=pengajian.school', 'left');
             echo $this->datatables->generate();
         }
     }
@@ -159,15 +159,15 @@ class Pengajian extends Member_Controller {
         $masjid_name = $this->input->post('masjid_name');
         $masjid_address = $this->input->post('masjid_address');
         $masjid_kotakab = $this->input->post('masjid_kotakab');
-        $pesantren = $this->input->post('pesantren');
-        $pesantren_name = $this->input->post('pesantren_name');
-        $pesantren_address = $this->input->post('pesantren_address');
-        $pesantren_kotakab = $this->input->post('pesantren_kotakab');
+        $school = $this->input->post('school');
+        $school_name = $this->input->post('school_name');
+        $school_address = $this->input->post('school_address');
+        $school_kotakab = $this->input->post('school_kotakab');
         if ($id) {
             //edit
-            if ($this->pengajian_model->update($id, $label, $nama, $rumah, $masjid, $pesantren, $lokasi)) {
+            if ($this->pengajian_model->update($id, $label, $nama, $rumah, $masjid, $school, $lokasi)) {
                 //update to neo4j
-                $q = $this->pengajian_model->neo4j_update_query($id, $label, $nama, $rumah, $masjid, $pesantren, $lokasi);
+                $q = $this->pengajian_model->neo4j_update_query($id, $label, $nama, $rumah, $masjid, $school, $lokasi);
                 postNeoQuery($q);
                 if ($this->input->is_ajax_request()) {
                     echo json_encode([ $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
@@ -187,13 +187,13 @@ class Pengajian extends Member_Controller {
                 $masjid = $this->masjid_model->create($masjid_name, $masjid_address, $masjid_kotakab);
                 $q[] = $this->masjid_model->neo4j_insert_query($masjid);
             }
-            if (!isset($pesantren) && (isset($pesantren_name) && isset($pesantren_kotakab) && isset($pesantren_address))) {
+            if (!isset($school) && (isset($school_name) && isset($school_kotakab) && isset($school_address))) {
                 $this->load->model('school_model');
-                $pesantren = $this->school_model->create($pesantren_name, $pesantren_address, $pesantren_kotakab);
-                $q[] = $this->school_model->neo4j_insert_query($pesantren);
+                $school = $this->school_model->create($school_name, $school_address, $school_kotakab);
+                $q[] = $this->school_model->neo4j_insert_query($school);
             }
             //insert to db
-            if ($new_id = $this->pengajian_model->create($label, $nama, $rumah, $masjid, $pesantren, $lokasi)) {
+            if ($new_id = $this->pengajian_model->create($label, $nama, $rumah, $masjid, $school, $lokasi)) {
                 //insert to neo4j
                 $q[] = $this->pengajian_model->neo4j_insert_query($new_id);
                 postNeoQuery($q);

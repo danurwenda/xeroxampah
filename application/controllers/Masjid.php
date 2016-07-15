@@ -103,9 +103,9 @@ class Masjid extends Member_Controller {
                 ->result();
         foreach ($refs as $ref) {
             //ubah masjid dari discard ke keep
-            if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->pesantren, $ref->lokasi)) {
+            if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->school, $ref->lokasi)) {
                 //update neo to reflect these changes
-                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->pesantren);
+                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->school);
             } else {
                 $success = false;
             }

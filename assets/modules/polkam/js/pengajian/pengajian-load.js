@@ -16,10 +16,10 @@ function load_pengajian(id) {
                         .trigger("change"); //apply to select2
             })
         }
-        //similarly, to pesantren
-        if (data.pesantren) {
-            $.getJSON(base_url + 'school/get/' + data.pesantren, function (skul) {
-                $('select[name="pesantren"]')
+        //similarly, to school
+        if (data.school) {
+            $.getJSON(base_url + 'school/get/' + data.school, function (skul) {
+                $('select[name="school"]')
                         .empty() //empty select
                         .append($("<option/>") //add option tag in select
                                 .val(skul.school_id) //set value for option to post it

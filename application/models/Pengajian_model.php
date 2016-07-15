@@ -29,8 +29,8 @@ class Pengajian_model extends CI_Model {
             $r = $q->row();
             if ($r->masjid) {
                 $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->masjid_name;
-            } if ($r->pesantren) {
-                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->pesantren])->row()->school_name;
+            } if ($r->school) {
+                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->school])->row()->school_name;
             }
             return $r;
         } else {
@@ -42,7 +42,7 @@ class Pengajian_model extends CI_Model {
         return $this->db->delete($this->table, [$this->primary_key => $id]);
     }
 
-    public function update($id, $label, $topik, $rumah, $masjid, $pesantren, $lokasi) {
+    public function update($id, $label, $topik, $rumah, $masjid, $school, $lokasi) {
         return $this->db->update(
                         $this->table, array(
                     'topik' => $topik,
@@ -50,12 +50,12 @@ class Pengajian_model extends CI_Model {
                     'rumah' => $rumah,
                     'lokasi' => $lokasi,
                     'masjid' => $masjid,
-                    'pesantren' => $pesantren
+                    'school' => $school
                         ), [$this->primary_key => $id]
         );
     }
 
-    public function create($label, $topik, $rumah, $masjid, $pesantren, $lokasi) {
+    public function create($label, $topik, $rumah, $masjid, $school, $lokasi) {
         $this->db->insert(
                 $this->table, array(
             'rumah' => $rumah,
@@ -63,7 +63,7 @@ class Pengajian_model extends CI_Model {
             'lokasi' => $lokasi,
             'topik' => $topik,
             'masjid' => $masjid,
-            'pesantren' => $pesantren
+            'school' => $school
                 )
         );
         return $this->last_id();
@@ -86,9 +86,9 @@ class Pengajian_model extends CI_Model {
             $match.="match(m:Masjid{masjid_id:$masjid})";
             $edge.=$merge . "-[l1:Lokasi]->(m)";
         }
-        if ($pengajian->pesantren) {
-            $pesantren = $pengajian->pesantren;
-            $match.="match(p:School{school_id:$pesantren})";
+        if ($pengajian->school) {
+            $school = $pengajian->school;
+            $match.="match(p:School{school_id:$school})";
             $edge.=$merge . "-[l2:Lokasi]->(p)";
         }
         if ($pengajian->rumah) {
@@ -107,15 +107,15 @@ class Pengajian_model extends CI_Model {
         return "match(n:Pengajian{pengajian_id:$id})detach delete n";
     }
 
-    public function neo4j_update_query($id, $label, $topik, $rumah, $masjid, $pesantren) {
+    public function neo4j_update_query($id, $label, $topik, $rumah, $masjid, $school) {
         $match = "match(p:Pengajian{pengajian_id:$id}),(p)-[d:Lokasi]->(x)";
         $newRel = "";
         if ($masjid) {
             $match.=",(m2:Masjid{masjid_id:$masjid})";
             $newRel = "merge(p)-[r1:Lokasi]->(m2)";
         }
-        if ($pesantren) {
-            $match.= ",(s2:School{school_id:$pesantren})";
+        if ($school) {
+            $match.= ",(s2:School{school_id:$school})";
             $newRel.="merge(p)-[r2:Lokasi]->(s2)";
         }
         if ($rumah) {

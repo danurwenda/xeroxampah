@@ -60,11 +60,11 @@ echo js_asset('jquery-ui.js', 'ace');
             <!--<div class="space-2"></div>-->
 
             <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="pesantren">Pesantren :</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="school">School :</label>
 
                 <div class="col-xs-12 col-sm-9">
                     <div class="input-group">
-                        <select style="width: 100%" class="form-control school-select2" name="pesantren"></select>
+                        <select style="width: 100%" class="form-control school-select2" name="school"></select>
                         <span class="input-group-addon" data-toggle="modal" data-target="#school-modal-form">
                             <i class="fa fa-plus bigger-110"></i>
                         </span>

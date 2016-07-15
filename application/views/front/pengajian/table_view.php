@@ -20,7 +20,7 @@
                         <th>Topik</th>
                         <th>Rumah</th>
                         <th>Masjid</th>
-                        <th>Pesantren</th>
+                        <th>School</th>
                         <th>Lokasi lain</th>
                         <th></th>
                     </tr>

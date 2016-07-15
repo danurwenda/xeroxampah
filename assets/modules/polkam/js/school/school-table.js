@@ -1,5 +1,115 @@
 jQuery(function ($) {
     //init datatable
+    function renderCheckbox(id) {
+        return '<label class="position-relative">' +
+                '<input type="checkbox" class="ace merge-cb" value=' + id + ' />'
+                + '<span class="lbl"></span>'
+                + '</label>';
+    }
+    //listen to merge-cb event
+    $('#school-table').on('change', '.merge-cb', function (e) {
+        $(this).closest('tr').toggleClass('selected');
+        //compute the number of checked
+        var selectedRow = $(this).closest('table').find('tr > td:nth-child(2) input:checkbox:checked');
+        if (selectedRow.length == 2) {
+            //enable merge button
+            $('.btn-merge').removeClass('disabled')
+        } else {
+            //disable merge button
+            $('.btn-merge').addClass('disabled')
+        }
+
+    });
+
+    $('#school-modal-form').on('show.bs.modal', function (e) {
+        var selected = [];
+        $('#school-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
+            selected.push($(this).val())
+        })
+        //put selected ids in the form
+        var form = $(this).find('form');
+        form.find('input:hidden[name=keep]').val(selected[0]);
+        form.find('input:hidden[name=discard]').val(selected[1]);
+        //populate modal form with selected ids
+        var modal = $(this)
+                //tarik data dari db
+                , fields = ['school_name', 'address', 'label'];//bisa gini soalnya semuanya tag input
+        $.getJSON(base_url + 'school/get/' + selected[0], function (data) {
+            fields.forEach(function (v, i) {
+                modal.find('.merge-1 input[nm="' + v + '"]').val(data[v]);
+            })
+            //kotakab ngisinya beda
+            if (data.kotakab_id) {
+                $.getJSON(base_url + 'kotakab/get/' + data.kotakab_id, function (kotakab) {
+                    $('.merge-1 .kotakab-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+        });
+        $.getJSON(base_url + 'school/get/' + selected[1], function (data) {
+            fields.forEach(function (v, i) {
+                modal.find('.merge-2 input[nm="' + v + '"]').val(data[v]);
+            })
+            //kotakab ngisinya beda
+            if (data.kotakab_id) {
+                $.getJSON(base_url + 'kotakab/get/' + data.kotakab_id, function (kotakab) {
+                    $('.merge-2 .kotakab-select2')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+        });
+    })
+    $('#school-modal-form .btn-primary').click(function (e) {
+        var form = $('#school-modal-form form')
+                //serialize the form
+                , h = form.serialize();
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'school/merge', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    $('#school-modal-form').modal('hide');
+                });
+    })
+    //swap all
+    $('#swapall').click(function (evt) {
+        //swap content
+        var modal = $('#school-modal-form');
+        modal.find('form .row').each(function (i, v) {
+            var val1 = $(this).find('.merge-1 input').first()
+            var val2 = $(this).find('.merge-2 input').first()
+            var vv1 = val1.val()
+            val1.val(val2.val())
+            val2.val(vv1)
+        })
+    })
+    //swap per row
+    $('.swaprow').click(function (e) {
+        var row = $(this).closest('.row');
+        var val1 = row.find('.merge-1 input')
+        var val2 = row.find('.merge-2 input')
+        var vv1 = val1.val()
+        val1.val(val2.val())
+        val2.val(vv1)
+    })
+    //init datatable
     var table = $('#school-table').DataTable({
         processing: true,
         serverSide: true,
@@ -20,6 +130,13 @@ jQuery(function ($) {
                 "searchable": false,
                 "orderable": false,
                 data:null
+            },//checkbox
+            {
+                "className": 'center',
+                "searchable": false,
+                "orderable": false,
+                data: 'school_id',
+                render: renderCheckbox
             },
             {data: 'school_name'}, //nama school
             {

@@ -85,7 +85,6 @@ jQuery(function ($) {
                 .done(function (data) {
                     //reset and close modal
                     form[0].reset();
-                    console.log(h)
                     $('#masjid-modal-form').modal('hide');
                 });
     })
