@@ -1439,7 +1439,7 @@ echo js_asset('jquery-ui.js', 'ace');
                             <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Nama </label>
 
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="name" />
+                                <input type="text" class="form-control" name="school_name" />
                             </div>
                         </div>
                         <!-- Alamat -->

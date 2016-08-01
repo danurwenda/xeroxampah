@@ -9,6 +9,9 @@
             <span class="btn btn-white btn-default btn-round btn-merge disabled" data-toggle="modal" data-target="#school-modal-form">
                 <i class="ace-icon fa fa-flask red"></i>Merge
             </span>
+            <span class="btn btn-white btn-default btn-round disabled" id="clear-merge">
+                <i class="ace-icon fa fa-times red2"></i>Clear
+            </span>
         </h4>
         <!--<div class="clear"></div>-->
 
@@ -31,7 +34,6 @@
         </div>
     </div>
 </div>
-
 <style>
     .modal-body .row{
         margin-top: 2px;

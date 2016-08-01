@@ -103,9 +103,9 @@ class School extends Member_Controller {
                 ->result();
         foreach ($pengajians as $ref) {
             //ubah school dari discard ke keep
-            if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->school, $ref->lokasi)) {
+            if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $ref->masjid, $keep, $ref->lokasi)) {
                 //update neo to reflect these changes
-                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $keep, $ref->school);
+                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah,$ref->masjid, $keep);
             } else {
                 $success = false;
             }
