@@ -266,7 +266,19 @@ var teror_select_config = {
     templateResult: formatTerorList,
     templateSelection: formatTerorSelection
 };
+function formatLapasList(l) {
+    if (l.loading)
+        return l.text;
+    var markup = "<div class='select2-result-repository clearfix'>" +
+            "<div class='select2-result-repository__meta'>" +
+            "<div class='select2-result-repository__title'>" + l.name + "</div>" +
+            "<div class='select2-result-repository__statistics'>" +
+            "<div class='select2-result-repository__forks'>" + l.address + ', ' + l.kotakab + "</div>" +
+            "</div>" +
+            "</div></div>";
 
+    return markup;
+}
 function formatLapasSelection(l) {
     return l.name || l.text;
 }
@@ -292,7 +304,7 @@ var lapas_select_config = {
         return markup;
     },
     minimumInputLength: 1, allowClear: true, placeholder: '',
-    templateResult: formatSchoolList,
+    templateResult: formatLapasList,
     templateSelection: formatLapasSelection
 };
 function formatOrganisasiList(org) {

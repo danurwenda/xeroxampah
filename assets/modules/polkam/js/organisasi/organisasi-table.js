@@ -1,28 +1,52 @@
 jQuery(function ($) {
-    //init datatable
+    var selected = [];
+//init datatable
     function renderCheckbox(id) {
         return '<label class="position-relative">' +
-                '<input type="checkbox" class="ace merge-cb" value=' + id + ' />'
+                '<input ' + (selected.indexOf(id) > -1 ? 'checked' : '') + ' type="checkbox" class="ace merge-cb" value=' + id + ' />'
                 + '<span class="lbl"></span>'
                 + '</label>';
     }
-    //listen to merge-cb event
-    $('#organisasi-table').on('change', '.merge-cb', function (e) {
-        $(this).closest('tr').toggleClass('selected');
+    function updateButtons(){
         //compute the number of checked
-        var selectedRow = $(this).closest('table').find('tr > td:nth-child(2) input:checkbox:checked');
-        if (selectedRow.length == 2) {
+        if (selected.length > 0) {
+            //enable clear
+            $('#clear-merge').removeClass('disabled')
+        } else {
+            $('#clear-merge').addClass('disabled')
+        }
+        if (selected.length == 2) {
             //enable merge button
             $('.btn-merge').removeClass('disabled')
         } else {
             //disable merge button
             $('.btn-merge').addClass('disabled')
         }
-
+    }
+    function resetSelection(){
+        selected = []
+        //redraw the table
+        table.ajax.reload(null, false)
+        updateButtons()
+    }
+    
+//listen to merge-cb event
+    $('#organisasi-table').on('change', '.merge-cb', function (e) {
+        var toSelect = $(this).closest('tr').toggleClass('selected').hasClass('selected'),
+                val = $(this).val();
+        if (toSelect) {
+            //add to selected
+            selected.push(val)
+        } else {
+            //remove from selected
+            var index = selected.indexOf(val);
+            if (index > -1) {
+                selected.splice(index, 1);
+            }
+        }
+        updateButtons()
     });
-
     $('#organisasi-modal-form').on('show.bs.modal', function (e) {
-        var selected = [];
         $('#organisasi-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
             selected.push($(this).val())
         })
@@ -33,7 +57,7 @@ jQuery(function ($) {
         //populate modal form with selected ids
         var modal = $(this)
                 //tarik data dari db
-                , fields = ['name', 'daerah', 'label'];//bisa gini soalnya semuanya tag input
+                , fields = ['name', 'daerah', 'label']; //bisa gini soalnya semuanya tag input
         $.getJSON(base_url + 'organisasi/get/' + selected[0], function (data) {
             fields.forEach(function (v, i) {
                 modal.find('.merge-1 input[nm="' + v + '"]').val(data[v]);
@@ -61,30 +85,40 @@ jQuery(function ($) {
                 .done(function (data) {
                     //reset and close modal
                     form[0].reset();
-                    console.log(h)
                     $('#organisasi-modal-form').modal('hide');
+                    resetSelection()
+                    
                 });
     })
+    function swapRow($row){
+        //input type input, swap val
+        var val1 = $row.find('.merge-1').find('input')
+        var val2 = $row.find('.merge-2').find('input')
+        var vv1 = val1.val()
+        val1.val(val2.val())
+        val2.val(vv1)
+        //input type select, swap option
+        var sel1 = $row.find('.merge-1').find('select')
+        var sel2 = $row.find('.merge-2').find('select')
+        val1 = sel1.val()
+        val2 = sel2.val()
+        var opt1 = sel1.find('option');
+        var opt2 = sel2.find('option');
+        sel1.empty().append(opt2).val(val2)
+        sel2.empty().append(opt1).val(val1)
+    }
     //swap all
     $('#swapall').click(function (evt) {
         //swap content
         var modal = $('#organisasi-modal-form');
         modal.find('form .row').each(function (i, v) {
-            var val1 = $(this).find('.merge-1 input').first()
-            var val2 = $(this).find('.merge-2 input').first()
-            var vv1 = val1.val()
-            val1.val(val2.val())
-            val2.val(vv1)
+            swapRow($(this))
         })
     })
     //swap per row
     $('.swaprow').click(function (e) {
         var row = $(this).closest('.row');
-        var val1 = row.find('.merge-1 input')
-        var val2 = row.find('.merge-2 input')
-        var vv1 = val1.val()
-        val1.val(val2.val())
-        val2.val(vv1)
+        swapRow(row)
     })
     var table = $('#organisasi-table').DataTable({
         processing: true,
@@ -138,14 +172,14 @@ jQuery(function ($) {
             cell.innerHTML = start + i + 1;
         });
     }).draw();
-    //disable merge function anytime the table is drawn
-    table.on('draw.dt', function () {
-        $('.btn-merge').addClass('disabled')
+  
+//clear selected
+    $('#clear-merge').click(function (e) {
+        resetSelection()
     })
-
     //action for 'delete' button
     $(document).on(ace.click_event, '.action-buttons a.delete', function (e) {
-        // popup warning
+// popup warning
         var rowID = $(this).closest('tr').attr('id').substr(4);
         bootbox.confirm("Hapus?", function (result) {
             if (result) {
@@ -159,21 +193,19 @@ jQuery(function ($) {
                 });
             }
         });
-
     });
     //action for 'edit' button
     $(document).on(ace.click_event, '.action-buttons a.edit', function (e) {
-        // popup warning
+// popup warning
         var rowID = $(this).closest('tr').attr('id').substr(4);
         var win = window.open(base_url + 'organisasi/edit/' + rowID, '_blank');
         win.focus();
     });
     //action for 'view' button
     $(document).on(ace.click_event, '.action-buttons a.view', function (e) {
-        // popup warning
+// popup warning
         var rowID = $(this).closest('tr').attr('id').substr(4);
         var win = window.open(base_url + 'graph/organisasi/' + rowID, '_blank');
         win.focus();
     });
-
 });

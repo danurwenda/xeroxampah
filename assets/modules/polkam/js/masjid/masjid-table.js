@@ -86,6 +86,8 @@ jQuery(function ($) {
                     //reset and close modal
                     form[0].reset();
                     $('#masjid-modal-form').modal('hide');
+                    //redraw the table
+                    table.ajax.reload(null,false)
                 });
     })
     //swap all
