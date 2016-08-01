@@ -7,7 +7,7 @@ jQuery(function ($) {
                 + '<span class="lbl"></span>'
                 + '</label>';
     }
-    function updateButtons(){
+    function updateButtons() {
         //compute the number of checked
         if (selected.length > 0) {
             //enable clear
@@ -23,13 +23,13 @@ jQuery(function ($) {
             $('.btn-merge').addClass('disabled')
         }
     }
-    function resetSelection(){
+    function resetSelection() {
         selected = []
         //redraw the table
         table.ajax.reload(null, false)
         updateButtons()
     }
-    
+
 //listen to merge-cb event
     $('#organisasi-table').on('change', '.merge-cb', function (e) {
         var toSelect = $(this).closest('tr').toggleClass('selected').hasClass('selected'),
@@ -87,10 +87,10 @@ jQuery(function ($) {
                     form[0].reset();
                     $('#organisasi-modal-form').modal('hide');
                     resetSelection()
-                    
+
                 });
     })
-    function swapRow($row){
+    function swapRow($row) {
         //input type input, swap val
         var val1 = $row.find('.merge-1').find('input')
         var val2 = $row.find('.merge-2').find('input')
@@ -172,7 +172,7 @@ jQuery(function ($) {
             cell.innerHTML = start + i + 1;
         });
     }).draw();
-  
+
 //clear selected
     $('#clear-merge').click(function (e) {
         resetSelection()

@@ -7,7 +7,7 @@ jQuery(function ($) {
                 + '<span class="lbl"></span>'
                 + '</label>';
     }
-    function updateButtons(){
+    function updateButtons() {
         //compute the number of checked
         if (selected.length > 0) {
             //enable clear
@@ -22,7 +22,8 @@ jQuery(function ($) {
             //disable merge button
             $('.btn-merge').addClass('disabled')
         }
-    }function resetSelection(){
+    }
+    function resetSelection() {
         selected = []
         //redraw the table
         table.ajax.reload(null, false)
@@ -112,7 +113,7 @@ jQuery(function ($) {
                     resetSelection()
                 });
     })
-    function swapRow($row){
+    function swapRow($row) {
         //input type input, swap val
         var val1 = $row.find('.merge-1').find('input')
         var val2 = $row.find('.merge-2').find('input')
@@ -162,8 +163,8 @@ jQuery(function ($) {
         columns: [{
                 "searchable": false,
                 "orderable": false,
-                data:null
-            },//checkbox
+                data: null
+            }, //checkbox
             {
                 "className": 'center',
                 "searchable": false,
@@ -191,9 +192,9 @@ jQuery(function ($) {
     });//biar kolom angka ga ikut ke sort
     table.on('order.dt search.dt draw.dt', function () {
         var start = table.page.info().start;
-        table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = start+i+1;
-        } );
+        table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
+            cell.innerHTML = start + i + 1;
+        });
     }).draw();
     //clear selected
     $('#clear-merge').click(function (e) {
