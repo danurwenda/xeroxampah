@@ -32,7 +32,7 @@ class Pengajian extends Member_Controller {
             $this->db->or_where('UPPER(school.school_name) LIKE', '%' . strtoupper($term) . '%');
         }
         $r = $this->db
-                ->select("topik,masjid.masjid_name, school.school_name ,pengajian_id")
+                ->select("topik,masjid.masjid_name,pengajian.lokasi, school.school_name ,pengajian_id")
                 ->join('masjid', 'masjid.masjid_id=pengajian.masjid', 'left')
                 ->join('school', 'school.school_id=pengajian.school', 'left')
                 ->get('pengajian')
@@ -42,11 +42,14 @@ class Pengajian extends Member_Controller {
             //craft return
             $i['id'] = $i['pengajian_id'] + 0;
             $lokasi = '';
+            if ($i['lokasi']) {
+                $lokasi = $i['lokasi'];
+            }
             if ($i['masjid_name']) {
-                $lokasi.=$i['masjid_name'];
+                $lokasi.=(strlen($lokasi) ? ',' : '') . $i['masjid_name'];
             }
             if ($i['school_name']) {
-                $lokasi.=', ' . $i['school_name'];
+                $lokasi.=(strlen($lokasi) ? ',' : '') . $i['school_name'];
             }
             $i['lokasi'] = $lokasi;
             $ret[] = $i;
@@ -92,15 +95,18 @@ class Pengajian extends Member_Controller {
         $keep = $this->input->post('keep');
         $discard = $this->input->post('discard');
         //fields
-        $nama = $this->input->post('name');
         $label = $this->input->post('label');
-        $daerah = $this->input->post('daerah');
+        $topik = $this->input->post('topik');
+        $rumah = $this->input->post('rumah');
+        $masjid = $this->input->post('masjid');
+        $school = $this->input->post('school');
+        $lokasi = $this->input->post('lokasi');
         $q = [];
         if ($keep) {
             //edit
-            if ($this->organisasi_model->update($keep, $label, $nama, $daerah)) {
+            if ($this->pengajian_model->update($keep, $label, $topik, $rumah, $masjid, $school, $lokasi)) {
                 //update to neo4j
-                $q[] = $this->organisasi_model->neo4j_update_query($keep, $label, $nama, $daerah);
+                $q[] = $this->pengajian_model->neo4j_update_query($keep, $label, $topik, $rumah, $masjid, $school);
             } else {
                 $success = false;
             }
@@ -109,7 +115,7 @@ class Pengajian extends Member_Controller {
         $this->load->model('edge_model');
         $refs = $this->db
                 ->join('edge_weight', 'edge_weight.weight_id=edge.weight_id')
-                ->get_where('edge', ['target_id' => $discard, 'type' => 2])
+                ->get_where('edge', ['target_id' => $discard, 'type' => 9])
                 ->result();
         foreach ($refs as $ref) {
             //ubah target_id ke $keep
@@ -120,15 +126,15 @@ class Pengajian extends Member_Controller {
                 $success = false;
             }
         }
-        if ($this->organisasi_model->delete($discard)) {
-            $q[] = $this->organisasi_model->neo4j_delete_query($discard);
+        if ($this->pengajian_model->delete($discard)) {
+            $q[] = $this->pengajian_model->neo4j_delete_query($discard);
         } else {
             $success = false;
         }
         if ($success) {
             postNeoQuery($q);
         }
-        echo json_encode(['success' => $success]);
+        echo json_encode(['success' => $success, 'q' => $q]);
     }
 
     /**

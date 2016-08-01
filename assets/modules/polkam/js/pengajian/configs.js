@@ -44,7 +44,9 @@ var individu_select_config = {
     },
     minimumInputLength: 1, allowClear: true, placeholder: '',
     templateResult: formatIndividuList,
-    templateSelection: formatIndividuSelection
+    templateSelection: formatIndividuSelection,
+    allowClear: true,
+    placeholder: 'Pilih Individu'
 };
 function formatKotakabList(org) {
     return org.kotakab

@@ -27,11 +27,11 @@ class Pengajian_model extends CI_Model {
                 ->get_where($this->table, [$this->primary_key => $id]);
         if ($q->num_rows() > 0) {
             $r = $q->row();
-            if ($r->masjid) {
-                $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->masjid_name;
-            } if ($r->school) {
-                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->school])->row()->school_name;
-            }
+//            if ($r->masjid) {
+//                $r->lokasi = $this->db->get_where('masjid', ['masjid_id' => $r->masjid])->row()->masjid_name;
+//            } if ($r->school) {
+//                $r->lokasi .=', ' . $this->db->get_where('school', ['school_id' => $r->school])->row()->school_name;
+//            }
             return $r;
         } else {
             return null;
@@ -108,7 +108,9 @@ class Pengajian_model extends CI_Model {
     }
 
     public function neo4j_update_query($id, $label, $topik, $rumah, $masjid, $school) {
-        $match = "match(p:Pengajian{pengajian_id:$id}),(p)-[d:Lokasi]->(x)";
+        //delete existing relationship, if any
+        $matchDel = "match(p:Pengajian{pengajian_id:$id})-[d:Lokasi]-() delete d";
+        $match = "match(p:Pengajian{pengajian_id:$id})";
         $newRel = "";
         if ($masjid) {
             $match.=",(m2:Masjid{masjid_id:$masjid})";
@@ -122,13 +124,11 @@ class Pengajian_model extends CI_Model {
             $match.= ",(i2:Individu{individu_id:$rumah})";
             $newRel.="merge(p)-[r3:Lokasi]->(i2)";
         }
-        //delete existing relationship, if any
-        $delRel = "delete d ";
         //update this.properties
         $prop = "set p.topik='" . addslashes($topik) . "',p.label='" . addslashes($label) . "' ";
         //compile query
-        $ret = $match . $delRel . $newRel . $prop;
-        return $ret;
+        $ret = $match  . $newRel . $prop;
+        return [$matchDel,$ret];
     }
 
 }
