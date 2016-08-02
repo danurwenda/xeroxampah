@@ -47,9 +47,7 @@ jQuery(function ($) {
         updateButtons()
     });
     $('#organisasi-modal-form').on('show.bs.modal', function (e) {
-        $('#organisasi-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
-            selected.push($(this).val())
-        })
+        
         //put selected ids in the form
         var form = $(this).find('form');
         form.find('input:hidden[name=keep]').val(selected[0]);

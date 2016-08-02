@@ -71,6 +71,13 @@ class Pengajian extends Member_Controller {
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(7);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ,['module' => 'polkam', 'asset' => 'pengajian/configs.js']
+        ];
         $data['title'] = 'tr.db | Pengajian';
         $this->template->display('pengajian/table_view', $data);
     }

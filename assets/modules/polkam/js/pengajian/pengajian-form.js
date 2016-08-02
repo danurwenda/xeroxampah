@@ -1,9 +1,4 @@
 jQuery(function ($) {
-    //select2
-    $('.individu-select2').select2(individu_select_config);
-    $('.masjid-select2').select2(masjid_select_config);
-    $('.school-select2').select2(school_select_config);
-    $('select.kotakab-select2').select2(kotakab_select_config);
     // INDIVIDU
     $('#individu-modal-form .btn-primary').click(function (e) {
         var form = $('#individu-modal-form form')

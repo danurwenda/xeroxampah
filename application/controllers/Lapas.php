@@ -50,7 +50,8 @@ class Lapas extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ['module' => 'polkam', 'asset' => 'select2.min.js'],
+            ['module' => 'polkam', 'asset' => 'lapas/config.js']
         ];
         $this->template->display('lapas/add_view', $data);
     }
@@ -58,6 +59,13 @@ class Lapas extends Member_Controller {
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(5);
         $data['title'] = 'tr.db | Lapas';
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js'],
+            ['module' => 'polkam', 'asset' => 'lapas/config.js']
+        ];
         $this->template->display('lapas/table_view', $data);
     }
 
@@ -69,7 +77,8 @@ class Lapas extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'select2.min.css']
         ];
         $data['js_assets'] = [
-            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            ['module' => 'polkam', 'asset' => 'select2.min.js'],
+            ['module' => 'polkam', 'asset' => 'lapas/config.js']
         ];
         $data['edit_id'] = $id;
         $this->template->display('lapas/add_view', $data);

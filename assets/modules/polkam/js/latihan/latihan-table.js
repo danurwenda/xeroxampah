@@ -49,9 +49,7 @@ jQuery(function ($) {
     $('#latihan-modal-form').on('show.bs.modal', function (e) {
         //reset combodates
         $(this).find('.combofulldate').combodate()
-        $('#latihan-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
-            selected.push($(this).val())
-        })
+        
         //put selected ids in the form
         var form = $(this).find('form');
         form.find('input:hidden[name=keep]').val(selected[0]);
@@ -145,13 +143,14 @@ jQuery(function ($) {
         var opt2 = sel2.find('option');
         sel1.empty().append(opt2).val(val2)
         sel2.empty().append(opt1).val(val1)
+        if(sel1.hasClass('select2'))sel1.trigger('change')
+        if(sel2.hasClass('select2'))sel2.trigger('change')
         //input type combodate, swap val
         var cdate1 = $row.find('.merge-1').find('.combofulldate')
         var cdate2 = $row.find('.merge-2').find('.combofulldate')
         val1 = cdate1.combodate('getValue')
         cdate1.combodate('setValue',cdate2.combodate('getValue'))
-        cdate2.combodate('setValue',val1)
-        
+        cdate2.combodate('setValue',val1)        
     }
     //swap all
     $('#swapall').click(function (evt) {

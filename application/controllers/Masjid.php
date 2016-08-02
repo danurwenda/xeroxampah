@@ -51,12 +51,20 @@ class Masjid extends Member_Controller {
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'masjid/config.js']
         ];
         $this->template->display('masjid/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(4);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'masjid/config.js']
+        ];
         $data['title'] = 'tr.db | Masjid';
         $this->template->display('masjid/table_view', $data);
     }
@@ -71,6 +79,7 @@ class Masjid extends Member_Controller {
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'masjid/config.js']
         ];
         $this->template->display('masjid/add_view', $data);
     }

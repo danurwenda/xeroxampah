@@ -51,12 +51,20 @@ class School extends Member_Controller {
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'school/config.js']
         ];
         $this->template->display('school/add_view', $data);
     }
 
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(6);
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'school/config.js']
+        ];
         $data['title'] = 'tr.db | School';
         $this->template->display('school/table_view', $data);
     }
@@ -71,6 +79,7 @@ class School extends Member_Controller {
         ];
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'school/config.js']
         ];
         $this->template->display('school/add_view', $data);
     }
@@ -105,7 +114,7 @@ class School extends Member_Controller {
             //ubah school dari discard ke keep
             if ($this->pengajian_model->update($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $ref->masjid, $keep, $ref->lokasi)) {
                 //update neo to reflect these changes
-                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah,$ref->masjid, $keep);
+                $q[] = $this->pengajian_model->neo4j_update_query($ref->pengajian_id, $ref->label, $ref->topik, $ref->rumah, $ref->masjid, $keep);
             } else {
                 $success = false;
             }

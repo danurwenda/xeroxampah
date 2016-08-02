@@ -1,4 +1,4 @@
-jQuery(function ($) {
+jQuery(function ($) {    
     var selected = [];
     //init datatable
     function renderCheckbox(id) {
@@ -47,9 +47,6 @@ jQuery(function ($) {
     });
 
     $('#lapas-modal-form').on('show.bs.modal', function (e) {
-        $('#lapas-table').find('tr > td:nth-child(2) input:checkbox:checked').each(function () {
-            selected.push($(this).val())
-        })
         //put selected ids in the form
         var form = $(this).find('form');
         form.find('input:hidden[name=keep]').val(selected[0]);
@@ -129,6 +126,8 @@ jQuery(function ($) {
         var opt2 = sel2.find('option');
         sel1.empty().append(opt2).val(val2)
         sel2.empty().append(opt1).val(val1)
+        if(sel1.hasClass('select2'))sel1.trigger('change')
+        if(sel2.hasClass('select2'))sel2.trigger('change')
     }
     //swap all
     $('#swapall').click(function (evt) {
@@ -232,5 +231,4 @@ jQuery(function ($) {
         var win = window.open(base_url + 'graph/lapas/' + rowID, '_blank');
         win.focus();
     });
-
 });

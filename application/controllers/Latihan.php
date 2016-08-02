@@ -51,6 +51,7 @@ class Latihan extends Member_Controller {
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
             , ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'latihan/config.js']
         ];
         $data['title'] = 'Tambah Latihan';
         $this->template->display('latihan/add_view', $data);
@@ -59,8 +60,14 @@ class Latihan extends Member_Controller {
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(11);
         $data['title'] = 'tr.db | Latihan';
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
         $data['js_assets'] = [ ['module' => 'polkam', 'asset' => 'moment.js']
-            , ['module' => 'polkam', 'asset' => 'combodate.js']];
+            , ['module' => 'polkam', 'asset' => 'combodate.js']
+            , ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'latihan/config.js']
+        ];
         $this->template->display('latihan/table_view', $data);
     }
 
@@ -73,6 +80,7 @@ class Latihan extends Member_Controller {
         $data['js_assets'] = [
             ['module' => 'polkam', 'asset' => 'combodate.js']
             , ['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'latihan/config.js']
             , ['module' => 'polkam', 'asset' => 'moment.js']
         ];
         $data['title'] = 'Ubah Latihan';
@@ -96,7 +104,7 @@ class Latihan extends Member_Controller {
         $q = [];
         if ($keep) {
             //edit
-            if ($this->latihan_model->update($keep, $label, $tempat, $kotakab, $sejak,$hingga, $materi, $motif)) {
+            if ($this->latihan_model->update($keep, $label, $tempat, $kotakab, $sejak, $hingga, $materi, $motif)) {
                 //update to neo4j
                 $q[] = $this->latihan_model->neo4j_update_query($keep, $label, $tempat, $materi);
             } else {

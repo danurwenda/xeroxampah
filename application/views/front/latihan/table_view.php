@@ -118,7 +118,7 @@
                         </div>
                         <div class="col-md-5 merge-1">
                             <!-- Kotakab -->
-                            <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
+                            <select style="width: 100%" class="form-control kotakab-select2 select2" name="kotakab"></select>
                         </div>
                         <div class="col-md-1 center">
                             <span class="btn btn-white btn-default btn-round swaprow">
@@ -126,7 +126,7 @@
                             </span>
                         </div>
                         <div class="col-md-5 merge-2">
-                            <select style="width: 100%" class="form-control kotakab-select2"></select>
+                            <select style="width: 100%" class="form-control kotakab-select2 select2"></select>
                         </div>
                     </div>
                     <div class="row">

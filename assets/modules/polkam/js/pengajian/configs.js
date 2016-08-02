@@ -46,7 +46,7 @@ var individu_select_config = {
     templateResult: formatIndividuList,
     templateSelection: formatIndividuSelection,
     allowClear: true,
-    placeholder: 'Pilih Individu'
+            placeholder: 'Pilih Individu'
 };
 function formatKotakabList(org) {
     return org.kotakab
@@ -125,7 +125,7 @@ var school_select_config = {
     placeholder: 'Pilih Sekolah'
 };
 function formatMasjidList(l) {
-     if (l.loading)
+    if (l.loading)
         return l.text;
     var markup = "<div class='select2-result-repository clearfix'>" +
             "<div class='select2-result-repository__meta'>" +
@@ -168,3 +168,10 @@ var masjid_select_config = {
     allowClear: true,
     placeholder: 'Pilih Masjid'
 };
+jQuery(function ($) {
+    //select2
+    $('.individu-select2').select2(individu_select_config);
+    $('.masjid-select2').select2(masjid_select_config);
+    $('.school-select2').select2(school_select_config);
+    $('select.kotakab-select2').select2(kotakab_select_config);
+})
