@@ -31,6 +31,14 @@ class Individu extends Member_Controller {
     function index() {
         $data['breadcrumb'] = $this->menu_model->create_breadcrumb(3);
         $data['title'] = 'tr.db | Individu';
+        $data['css_assets'] = [
+            ['module' => 'polkam', 'asset' => 'select2.min.css']
+        ];
+        $data['js_assets'] = [['module' => 'polkam', 'asset' => 'moment.js']
+            ,['module' => 'polkam', 'asset' => 'select2.min.js']
+            , ['module' => 'polkam', 'asset' => 'combodate.js']
+            ,['module' => 'polkam', 'asset' => 'individu/configs.js']
+        ];
 
         $this->template->display('individu/table_view', $data);
     }

@@ -1,6 +1,198 @@
 jQuery(function ($) {
+    var selected = [];
     //init datatable
-    var oTable1 = $('#individu-table').DataTable({
+    function renderCheckbox(id) {
+        return '<label class="position-relative">' +
+                '<input ' + (selected.indexOf(id) > -1 ? 'checked' : '') + ' type="checkbox" class="ace merge-cb" value=' + id + ' />'
+                + '<span class="lbl"></span>'
+                + '</label>';
+    }
+    function updateButtons() {
+        //compute the number of checked
+        if (selected.length > 0) {
+            //enable clear
+            $('#clear-merge').removeClass('disabled')
+        } else {
+            $('#clear-merge').addClass('disabled')
+        }
+        if (selected.length == 2) {
+            //enable merge button
+            $('.btn-merge').removeClass('disabled')
+        } else {
+            //disable merge button
+            $('.btn-merge').addClass('disabled')
+        }
+    }
+    function resetSelection() {
+        selected = []
+        //redraw the table
+        table.ajax.reload(null, false)
+        updateButtons()
+    }
+    //listen to merge-cb event
+    $('#individu-table').on('change', '.merge-cb', function (e) {
+        var toSelect = $(this).closest('tr').toggleClass('selected').hasClass('selected'),
+                val = $(this).val();
+        if (toSelect) {
+            //add to selected
+            selected.push(val)
+        } else {
+            //remove from selected
+            var index = selected.indexOf(val);
+            if (index > -1) {
+                selected.splice(index, 1);
+            }
+        }
+        updateButtons()
+    });
+
+    $('#individu-modal-form').on('show.bs.modal', function (e) {
+        //put selected ids in the form
+        var form = $(this).find('form');
+        form.find('input:hidden[name=keep]').val(selected[0]);
+        form.find('input:hidden[name=discard]').val(selected[1]);
+        //populate modal form with selected ids
+        var modal = $(this)
+                //tarik data dari db
+                , inputs = ['individu_name', 'address', 'label']
+                , selects = ['gender','religion'];//bisa gini soalnya semuanya tag input
+        $.getJSON(base_url + 'individu/get/' + selected[0], function (data) {
+            inputs.forEach(function (v, i) {
+                modal.find('.merge-1 input[nm="' + v + '"]').val(data[v]);
+            })
+            selects.forEach(function (v, i) {
+                modal.find('.merge-1 select[nm="' + v + '"]').val(data[v]);
+            })
+            //kotakab ngisinya beda
+            if (data.address_kotakab) {
+                $.getJSON(base_url + 'kotakab/get/' + data.address_kotakab, function (kotakab) {
+                    $('.merge-1 .kotakab-select2[nm="address_kotakab"]')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+            if (data.born_kotakab) {
+                $.getJSON(base_url + 'kotakab/get/' + data.born_kotakab, function (kotakab) {
+                    $('.merge-1 .kotakab-select2[nm="born_kotakab"]')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+            //tanggal ngisinya beda
+            if (data.born_date) {
+                $('.merge-1 input[nm="born_date"]').combodate('setValue', data.born_date);
+            }
+        });
+        $.getJSON(base_url + 'individu/get/' + selected[1], function (data) {
+            inputs.forEach(function (v, i) {
+                modal.find('.merge-2 input[nm="' + v + '"]').val(data[v]);
+            })
+            selects.forEach(function (v, i) {
+                modal.find('.merge-2 select[nm="' + v + '"]').val(data[v]);
+            })
+            //kotakab ngisinya beda
+            if (data.address_kotakab) {
+                $.getJSON(base_url + 'kotakab/get/' + data.address_kotakab, function (kotakab) {
+                    $('.merge-2 .kotakab-select2[nm="address_kotakab"]')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+            if (data.born_kotakab) {
+                $.getJSON(base_url + 'kotakab/get/' + data.born_kotakab, function (kotakab) {
+                    $('.merge-2 .kotakab-select2[nm="born_kotakab"]')
+                            .empty() //empty select
+                            .append($("<option/>") //add option tag in select
+                                    .val(kotakab.kotakab_id) //set value for option to post it
+                                    .text(kotakab.kotakab)) //set a text for show in select
+                            .val(kotakab.kotakab_id) //select option of select2
+                            .trigger("change"); //apply to select2
+                })
+            }
+            //tanggal ngisinya beda
+            if (data.born_date) {
+                $('.merge-2 input[nm="born_date"]').combodate('setValue', data.born_date);
+            }
+        });
+    })
+    $('#individu-modal-form .btn-primary').click(function (e) {
+        var form = $('#individu-modal-form form')
+                //serialize the form
+                , h = form.serialize();
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'individu/merge', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    $('#individu-modal-form').modal('hide');
+                    resetSelection()
+                });
+    })
+    function swapRow($row) {
+        //input type input, swap val
+        var val1 = $row.find('.merge-1').find('input:not(.combofulldate)')
+        var val2 = $row.find('.merge-2').find('input:not(.combofulldate)')
+        var vv1 = val1.val()
+        val1.val(val2.val())
+        val2.val(vv1)
+        //input type select, swap option
+        var sel1 = $row.find('.merge-1').find('select:not(.day,.month,.year)')
+        var sel2 = $row.find('.merge-2').find('select:not(.day,.month,.year)')
+        val1 = sel1.val()
+        val2 = sel2.val()
+        var opt1 = sel1.find('option');
+        var opt2 = sel2.find('option');
+        if (sel1.hasClass('select2'))
+            sel1.empty().append(opt2)
+        if (sel2.hasClass('select2'))
+            sel2.empty().append(opt1)
+        sel1.val(val2)
+        sel2.val(val1)
+        if (sel1.hasClass('select2'))
+            sel1.trigger('change')
+        if (sel2.hasClass('select2'))
+            sel2.trigger('change')
+        //input type combodate, swap val
+        var cdate1 = $row.find('.merge-1').find('.combofulldate')
+        var cdate2 = $row.find('.merge-2').find('.combofulldate')
+        val1 = cdate1.combodate('getValue')
+        cdate1.combodate('setValue', cdate2.combodate('getValue'))
+        cdate2.combodate('setValue', val1)
+    }
+    //swap all
+    $('#swapall').click(function (evt) {
+        //swap content
+        var modal = $('#individu-modal-form');
+        modal.find('form .row').each(function (i, v) {
+            swapRow($(this))
+        })
+    })
+    //swap per row
+    $('.swaprow').click(function (e) {
+        var row = $(this).closest('.row');
+        swapRow(row)
+    })
+    //init datatable
+    var table = $('#individu-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
@@ -16,11 +208,17 @@ jQuery(function ($) {
         },
         order: [[1, 'asc']],
         //mapping nth-column to data source
-        columns: [
-            {
+        columns: [{
                 "searchable": false,
                 "orderable": false,
-                data:null
+                data: null
+            }, //checkbox
+            {
+                "className": 'center',
+                "searchable": false,
+                "orderable": false,
+                data: 'individu_id',
+                render: renderCheckbox
             },
             {data: 'individu_name'}, //nama individu
             {
@@ -49,13 +247,23 @@ jQuery(function ($) {
             }
         ]
     });
-    //biar kolom angka ga ikut ke sort
-    oTable1.on('order.dt search.dt draw.dt', function () {
-        var start = oTable1.page.info().start;
-        oTable1.column(0, {order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = start+i+1;
-        } );
+    table.on('order.dt search.dt draw.dt', function () {
+        //biar kolom angka ga ikut ke sort
+        var start = table.page.info().start;
+        table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
+            cell.innerHTML = start + i + 1;
+        });
+        //kasih class 'selected' kalau row tersebut ada di array selected
+        table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            var datax = this.data();
+            if (selected.indexOf(datax.individu_id) > -1)
+                $(this.node()).addClass('selected')
+        });
     }).draw();
+    //clear selected
+    $('#clear-merge').click(function (e) {
+        resetSelection()
+    })
     //action for 'delete' button
     $(document).on(ace.click_event, '.action-buttons a.delete', function (e) {
         // popup warning
@@ -67,7 +275,7 @@ jQuery(function ($) {
                     type: 'DELETE',
                     success: function (r) {
                         //reload table
-                        oTable1.ajax.reload(null, false);
+                        table.ajax.reload(null, false);
                     }
                 });
             }

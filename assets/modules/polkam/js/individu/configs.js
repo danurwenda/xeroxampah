@@ -509,3 +509,12 @@ var kotakab_select_config = {
     templateResult: formatKotakabList,
     templateSelection: formatKotakabSelection
 };
+jQuery(function ($) {
+// AUTO COMPLETES
+    // input type di autocomplete ini akan auto-add jika bukan reference
+    //individu
+    $('select.kotakab-select2').select2(kotakab_select_config);
+    $('select.male-select2').select2(male_select_config);
+    $('select.female-select2').select2(female_select_config);
+    $('select.individu-select2').select2(individu_select_config);
+})

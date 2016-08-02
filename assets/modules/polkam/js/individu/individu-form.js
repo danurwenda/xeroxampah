@@ -411,30 +411,11 @@ jQuery(function ($) {
         speech_button: false
     });
 
-    // AUTO COMPLETES
-    // input type di autocomplete ini akan auto-add jika bukan reference
-    //individu
-    $('select.kotakab-select2').select2(kotakab_select_config);
-    $('select.male-select2').select2(male_select_config);
-    $('select.female-select2').select2(female_select_config);
-    $('select.individu-select2').select2(individu_select_config);
+    
     $('.modal .monthpicker').combodate({
         format: "YYYY-MM-DD",
         template: "MMM YYYY"
     });
-    //jaringan
-    var network_autocomplete_config = {
-        source: base_url + "network/search",
-        minLength: 4,
-        create: function (e) {
-            $(this).next('.ui-helper-hidden-accessible').remove();
-        },
-        select: function (e, ui) {
-            $(this).data('reference_id', ui.item.id);
-        }
-    };
-    $('.network-autocomplete').autocomplete(network_autocomplete_config);
-
     //when the form is submitted, add additional hidden from wysiwyg
     $('#individu_form').submit(function (e) {
 //        e.preventDefault();
