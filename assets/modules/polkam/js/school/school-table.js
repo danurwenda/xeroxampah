@@ -189,12 +189,19 @@ jQuery(function ($) {
                 }
             }
         ]
-    });//biar kolom angka ga ikut ke sort
+    });
     table.on('order.dt search.dt draw.dt', function () {
+        //biar kolom angka ga ikut ke sort
         var start = table.page.info().start;
-        table.column(0, {order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = start+i+1;
-        } );
+        table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
+            cell.innerHTML = start + i + 1;
+        });
+        //kasih class 'selected' kalau row tersebut ada di array selected
+        table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+            var datax = this.data();
+            if (selected.indexOf(datax.school_id) > -1)
+                $(this.node()).addClass('selected')
+        });
     }).draw();
     //clear selected
     $('#clear-merge').click(function (e) {
