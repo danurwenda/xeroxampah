@@ -337,10 +337,10 @@ jQuery(function ($) {
     })
     $('span.plus').on(ace.click_event, function () {
         //find template
-        var template = $(this).parents('.widget-main').find('.template');
+        var template = $(this).parents('.template-group').find('.template');
         var clone = template.clone()
                 .removeClass('template hide')
-                .insertBefore($(this).parents('.form-group').first());
+                .insertBefore($(this).closest('.form-group'));
         //initiate jquery plugins/UI
         clone.find('.combofulldate').combodate({maxYear:2030});
         clone.find('.monthpicker').combodate({

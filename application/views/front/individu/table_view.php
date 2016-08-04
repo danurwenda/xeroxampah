@@ -34,23 +34,7 @@
         </div>
     </div>
 </div>
-<style>
-    .modal-body .row{
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-    .merge-1{
-        background-color: #9cffb0;
-    }
-    .merge-2{
-        background-color: #d15b47;
-    }
-    @media (min-width: 1280px)
-    {  .modal-lg {
-           width: 1200px;
-       }
-    }
-</style>
+
 
 <div id="individu-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -117,12 +101,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-1">
-                            <!-- Alamat -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> TTL </label>
+                            <!-- Nama -->
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alias </label>
                         </div>
                         <div class="col-md-5 merge-1">
-                            <!-- Alamat -->
-                            <input type="text" class="form-control combofulldate" name="born_date" nm="born_date" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" />
+                            <!-- Nama -->
+                            <input type="text" class="form-control" name="alias" nm="alias" />
                         </div>
                         <div class="col-md-1 center">
                             <span class="btn btn-white btn-default btn-round swaprow">
@@ -131,119 +115,366 @@
                         </div>
                         <div class="col-md-5 merge-2">
                             <!-- Nama -->
-                            <input type="text" class="form-control combofulldate" nm="born_date" data-format="YYYY-MM-DD" data-template="DD MMM YYYY">
+                            <input type="text" class="form-control" nm="alias"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <!-- Kotakab -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Hubungan dengan Lembaga Pendidikan</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-5 merge-1">
-                            <!-- Kotakab -->
-                            <select style="width: 100%" class="form-control kotakab-select2 select2" nm="born_kotakab" name="born_kotakab"></select>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="edu-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="edu-edge" data-placeholder="Pilih Relasi..." name="edu_edge[]">
+
+                                                        <option value="22">Mudir/Pengasuh</option>
+                                                        <option value="23">Pendiri</option>
+                                                        <option value="24">Pengajar</option>                                    
+                                                        <option value="51">Santri/Murid</option>                                    
+                                                        <option value="52">Staf</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide subjek attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Subjek </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="edu_subjek[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control school-select2" name="school_id[]"></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#school-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="text" class="input-sm form-control monthpicker " name="edu_start[]" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+
+                                                        <input type="text" class="monthpicker input-sm form-control" name="edu_end[]" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pendidikan </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="edu-edge" data-placeholder="Pilih Relasi..." name="edu_edge[]">
+
+                                                        <option value="22">Mudir/Pengasuh</option>
+                                                        <option value="23">Pendiri</option>
+                                                        <option value="24">Pengajar</option>                                    
+                                                        <option value="51">Santri/Murid</option>                                    
+                                                        <option value="52">Staf</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide subjek attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Subjek </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="edu_subjek[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tempat </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control school-select2" name="school_id[]"></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#school-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="text" class="input-sm form-control monthpicker " name="edu_start[]" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+
+                                                        <input type="text" class="monthpicker input-sm form-control" name="edu_end[]" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pendidikan </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-1 center">
-                            <span class="btn btn-white btn-default btn-round swaprow">
-                                <i class="ace-icon fa fa-exchange green"></i>
-                            </span>
-                        </div>
-                        <div class="col-md-5 merge-2">
-                            <select style="width: 100%" class="form-control kotakab-select2 select2" nm="born_kotakab"></select>
-                        </div>
+
                     </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <!-- Alamat -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat </label>
-                        </div>
-                        <div class="col-md-5 merge-1">
-                            <!-- Alamat -->
-                            <input type="text" class="form-control" name="address" nm="address" />
-                        </div>
-                        <div class="col-md-1 center">
-                            <span class="btn btn-white btn-default btn-round swaprow">
-                                <i class="ace-icon fa fa-exchange green"></i>
-                            </span>
-                        </div>
-                        <div class="col-md-5 merge-2">
-                            <!-- Nama -->
-                            <input type="text" class="form-control" nm="address">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <!-- Kotakab -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
-                        </div>
-                        <div class="col-md-5 merge-1">
-                            <!-- Kotakab -->
-                            <select style="width: 100%" class="form-control kotakab-select2 select2" nm="address_kotakab" name="address_kotakab"></select>
-                        </div>
-                        <div class="col-md-1 center">
-                            <span class="btn btn-white btn-default btn-round swaprow">
-                                <i class="ace-icon fa fa-exchange green"></i>
-                            </span>
-                        </div>
-                        <div class="col-md-5 merge-2">
-                            <select style="width: 100%" class="form-control kotakab-select2 select2" nm="address_kotakab"></select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-1">
-                            <!-- Kotakab -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> JenKel </label>
-                        </div>
-                        <div class="col-md-5 merge-1">
-                            <select class="form-control" name="gender" nm="gender">
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-1 center">
-                            <span class="btn btn-white btn-default btn-round swaprow">
-                                <i class="ace-icon fa fa-exchange green"></i>
-                            </span>
-                        </div>
-                        <div class="col-md-5 merge-2">
-                            <select class="form-control" nm="gender">
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <!-- Kotakab -->
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agama </label>
-                        </div>
-                        <div class="col-md-5 merge-1">
-                            <select class="form-control" name="religion" nm="religion">
-                            <option value="Islam">Islam</option>
-                            <option value="Protestan">Protestan</option>
-                            <option value="Katolik">Katolik</option>
-                            <option value="Hindu">Hindu</option>
-                            <option value="Budha">Budha</option>
-                            <option value="Konghucu">Konghucu</option>
-                        </select>
-                        </div>
-                        <div class="col-md-1 center">
-                            <span class="btn btn-white btn-default btn-round swaprow">
-                                <i class="ace-icon fa fa-exchange green"></i>
-                            </span>
-                        </div>
-                        <div class="col-md-5 merge-2">
-                            <select class="form-control" nm="religion" >
-                            <option value="Islam">Islam</option>
-                            <option value="Protestan">Protestan</option>
-                            <option value="Katolik">Katolik</option>
-                            <option value="Hindu">Hindu</option>
-                            <option value="Budha">Budha</option>
-                            <option value="Konghucu">Konghucu</option>
-                        </select>
-                        </div>
-                    </div>
+                    <!--                    <div class="row">
+                                            <div class="col-md-1">
+                                                 Nama 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Suku/kwn </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                 Nama 
+                                                <input type="text" class="form-control" name="nationality" nm="nationality" />
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                 Nama 
+                                                <input type="text" class="form-control" nm="nationality"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Alamat 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> TTL </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                 Alamat 
+                                                <input type="text" class="form-control combofulldate" name="born_date" nm="born_date" data-format="YYYY-MM-DD" data-template="DD MMM YYYY" />
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                 Nama 
+                                                <input type="text" class="form-control combofulldate" nm="born_date" data-format="YYYY-MM-DD" data-template="DD MMM YYYY">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Kotakab 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                 Kotakab 
+                                                <select style="width: 100%" class="form-control kotakab-select2 select2" nm="born_kotakab" name="born_kotakab"></select>
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                <select style="width: 100%" class="form-control kotakab-select2 select2" nm="born_kotakab"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Alamat 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Alamat </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                 Alamat 
+                                                <input type="text" class="form-control" name="address" nm="address" />
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                 Nama 
+                                                <input type="text" class="form-control" nm="address">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Kotakab 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                 Kotakab 
+                                                <select style="width: 100%" class="form-control kotakab-select2 select2" nm="address_kotakab" name="address_kotakab"></select>
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                <select style="width: 100%" class="form-control kotakab-select2 select2" nm="address_kotakab"></select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Kotakab 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Pendidikan Formal </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                <select class="form-control" name="recent_edu" nm="recent_edu">
+                                                <option value=""></option>
+                                                <option value="0">SD atau lebih rendah</option>
+                                                <option value="1">SMP</option>
+                                                <option value="2">SMA</option>
+                                                <option value="3">Diploma</option>
+                                                <option value="4">S1</option>
+                                                <option value="5">S2</option>
+                                                <option value="6">S3 atau lebih tinggi</option>
+                                            </select>
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                <select class="form-control" nm="recent_edu">
+                                                <option value=""></option>
+                                                <option value="0">SD atau lebih rendah</option>
+                                                <option value="1">SMP</option>
+                                                <option value="2">SMA</option>
+                                                <option value="3">Diploma</option>
+                                                <option value="4">S1</option>
+                                                <option value="5">S2</option>
+                                                <option value="6">S3 atau lebih tinggi</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Kotakab 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> JenKel </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                <select class="form-control" name="gender" nm="gender">
+                                                    <option value="Laki-laki">Laki-laki</option>
+                                                    <option value="Perempuan">Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                <select class="form-control" nm="gender">
+                                                    <option value="Laki-laki">Laki-laki</option>
+                                                    <option value="Perempuan">Perempuan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                 Kotakab 
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agama </label>
+                                            </div>
+                                            <div class="col-md-5 merge-1">
+                                                <select class="form-control" name="religion" nm="religion">
+                                                <option value="Islam">Islam</option>
+                                                <option value="Protestan">Protestan</option>
+                                                <option value="Katolik">Katolik</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Budha">Budha</option>
+                                                <option value="Konghucu">Konghucu</option>
+                                            </select>
+                                            </div>
+                                            <div class="col-md-1 center">
+                                                <span class="btn btn-white btn-default btn-round swaprow">
+                                                    <i class="ace-icon fa fa-exchange green"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-5 merge-2">
+                                                <select class="form-control" nm="religion" >
+                                                <option value="Islam">Islam</option>
+                                                <option value="Protestan">Protestan</option>
+                                                <option value="Katolik">Katolik</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Budha">Budha</option>
+                                                <option value="Konghucu">Konghucu</option>
+                                            </select>
+                                            </div>
+                                        </div>-->
                 </form>
             </div>
 

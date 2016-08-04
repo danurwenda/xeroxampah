@@ -34,18 +34,6 @@
         </div>
     </div>
 </div>
-<style>
-    .modal-body .row{
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-    .merge-1{
-        background-color: #9cffb0;
-    }
-    .merge-2{
-        background-color: #d15b47;
-    }
-</style>
 
 <div id="lapas-modal-form" class="modal" tabindex="-1">
     <div class="modal-dialog modal-lg">

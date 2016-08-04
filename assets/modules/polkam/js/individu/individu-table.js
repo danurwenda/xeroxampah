@@ -1,4 +1,55 @@
+function cloneTemplate(widget) {
+    //find template
+    var template = $(widget + ' .template');
+    var clone = template.clone()
+            .removeClass('template hide')
+            .insertBefore($(widget + '>.form-group'));
+    //initiate jquery plugins/UI
+    clone.find('.combofulldate').combodate();
+    clone.find('.monthpicker').combodate({
+        format: "YYYY-MM-DD",
+        template: "MMM YYYY"
+    });
+    clone.find('.organisasi-select2').select2(organisasi_select_config)
+    clone.find('.lapas-select2').select2(lapas_select_config)
+    clone.find('.school-select2').select2(school_select_config)
+    clone.find('.masjid-select2').select2(masjid_select_config)
+    clone.find('.pengajian-select2').select2(pengajian_select_config)
+    clone.find('.nonteror-select2').select2(nonteror_select_config);
+    clone.find('.teror-select2').select2(teror_select_config);
+    clone.find('.latsen-select2').select2(latsen_select_config);
+    clone.find('.latihan-select2').select2(latihan_select_config);
+    return clone;
+}
 jQuery(function ($) {
+    // EXPANDABLE FIELDS
+    //handle "hapus" button
+    $('.template-group').on(ace.click_event, '.btn-delete', function () {
+        $(this).parents('.form-template').first().remove();
+    })
+    $('span.plus').on(ace.click_event, function () {
+        //find template
+        var template = $(this).parents('.template-group').find('.template');
+        var clone = template.clone()
+                .removeClass('template hide')
+                .insertBefore($(this).parents('.form-group').first());
+        //initiate jquery plugins/UI
+        clone.find('.combofulldate').combodate({maxYear: 2030});
+        clone.find('.monthpicker').combodate({
+            format: "YYYY-MM-DD", maxYear: 2030,
+            template: "MMM YYYY"
+        });
+        clone.find('.organisasi-select2').select2(organisasi_select_config)
+        clone.find('.lapas-select2').select2(lapas_select_config)
+        clone.find('.school-select2').select2(school_select_config)
+        clone.find('.masjid-select2').select2(masjid_select_config)
+        clone.find('.pengajian-select2').select2(pengajian_select_config)
+        clone.find('.nonteror-select2').select2(nonteror_select_config);
+        clone.find('.teror-select2').select2(teror_select_config);
+        clone.find('.latsen-select2').select2(latsen_select_config);
+        clone.find('.latihan-select2').select2(latihan_select_config);
+    })
+    //SELECTION
     var selected = [];
     //init datatable
     function renderCheckbox(id) {
@@ -46,6 +97,7 @@ jQuery(function ($) {
         updateButtons()
     });
 
+    //LOAD DATA oon show
     $('#individu-modal-form').on('show.bs.modal', function (e) {
         //put selected ids in the form
         var form = $(this).find('form');
@@ -54,9 +106,9 @@ jQuery(function ($) {
         //populate modal form with selected ids
         var modal = $(this)
                 //tarik data dari db
-                , inputs = ['individu_name', 'address', 'label']
-                , selects = ['gender','religion'];//bisa gini soalnya semuanya tag input
-        $.getJSON(base_url + 'individu/get/' + selected[0], function (data) {
+                , inputs = ['individu_name', 'address', 'nationality', 'label', 'alias']
+                , selects = ['gender', 'religion', 'recent_edu'];//bisa gini soalnya semuanya tag input
+        $.getJSON(base_url + 'individu/get_cascade/' + selected[0], function (data) {
             inputs.forEach(function (v, i) {
                 modal.find('.merge-1 input[nm="' + v + '"]').val(data[v]);
             })
@@ -86,12 +138,44 @@ jQuery(function ($) {
                             .trigger("change"); //apply to select2
                 })
             }
+            //PENDIDIKAN
+            if (data.pendidikan) {
+                $.each(data.pendidikan, function (i, v) {
+                    //create clone from templates
+                    var row = cloneTemplate('#edu-widget .merge-1');
+                    //set values
+                    if (v.prop) {
+                        var prop = $.parseJSON(v.prop);
+                        if (v.weight == 24 && prop.subjek) {
+                            //subjek
+                            row.find('.subjek').removeClass('hide')
+                                    .find('input').val(prop.subjek);
+                        }
+                        if (prop.from) {
+                            row.find('input[name="edu_start[]"]').combodate("setValue", new Date(prop.from));
+                        }
+                        if (prop.until) {
+                            row.find('input[name="edu_end[]"]').combodate("setValue", new Date(prop.until));
+                        }
+                    }
+                    row.find('.edu-edge').val(v.weight);
+                    $.getJSON(base_url + 'school/get/' + v.target, function (f) {
+                        row.find('.school-select2')
+                                .empty() //empty select
+                                .append($("<option/>") //add option tag in select
+                                        .val(f.school_id) //set value for option to post it
+                                        .text(f.school_name)) //set a text for show in select
+                                .val(f.school_id) //select option of select2
+                                .trigger("change"); //apply to select2
+                    })
+                })
+            }
             //tanggal ngisinya beda
             if (data.born_date) {
                 $('.merge-1 input[nm="born_date"]').combodate('setValue', data.born_date);
             }
         });
-        $.getJSON(base_url + 'individu/get/' + selected[1], function (data) {
+        $.getJSON(base_url + 'individu/get_cascade/' + selected[1], function (data) {
             inputs.forEach(function (v, i) {
                 modal.find('.merge-2 input[nm="' + v + '"]').val(data[v]);
             })
@@ -119,6 +203,38 @@ jQuery(function ($) {
                                     .text(kotakab.kotakab)) //set a text for show in select
                             .val(kotakab.kotakab_id) //select option of select2
                             .trigger("change"); //apply to select2
+                })
+            }
+            //PENDIDIKAN
+            if (data.pendidikan) {
+                $.each(data.pendidikan, function (i, v) {
+                    //create clone from templates
+                    var row = cloneTemplate('#edu-widget .merge-2');
+                    //set values
+                    if (v.prop) {
+                        var prop = $.parseJSON(v.prop);
+                        if (v.weight == 24 && prop.subjek) {
+                            //subjek
+                            row.find('.subjek').removeClass('hide')
+                                    .find('input').val(prop.subjek);
+                        }
+                        if (prop.from) {
+                            row.find('input[name="edu_start[]"]').combodate("setValue", new Date(prop.from));
+                        }
+                        if (prop.until) {
+                            row.find('input[name="edu_end[]"]').combodate("setValue", new Date(prop.until));
+                        }
+                    }
+                    row.find('.edu-edge').val(v.weight);
+                    $.getJSON(base_url + 'school/get/' + v.target, function (f) {
+                        row.find('.school-select2')
+                                .empty() //empty select
+                                .append($("<option/>") //add option tag in select
+                                        .val(f.school_id) //set value for option to post it
+                                        .text(f.school_name)) //set a text for show in select
+                                .val(f.school_id) //select option of select2
+                                .trigger("change"); //apply to select2
+                    })
                 })
             }
             //tanggal ngisinya beda
@@ -182,14 +298,29 @@ jQuery(function ($) {
     $('#swapall').click(function (evt) {
         //swap content
         var modal = $('#individu-modal-form');
-        modal.find('form .row').each(function (i, v) {
+        modal.find('form > .row:not(.widget-box)').each(function (i, v) {
             swapRow($(this))
+        })
+        modal.find('form > .row.widget-box').each(function (i, v) {
+            $(this).find('.swaprecord').click()
         })
     })
     //swap per row
     $('.swaprow').click(function (e) {
         var row = $(this).closest('.row');
         swapRow(row)
+    })
+    //swap per tipe edge
+    $('.swaprecord').click(function (e) {
+        //naik ke row & pindah ke next row
+        var swaprow = $(this).closest('.row').next()
+        var merge1 = swaprow.children('.merge-1')
+                , side1 = merge1.find('.form-template:not(.template)').detach()
+        var merge2 = swaprow.children('.merge-2')
+                , side2 = merge2.find('.form-template:not(.template)').detach()
+        //tukar
+        side1.insertBefore(merge2.children('.form-group'))
+        side2.insertBefore(merge1.children('.form-group'))
     })
     //init datatable
     var table = $('#individu-table').DataTable({
