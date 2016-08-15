@@ -651,7 +651,7 @@ echo js_asset('jquery-ui.js', 'ace');
                                 </div>
                             </div>
                             <div class="form-group hide fam-template">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Ibu </label>
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
 
                                 <div class="col-sm-9">
                                     <div class="input-group">
@@ -666,11 +666,17 @@ echo js_asset('jquery-ui.js', 'ace');
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi </label>
 
                                 <div class="col-sm-9">
-                                    <a href="#family-modal-form" role="button" class="blue" data-toggle="modal">
-                                        <span class="input-group-addon">
+                                    <div class="input-group">
+                                        <select style="width: 100%" class="chosen-select" data-placeholder="Pilih Relasi..." id="fam-field">
+
+                                            <option value="48">Saudara</option>
+                                            <option value="49">Pasangan</option>
+                                            <option value="50">Anak</option>                                    
+                                        </select>
+                                        <span class="input-group-addon fam-plus">
                                             <i class="fa fa-plus bigger-110"></i>
                                         </span>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2014,47 +2020,6 @@ echo js_asset('jquery-ui.js', 'ace');
     </div>
 </div>
 
-<div id="family-modal-form" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="blue bigger">Tambah Relasi</h4>
-            </div>
-
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <label for="form-field-select-3">Relasi Kekeluargaan</label>
-
-                            <div>
-                                <select class="chosen-select" data-placeholder="Pilih Relasi..." id="fam-field">
-
-                                    <option value="48">Saudara</option>
-                                    <option value="49">Pasangan</option>
-                                    <option value="50">Anak</option>                                    
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-sm" data-dismiss="modal">
-                    <i class="ace-icon fa fa-times"></i>
-                    Cancel
-                </button>
-
-                <button class="btn btn-sm btn-primary">
-                    <i class="ace-icon fa fa-check"></i>
-                    Tambah
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php
 echo js_asset('jquery.dataTables.js', 'ace');

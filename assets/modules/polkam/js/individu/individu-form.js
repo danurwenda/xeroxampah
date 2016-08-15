@@ -288,8 +288,7 @@ jQuery(function ($) {
         $('#latsen-modal-form').modal('hide');
     });
     // FAMILY
-    $('#family-modal-form .btn-primary').click(function (c) {
-        $('#family-modal-form').modal('hide');
+    $('.fam-plus').click(function (c) {
         //insert new row di keluarga
         var template = $('.fam-template');
         var clone = template.clone();
@@ -314,8 +313,6 @@ jQuery(function ($) {
                     .after(date);
             adjustGender(select);
         }
-
-
     });
 
     function adjustGender(select) {
