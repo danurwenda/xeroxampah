@@ -864,8 +864,8 @@ jQuery(function ($) {
     })
     $('#individu-modal-form .btn-primary').click(function (e) {
         var form = $('#individu-modal-form form')
-                //serialize the form
-                , h = form.serialize();
+                //serialize the form, except those in hidden template
+                , h = form.find(":input:not(.template :input)").serialize();
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)

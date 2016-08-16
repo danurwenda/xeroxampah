@@ -19,7 +19,6 @@ jQuery(function ($) {
                     form[0].reset();
                     //reset expandable
                     form.find('.btn-delete:not(.template *)').click();
-                    console.log('kenapa ga close??')
                     $('#individu-modal-form').modal('hide');
                 });
     });

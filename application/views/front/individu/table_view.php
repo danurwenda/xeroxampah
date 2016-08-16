@@ -1002,6 +1002,782 @@
 
                     <div class="row widget-box collapsed">
                         <div class="widget-header">
+                            <h4 class="widget-title">Kejahatan Teror</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="teror-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="teror-edge" data-placeholder="Pilih Relasi..." name="teror_edge[]">
+                                                        <option value="25">Pemberi Perintah</option>
+                                                        <option value="26">Perencana</option>
+                                                        <option value="27">Pelaksana</option>                                    
+                                                        <option value="28">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="teror_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control teror-select2" name="teror[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#teror-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="teror-edge" data-placeholder="Pilih Relasi..." nm="teror_edge[]">
+                                                        <option value="25">Pemberi Perintah</option>
+                                                        <option value="26">Perencana</option>
+                                                        <option value="27">Pelaksana</option>                                    
+                                                        <option value="28">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" nm="teror_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control teror-select2" nm="teror[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#teror-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Kejahatan Non-Teror</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="nonteror-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="nonteror-edge" data-placeholder="Pilih Relasi..." name="nonteror_edge[]">
+
+                                                        <option value="29">Pemberi Perintah</option>
+                                                        <option value="30">Perencana</option>
+                                                        <option value="31">Pelaksana</option>                                    
+                                                        <option value="32">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="nonteror_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control nonteror-select2" name="nonteror[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#nonteror-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="nonteror-edge" data-placeholder="Pilih Relasi..." nm="nonteror_edge[]">
+
+                                                        <option value="29">Pemberi Perintah</option>
+                                                        <option value="30">Perencana</option>
+                                                        <option value="31">Pelaksana</option>                                    
+                                                        <option value="32">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" nm="nonteror_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kasus </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control nonteror-select2" nm="nonteror[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#nonteror-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Latihan Senjata</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="latsen-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="latsen-edge" data-placeholder="Pilih Relasi..." name="latsen_edge[]">
+                                                        <option value="33">Pelatih</option>
+                                                        <option value="34">Pemberi Perintah</option>
+                                                        <option value="35">Perencana</option>
+                                                        <option value="36">Pelaksana</option>                                    
+                                                        <option value="37">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="latsen_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control latsen-select2" name="latsen[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#latsen-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="latsen-edge" data-placeholder="Pilih Relasi..." nm="latsen_edge[]">
+                                                        <option value="33">Pelatih</option>
+                                                        <option value="34">Pemberi Perintah</option>
+                                                        <option value="35">Perencana</option>
+                                                        <option value="36">Pelaksana</option>                                    
+                                                        <option value="37">Pemberi Dukungan</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" nm="latsen_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control latsen-select2" nm="latsen[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#latsen-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Latihan Non-Senjata</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="latihan-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="latihan-edge" data-placeholder="Pilih Relasi..." name="latihan_edge[]">
+                                                        <option value="38">Pelatih</option>
+                                                        <option value="39">Pemberi Perintah</option>
+                                                        <option value="40">Perencana</option>
+                                                        <option value="41">Pelaksana</option>                                    
+                                                        <option value="42">Pemberi Dukungan</option>                                     
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" name="latihan_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control latihan-select2" name="latihan[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#latihan-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select class="latihan-edge" data-placeholder="Pilih Relasi..." nm="latihan_edge[]">
+                                                        <option value="38">Pelatih</option>
+                                                        <option value="39">Pemberi Perintah</option>
+                                                        <option value="40">Perencana</option>
+                                                        <option value="41">Pelaksana</option>                                    
+                                                        <option value="42">Pemberi Dukungan</option>                                     
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hide dukungan attr">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Bentuk dukungan </label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="text" placeholder="Dukungan" class="form-control" nm="latihan_dukungan[]" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Latihan </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control latihan-select2" nm="latihan[]" ></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#latihan-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Riwayat Organisasi</h4>
+
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main"  id="org-widget">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <!-- Nama -->
+                                        <label class="control-label no-padding-right" for="form-field-1"> Swap all </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-2 center">
+                                        <span class="btn btn-white btn-default btn-round swaprecord">
+                                            <i class="ace-icon fa fa-exchange purple"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-md-6 merge-1 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select data-placeholder="Pilih Relasi..." name="org_edge[]">
+
+                                                        <option value="15">Anggota Aktif</option>
+                                                        <option value="16">Anggota Biasa</option>
+                                                        <option value="53">Anggota inti/Pengurus</option>
+                                                        <option value="54">Muharrik/Pengurus Inti</option>
+                                                        <option value="55">Pelaku Teror</option>
+                                                        <option value="17">Amir</option>                                    
+                                                        <option value="18">Komandan militer</option>                                    
+                                                        <option value="19">Dewan Pimpinan/Pimpinan Wilayah</option>                                    
+                                                        <option value="20">Pemberi dukungan permanen/rutin</option>                                    
+                                                        <option value="20">Pemberi dukungan insidental</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control organisasi-select2" name="organisasi_id[]"></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#organisasi-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="text" class="monthpicker input-sm form-control" name="org_start[]" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+
+                                                        <input type="text" class="monthpicker input-sm form-control" name="org_end[]" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-md-6 merge-2 template-group">
+                                        <div class="hide form-template template" style="margin-bottom:5px;padding:10px;border:1px solid black;">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sebagai </label>
+
+                                                <div class="col-sm-9">
+                                                    <select data-placeholder="Pilih Relasi..." nm="org_edge[]">
+
+                                                        <option value="15">Anggota Aktif</option>
+                                                        <option value="16">Anggota Biasa</option>
+                                                        <option value="53">Anggota inti/Pengurus</option>
+                                                        <option value="54">Muharrik/Pengurus Inti</option>
+                                                        <option value="55">Pelaku Teror</option>
+                                                        <option value="17">Amir</option>                                    
+                                                        <option value="18">Komandan militer</option>                                    
+                                                        <option value="19">Dewan Pimpinan/Pimpinan Wilayah</option>                                    
+                                                        <option value="20">Pemberi dukungan permanen/rutin</option>                                    
+                                                        <option value="20">Pemberi dukungan insidental</option>                                    
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Organisasi </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <select style="width: 100%" class="form-control organisasi-select2" nm="organisasi_id[]"></select>
+                                                        <span class="input-group-addon" data-toggle="modal" data-target="#organisasi-modal-form">
+                                                            <i class="fa fa-plus bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Tanggal </label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <input type="text" class="monthpicker input-sm form-control" nm="org_start[]" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+
+                                                        <input type="text" class="monthpicker input-sm form-control" nm="org_end[]" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
+                                                <div class="col-sm-9">
+                                                    <button class="btn btn-delete btn-danger" type="button">
+                                                        <i class="ace-icon fa fa-remove bigger-110"></i>
+                                                        Hapus
+                                                    </button>
+                                                    <button class="btn btn-swap btn-info" type="button">
+                                                        <i class="ace-icon fa fa-exchange bigger-110"></i>
+                                                        Pindah
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tambah Relasi Pengajian </label>
+
+                                            <div class="col-sm-9">
+                                                <span class="input-group-addon plus">
+                                                    <i class="fa fa-plus bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row widget-box collapsed">
+                        <div class="widget-header">
                             <h4 class="widget-title">Kegiatan Pengajian</h4>
 
                             <div class="widget-toolbar">
@@ -1249,7 +2025,7 @@
                                             <div class="col-sm-9">
                                                 <div class="input-group">
                                                     <select style="width: 100%" class="form-control"></select>
-                                                   <span class="input-group-addon fam-swap">
+                                                    <span class="input-group-addon fam-swap">
                                                         <i class="fa fa-exchange bigger-110"></i>
                                                     </span>
                                                 </div>
