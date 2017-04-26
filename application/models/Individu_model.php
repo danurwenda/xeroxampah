@@ -86,7 +86,8 @@ class Individu_model extends CI_Model {
             //anak
             $anak = [];
             foreach ($this->db
-                    ->get_where('edge', ['source_id' => $id, 'weight_id' => 50])
+                    ->where_in('weight_id',[46,47])
+                    ->get_where('edge', ['source_id' => $id])
                     ->result() as $anaks) {
                 $anak[] = $anaks->target_id;
             }

@@ -148,7 +148,7 @@ jQuery(function ($) {
                 data: 'organisasi_id',
                 render: renderCheckbox
             },
-            {data: 'name'}, //nama organisasi
+            {data: 'name','orderData':[2,1]}, //fix sort saat paged, filtered search
             {
                 data: 'daerah'
             },
