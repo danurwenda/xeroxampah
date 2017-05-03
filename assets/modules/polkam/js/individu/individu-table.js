@@ -509,8 +509,8 @@ jQuery(function ($) {
             if (data.pasangan.length) {
                 var row;
                 $.each(data.pasangan, function (i, v) {
+                    row = insertIndividuRow('.merge-1', 49);
                     $.getJSON(base_url + 'individu/get/' + v.pasangan, function (f) {
-                        row = insertIndividuRow('.merge-1', 49);
                         if (v.prop) {
                             row.find('.combofulldate').combodate("setValue", new Date($.parseJSON(v.prop).from));
                         }
@@ -528,8 +528,8 @@ jQuery(function ($) {
             if (data.saudara.length) {
                 var row;
                 $.each(data.saudara, function (i, v) {
+                    row = insertIndividuRow('.merge-1', 48);
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        row = insertIndividuRow('.merge-1', 48);
                         row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
@@ -544,8 +544,8 @@ jQuery(function ($) {
             if (data.anak.length) {
                 var row;
                 $.each(data.anak, function (i, v) {
+                    row = insertIndividuRow('.merge-1', 50);
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        row = insertIndividuRow('.merge-1', 50);
                         row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
@@ -874,8 +874,8 @@ jQuery(function ($) {
             if (data.pasangan.length) {
                 var row;
                 $.each(data.pasangan, function (i, v) {
+                    row = insertIndividuRow('.merge-2', 49);
                     $.getJSON(base_url + 'individu/get/' + v.pasangan, function (f) {
-                        row = insertIndividuRow('.merge-2', 49);
                         if (v.prop) {
                             row.find('.combofulldate').combodate("setValue", new Date($.parseJSON(v.prop).from));
                         }
@@ -893,8 +893,8 @@ jQuery(function ($) {
             if (data.saudara.length) {
                 var row;
                 $.each(data.saudara, function (i, v) {
+                    row = insertIndividuRow('.merge-2', 48);
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        row = insertIndividuRow('.merge-2', 48);
                         row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
@@ -909,8 +909,8 @@ jQuery(function ($) {
             if (data.anak.length) {
                 var row;
                 $.each(data.anak, function (i, v) {
+                    row = insertIndividuRow('.merge-2', 50)
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        row = insertIndividuRow('.merge-2', 50)
                         row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
