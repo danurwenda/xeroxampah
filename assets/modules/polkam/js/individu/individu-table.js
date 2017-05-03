@@ -169,6 +169,8 @@ jQuery(function ($) {
         $('form [nm="born_date"]').combodate('setValue', null)
         //select-select individu bekas sebelumnya jika ada
         $('#family-widget .template-group').children(':not(.ayah,.ibu,.fam-template,.family-plus)').remove()
+        //un-collapse semua chevron
+        $('.widget-box').widget_box('hide')
     }
     //LOAD DATA oon show
     $('#individu-modal-form').on('show.bs.modal', function (e) {
@@ -214,45 +216,53 @@ jQuery(function ($) {
             }
             var prop = $.parseJSON(data.properties);
             if (prop) {
+                var row;
                 //RIWAYAT NAMA
-                if (prop.namas) {
+                if (prop.namas.length) {
                     $.each(prop.namas, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#nama-widget .merge-1');
+                        row = cloneTemplate('#nama-widget .merge-1');
                         //set values
                         row.find('input[name="old_name[]"]').val(v.nama);
                         row.find('input[name="lokasi_nama[]"]').val(v.location);
                         row.find('input[name="nama_date[]"]').combodate("setValue", new Date(v.time));
                     });
+                    //collapse widgetbox
+                    row.parents('.widget-box').first().widget_box('show');
                 }
                 //RIWAYAT PEKERJAAN
-                if (prop.jobs) {
+                if (prop.jobs.length) {
                     $.each(prop.jobs, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#job-widget .merge-1');
+                        row = cloneTemplate('#job-widget .merge-1');
                         //set values
                         row.find('input[name="job_place[]"]').val(v.job);
                         row.find('input[name="job_end[]"]').combodate("setValue", new Date(v.until));
                         row.find('input[name="job_start[]"]').combodate("setValue", new Date(v.from));
                     });
+                    //collapse widgetbox
+                    row.parents('.widget-box').first().widget_box('show');
                 }
                 //RIWAYAT PENANGKAPAN
-                if (prop.tangkaps) {
+                if (prop.tangkaps.length) {
                     $.each(prop.tangkaps, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#tangkap-widget .merge-1');
+                        row = cloneTemplate('#tangkap-widget .merge-1');
                         //set values
                         row.find('input[name="tangkap_lokasi[]"]').val(v.location);
                         row.find('input[name="tangkap_date[]"]').combodate("setValue", new Date(v.date));
                     });
+                    //collapse widgetbox
+                    row.parents('.widget-box').first().widget_box('show');
                 }
             }
 
             //PENDIDIKAN
-            if (data.pendidikan) {
+            if (data.pendidikan.length) {
+                var row;
                 $.each(data.pendidikan, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#edu-widget .merge-1');
+                    row = cloneTemplate('#edu-widget .merge-1');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -279,12 +289,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //ORGANISASI
-            if (data.organisasi) {
+            if (data.organisasi.length) {
+                var row;
                 $.each(data.organisasi, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#org-widget .merge-1');
+                    row = cloneTemplate('#org-widget .merge-1');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -306,12 +319,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LAPAS
-            if (data.lapas) {
+            if (data.lapas.length) {
+                var row;
                 $.each(data.lapas, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#lapas-widget .merge-1');
+                    row = cloneTemplate('#lapas-widget .merge-1');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -332,12 +348,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //TEROR
-            if (data.teror) {
+            if (data.teror.length) {
+                var row;
                 $.each(data.teror, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#teror-widget .merge-1');
+                    row = cloneTemplate('#teror-widget .merge-1');
                     //set values
                     row.find('[name="teror_edge[]"]').val(v.weight);
                     $.getJSON(base_url + 'teror/get/' + v.target, function (f) {
@@ -350,12 +369,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LATSEN
-            if (data.latsen) {
+            if (data.latsen.length) {
+                var row;
                 $.each(data.latsen, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#latsen-widget .merge-1');
+                    row = cloneTemplate('#latsen-widget .merge-1');
                     //set values
                     row.find('[name="latsen_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -374,12 +396,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LATIHAN
-            if (data.latihan) {
+            if (data.latihan.length) {
+                var row;
                 $.each(data.latihan, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#latihan-widget .merge-1');
+                    row = cloneTemplate('#latihan-widget .merge-1');
                     //set values
                     row.find('[name="latihan_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -398,12 +423,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //NONTEROR
-            if (data.nonteror) {
+            if (data.nonteror.length) {
+                var row;
                 $.each(data.nonteror, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#nonteror-widget .merge-1');
+                    row = cloneTemplate('#nonteror-widget .merge-1');
                     //set values
                     row.find('[name="nonteror_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -422,12 +450,15 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
             //PENGAJIAN
-            if (data.pengajian) {
+            if (data.pengajian.length) {
+                var row;
                 $.each(data.pengajian, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#pengajian-widget .merge-1');
+                    row = cloneTemplate('#pengajian-widget .merge-1');
                     //set values
                     row.find('[name="pengajian_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -446,35 +477,40 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                //collapse widgetbox
+                row.parents('.widget-box').first().widget_box('show');
             }
 
             //KELUARGA
             if (data.father) {
                 $.getJSON(base_url + 'individu/get/' + data.father, function (f) {
-                    $('.merge-1 select[name="father"]')
-                            .empty() //empty select
+                    var father = $('.merge-1 select[name="father"]');
+                    father.empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.individu_id) //set value for option to post it
                                     .text(f.individu_name)) //set a text for show in select
                             .val(f.individu_id) //select option of select2
                             .trigger("change"); //apply to select2
+                    father.parents('.widget-box').first().widget_box('show');
                 });
             }
             if (data.mother) {
                 $.getJSON(base_url + 'individu/get/' + data.mother, function (f) {
-                    $('.merge-1 select[name="mother"]')
-                            .empty() //empty select
+                    var mother = $('.merge-1 select[name="mother"]')
+                    mother.empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.individu_id) //set value for option to post it
                                     .text(f.individu_name)) //set a text for show in select
                             .val(f.individu_id) //select option of select2
                             .trigger("change"); //apply to select2
+                    mother.parents('.widget-box').first().widget_box('show');
                 });
             }
-            if (data.pasangan) {
+            if (data.pasangan.length) {
+                var row;
                 $.each(data.pasangan, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v.pasangan, function (f) {
-                        var row = insertIndividuRow('.merge-1', 49);
+                        row = insertIndividuRow('.merge-1', 49);
                         if (v.prop) {
                             row.find('.combofulldate').combodate("setValue", new Date($.parseJSON(v.prop).from));
                         }
@@ -486,13 +522,15 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
-            if (data.saudara) {
+            if (data.saudara.length) {
+                var row;
                 $.each(data.saudara, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        insertIndividuRow('.merge-1', 48).find('select')
+                        row = insertIndividuRow('.merge-1', 48);
+                        row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
                                         .val(f.individu_id) //set value for option to post it
@@ -500,13 +538,15 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
-            if (data.anak) {
+            if (data.anak.length) {
+                var row;
                 $.each(data.anak, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        insertIndividuRow('.merge-1', 50).find('select')
+                        row = insertIndividuRow('.merge-1', 50);
+                        row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
                                         .val(f.individu_id) //set value for option to post it
@@ -514,8 +554,8 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
             //tanggal ngisinya beda
             if (data.born_date) {
@@ -554,44 +594,49 @@ jQuery(function ($) {
             }
             var prop = $.parseJSON(data.properties);
             if (prop) {
+                var row;
                 //RIWAYAT NAMA
-                if (prop.namas) {
+                if (prop.namas.length) {
                     $.each(prop.namas, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#nama-widget .merge-2');
+                        row = cloneTemplate('#nama-widget .merge-2');
                         //set values
                         row.find('input[nm="old_name[]"]').val(v.nama);
                         row.find('input[nm="lokasi_nama[]"]').val(v.location);
                         row.find('input[nm="nama_date[]"]').combodate("setValue", new Date(v.time));
                     });
+                    row.parents('.widget-box').first().widget_box('show');
                 }
                 //RIWAYAT PEKERJAAN
-                if (prop.jobs) {
+                if (prop.jobs.length) {
                     $.each(prop.jobs, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#job-widget .merge-2');
+                        row = cloneTemplate('#job-widget .merge-2');
                         //set values
                         row.find('input[nm="job_place[]"]').val(v.job);
                         row.find('input[nm="job_end[]"]').combodate("setValue", new Date(v.until));
                         row.find('input[nm="job_start[]"]').combodate("setValue", new Date(v.from));
                     });
+                    row.parents('.widget-box').first().widget_box('show');
                 }
                 //RIWAYAT PENANGKAPAN
-                if (prop.tangkaps) {
+                if (prop.tangkaps.length) {
                     $.each(prop.tangkaps, function (i, v) {
                         //create clone
-                        var row = cloneTemplate('#tangkap-widget .merge-2');
+                        row = cloneTemplate('#tangkap-widget .merge-2');
                         //set values
                         row.find('input[nm="tangkap_lokasi[]"]').val(v.location);
                         row.find('input[nm="tangkap_date[]"]').combodate("setValue", new Date(v.date));
                     });
+                    row.parents('.widget-box').first().widget_box('show');
                 }
             }
             //PENDIDIKAN
-            if (data.pendidikan) {
+            if (data.pendidikan.length) {
+                var row;
                 $.each(data.pendidikan, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#edu-widget .merge-2');
+                    row = cloneTemplate('#edu-widget .merge-2');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -618,12 +663,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //ORGANISASI
-            if (data.organisasi) {
+            if (data.organisasi.length) {
+                var row;
                 $.each(data.organisasi, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#org-widget .merge-2');
+                    row = cloneTemplate('#org-widget .merge-2');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -645,12 +692,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LAPAS
-            if (data.lapas) {
+            if (data.lapas.length) {
+                var row;
                 $.each(data.lapas, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#lapas-widget .merge-2');
+                    row = cloneTemplate('#lapas-widget .merge-2');
                     //set values
                     if (v.prop) {
                         var prop = $.parseJSON(v.prop);
@@ -671,12 +720,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //TEROR
-            if (data.teror) {
+            if (data.teror.length) {
+                var row;
                 $.each(data.teror, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#teror-widget .merge-2');
+                    row = cloneTemplate('#teror-widget .merge-2');
                     //set values
                     row.find('[nm="teror_edge[]"]').val(v.weight);
                     $.getJSON(base_url + 'teror/get/' + v.target, function (f) {
@@ -689,12 +740,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LATSEN
-            if (data.latsen) {
+            if (data.latsen.length) {
+                var row;
                 $.each(data.latsen, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#latsen-widget .merge-2');
+                    row = cloneTemplate('#latsen-widget .merge-2');
                     //set values
                     row.find('[nm="latsen_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -713,12 +766,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //LATIHAN
-            if (data.latihan) {
+            if (data.latihan.length) {
+                var row;
                 $.each(data.latihan, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#latihan-widget .merge-2');
+                    row = cloneTemplate('#latihan-widget .merge-2');
                     //set values
                     row.find('[nm="latihan_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -737,12 +792,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //NONTEROR
-            if (data.nonteror) {
+            if (data.nonteror.length) {
+                var row;
                 $.each(data.nonteror, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#nonteror-widget .merge-2');
+                    row = cloneTemplate('#nonteror-widget .merge-2');
                     //set values
                     row.find('[nm="nonteror_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -761,12 +818,14 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
             //PENGAJIAN
-            if (data.pengajian) {
+            if (data.pengajian.length) {
+                var row;
                 $.each(data.pengajian, function (i, v) {
                     //create clone from templates
-                    var row = cloneTemplate('#pengajian-widget .merge-2');
+                    row = cloneTemplate('#pengajian-widget .merge-2');
                     //set values
                     row.find('[nm="pengajian_edge[]"]').val(v.weight);
                     var prop = $.parseJSON(v.prop);
@@ -785,34 +844,38 @@ jQuery(function ($) {
                                 .trigger("change"); //apply to select2
                     })
                 })
+                row.parents('.widget-box').first().widget_box('show');
             }
 //KELUARGA
             if (data.father) {
                 $.getJSON(base_url + 'individu/get/' + data.father, function (f) {
-                    $('.merge-2 select[nm="father"]')
-                            .empty() //empty select
+                    var row = $('.merge-2 select[nm="father"]');
+                    row.empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.individu_id) //set value for option to post it
                                     .text(f.individu_name)) //set a text for show in select
                             .val(f.individu_id) //select option of select2
                             .trigger("change"); //apply to select2
+                    row.parents('.widget-box').first().widget_box('show');
                 });
             }
             if (data.mother) {
                 $.getJSON(base_url + 'individu/get/' + data.mother, function (f) {
-                    $('.merge-2 select[nm="mother"]')
-                            .empty() //empty select
+                    var row = $('.merge-2 select[nm="mother"]')
+                    row.empty() //empty select
                             .append($("<option/>") //add option tag in select
                                     .val(f.individu_id) //set value for option to post it
                                     .text(f.individu_name)) //set a text for show in select
                             .val(f.individu_id) //select option of select2
                             .trigger("change"); //apply to select2
+                    row.parents('.widget-box').first().widget_box('show');
                 });
             }
-            if (data.pasangan) {
+            if (data.pasangan.length) {
+                var row;
                 $.each(data.pasangan, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v.pasangan, function (f) {
-                        var row = insertIndividuRow('.merge-2', 49);
+                        row = insertIndividuRow('.merge-2', 49);
                         if (v.prop) {
                             row.find('.combofulldate').combodate("setValue", new Date($.parseJSON(v.prop).from));
                         }
@@ -824,13 +887,15 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
-            if (data.saudara) {
+            if (data.saudara.length) {
+                var row;
                 $.each(data.saudara, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        insertIndividuRow('.merge-2', 48).find('select')
+                        row = insertIndividuRow('.merge-2', 48);
+                        row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
                                         .val(f.individu_id) //set value for option to post it
@@ -838,13 +903,15 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
-            if (data.anak) {
+            if (data.anak.length) {
+                var row;
                 $.each(data.anak, function (i, v) {
                     $.getJSON(base_url + 'individu/get/' + v, function (f) {
-                        insertIndividuRow('.merge-2', 50).find('select')
+                        row = insertIndividuRow('.merge-2', 50)
+                        row.find('select')
                                 .empty() //empty select
                                 .append($("<option/>") //add option tag in select
                                         .val(f.individu_id) //set value for option to post it
@@ -852,8 +919,8 @@ jQuery(function ($) {
                                 .val(f.individu_id) //select option of select2
                                 .trigger("change"); //apply to select2
                     });
-
                 });
+                row.parents('.widget-box').first().widget_box('show');
             }
 
             //tanggal ngisinya beda
