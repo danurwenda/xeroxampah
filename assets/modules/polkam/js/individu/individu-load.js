@@ -3,7 +3,7 @@ function load_individu(id) {
         $('#individu_form').append($('<input/>', {type: 'hidden', name: 'individu_id', value: data.individu_id}));
 
         $('#individu_form input[name="individu_name"]').val(data.individu_name);
-        $('#individu_form input[name="religion"]').val(data.religion);
+        $('#individu_form select[name="religion"]').val(data.religion);
         $('#individu_form input[name="label"]').val(data.label);
         $('#individu_form select[name="gender"]').val(data.gender);
         $('#individu_form input[name="alias"]').val(data.alias);
