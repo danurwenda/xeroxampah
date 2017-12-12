@@ -77,39 +77,21 @@ class Kotakab extends Member_Controller {
 
     //REST-like
     function submit() {
-        $id = $this->input->post('kotakab_id');
-        $nama = $this->input->post('name');
-        $address = $this->input->post('address');
-        $city = $this->input->post('city');
-        if ($id) {
-            //edit
-            if ($this->kotakab_model->update($id, $nama, $address, $city)) {
-                //update to neo4j
-                postNeoQuery($this->kotakab_model->neo4j_update_query($id, $nama, $address, $city));
-                if ($this->input->is_ajax_request()) {
-                    echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
-                } else {
-                    //back to table
-                    redirect('kotakab');
-                }
-            } else {
-                echo 0;
+        $kotakab = $this->input->post('kotakab');
+        $prov = $this->input->post('prov');
+        $negara = $this->input->post('negara');
+
+        //add
+        //insert to db
+        if ($new_id = $this->kotakab_model->create($kotakab, $prov, $negara)) {
+            if ($this->input->is_ajax_request()) {
+                echo json_encode([
+                    'kotakab_id' => $new_id,
+                    $this->security->get_csrf_token_name() => $this->security->get_csrf_hash()
+                ]);
             }
         } else {
-            //add
-            //insert to db
-            if ($new_id = $this->kotakab_model->create($nama, $address, $city)) {
-                //insert to neo4j
-                postNeoQuery($this->kotakab_model->neo4j_insert_query($new_id));
-                if ($this->input->is_ajax_request()) {
-                    echo json_encode([$this->security->get_csrf_token_name() => $this->security->get_csrf_hash()]);
-                } else {
-                    //back to table
-                    redirect('kotakab');
-                }
-            } else {
-                echo 0;
-            }
+            echo 0;
         }
     }
 
