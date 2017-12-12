@@ -86,7 +86,7 @@ class Individu_model extends CI_Model {
             //anak
             $anak = [];
             foreach ($this->db
-                    ->where_in('weight_id',[46,47])
+                    ->where_in('weight_id', [46, 47])
                     ->get_where('edge', ['source_id' => $id])
                     ->result() as $anaks) {
                 $anak[] = $anaks->target_id;
@@ -194,8 +194,8 @@ class Individu_model extends CI_Model {
     public function neo4j_insert_query($id) {
         $x = $this->get($id);
         $prop = "individu_name:'" . addslashes($x->individu_name) . "',";
-        $prop.="label:'" . addslashes($x->label) . "',";
-        $prop.="individu_id:" . $id;
+        $prop .= "label:'" . (empty($x->label) ? addslashes($x->individu_name) : addslashes($x->label)) . "',";
+        $prop .= "individu_id:" . $id;
         return "MERGE(Individu$id:Individu { $prop } )";
     }
 
