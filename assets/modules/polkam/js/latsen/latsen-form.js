@@ -1,4 +1,27 @@
 jQuery(function ($) {
+    // ============== MODALS TO CREATE ENTITY ==========================
+    // KOTAKAB
+    $('#kotakab-modal-form .btn-primary').click(function (e) {
+        var form = $('#kotakab-modal-form form')
+                //serialize the form, except those in hidden template
+                , h = form.find(":input").serialize();
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: base_url + 'kotakab/submit', // the url where we want to POST
+            data: h, // our data object
+            dataType: 'json', // what type of data do we expect back from the server
+            encode: true
+        })
+                // using the done promise callback
+                .done(function (data) {
+                    //reset and close modal
+                    form[0].reset();
+                    //reset expandable
+                    form.find('.btn-delete:not(.template *)').click();
+                    $('#kotakab-modal-form').modal('hide');
+                });
+    });
     function formatKotakabList(org) {
         return org.kotakab
     }

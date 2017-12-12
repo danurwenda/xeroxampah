@@ -27,7 +27,12 @@ echo js_asset('jquery-ui.js', 'ace');
                 <div class="col-sm-9">
                     <div class="clearfix">
                         <input type="text" class="form-control" name="tempat" />
-                        <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
+                        <div class="input-group">
+                            <select style="width: 100%" class="form-control kotakab-select2" name="kotakab"></select>
+                            <span class="input-group-addon" data-toggle="modal" data-target="#kotakab-modal-form">
+                                <i class="fa fa-plus bigger-110"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,6 +96,61 @@ echo js_asset('jquery-ui.js', 'ace');
 
     </div>
 </div>
+<div id="kotakab-modal-form" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger">Tambah Kota</h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="row form-horizontal">
+                    <div class="col-xs-12">
+                        <!-- Kotakab -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Kota/Kabupaten </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="kotakab" />
+                            </div>
+                        </div>
+                        <!-- Prov -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Provinsi </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="prov" />
+                            </div>
+                        </div>
+                        <!-- Negara -->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Negara </label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="negara" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-check"></i>
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <?php
